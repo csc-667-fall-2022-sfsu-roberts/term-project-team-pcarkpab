@@ -6,6 +6,11 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+// To make use the environment variables defined in the .env file in our development environment
+if(process.env.NODE_ENV === 'development') {
+    require("dotenv").config();
+}
+
 var app = express();
 
 app.use(logger('dev'));
