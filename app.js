@@ -5,6 +5,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var testsRouter = require('./routes/tests');
 
 // To make use the environment variables defined in the .env file in our development environment
 if(process.env.NODE_ENV === 'development') {
@@ -21,5 +22,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/tests', testsRouter);
 
 module.exports = app;
