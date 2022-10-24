@@ -1,0 +1,15 @@
+.nav-containers{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.nav-item{
+  color:blue;
+  font-size: 64px; 
+}
+
+.Logo {
+  color:blue;
+  font-size: 64px;
+}

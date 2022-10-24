@@ -30,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.engine("hbs", engine({
   extname: '.hbs',
   layoutsDir: path.join(__dirname, "views/layouts"), 
+  partialsDir: path.join(__dirname, "views/partials"),
   defaultLayout: "layout",
 })
 );
