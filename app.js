@@ -11,10 +11,10 @@ if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
 }
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var testsRouter = require('./routes/tests');
-
+var indexRouter = require('./routes/public/index');
+var testsRouter = require('./routes/public/tests');
+var lobbyRouter = require('./routes/protected/lobby');
+var gameRouter = require('./routes/protected/game');
 
 
 var app = express();
@@ -39,7 +39,13 @@ app.set("view engine", "hbs");
 
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/tests', testsRouter);
+app.use('/lobby', lobbyRouter);
+app.use('/game', gameRouter);
+
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.render("pages/error");
+})
 
 module.exports = app;
