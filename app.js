@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-
+//View Engine set up
 app.engine("hbs", engine({
   extname: '.hbs',
   layoutsDir: path.join(__dirname, "views/layouts"), 
