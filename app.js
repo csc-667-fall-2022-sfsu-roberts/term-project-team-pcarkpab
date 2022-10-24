@@ -2,7 +2,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-//require("dotenv").config();
+const {engine} = require("express-handlebars");
+
 
 // To make use the environment variables defined in the .env file in our development environment
 //Setting the environment after the database is initialized
@@ -23,6 +24,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+
+app.engine("hbs", engine({
+  extname: '.hbs',
+  layoutsDir: path.join(__dirname, "views/layouts"), 
+  defaultLayout: "layout",
+})
+);
+
+app.set("views", path.join(__dirname, "views/pages"));
+app.set("view engine", "hbs");
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
