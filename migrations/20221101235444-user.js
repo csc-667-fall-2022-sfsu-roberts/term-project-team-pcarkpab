@@ -9,7 +9,7 @@ module.exports = {
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
     return queryInterface.createTable('user', {
-      userID:{
+      userId:{
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
@@ -36,7 +36,8 @@ module.exports = {
         defaultValue: null,
         allowNull: true,
       },
-    })
+    }).then(() => queryInterface.addIndex('user', ['userId']))
+
   },
 
   async down (queryInterface, Sequelize) {

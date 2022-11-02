@@ -43,7 +43,8 @@ module.exports = {
         defaultValue: null,
         allowNull: true,
       },
-    })
+    }).then(() => queryInterface.addIndex('game', ['gameId']))
+
   },
 
   async down (queryInterface, Sequelize) {

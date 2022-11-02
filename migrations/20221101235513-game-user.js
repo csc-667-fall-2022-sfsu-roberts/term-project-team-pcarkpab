@@ -26,7 +26,7 @@ module.exports = {
     ON DELETE CASCADE
     ON UPDATE CASCADE)
      */
-    return queryInterface.createTable('game-user', {
+    return queryInterface.createTable('game_user', {
       gameUserId:{
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -38,13 +38,29 @@ module.exports = {
       userId:{
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
+        references: {
+          model: {
+            tableName: 'user',
+            schema: 'public'
+          },
+          key: 'userId',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
 
       gameId:{
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
+        references: {
+          model: {
+            tableName: 'game',
+            schema: 'public'
+          },
+          key: 'gameId',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
       },
       
       chipsHeld:{
@@ -70,10 +86,10 @@ module.exports = {
         default: null,
         allowNull: true,
       }
-    })
+    }).then(() => queryInterface.addIndex('game_user', ['gameId', 'userId', 'gameUserId']))
   },
 
   async down (queryInterface, Sequelize) {
-    return queryInterface.dropTable('game-user');
+    return queryInterface.dropTable('game_user');
   }
 };
