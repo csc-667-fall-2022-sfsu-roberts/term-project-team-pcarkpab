@@ -80,12 +80,25 @@ module.exports = {
         allowNull: true,
       },
 
+      blindStatus:{
+        type: Sequelize.ENUM,
+        values: ['NONE', 'BIGBLIND', 'SMALLBLIND'],
+        default: null,
+        allowNull: true,
+      },
+
       status:{
         type: Sequelize.ENUM,
         values: ['INGAME', 'SPECTATOR', 'IDLE', 'LEFTGAME', 'LOSER', 'WINNER'],
         default: null,
         allowNull: true,
+      },
+
+      seatNumber:{
+        type: Sequelize.INTEGER,
+        allowNull: true,
       }
+
     }).then(() => queryInterface.addIndex('game_user', ['gameId', 'userId', 'gameUserId']))
   },
 
