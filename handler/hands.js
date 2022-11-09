@@ -4,8 +4,10 @@ let dealerCards = [
 ]
 
 let playerCards = [
-  {rank: 13, suit: "S"}, {rank: 1, suit: "S"} 
+  {rank: 13, suit: "S"}, {rank: 1, suit: "A"} 
 ]
+
+
 
 let sortCards = (cards) => {
   //Change Ace from rank 1 to rank 14 highest priority
@@ -23,7 +25,8 @@ let sortCards = (cards) => {
 let calculateHands = (dealerCards, playerCards) => {
   let score = 0;
   let tempCards = dealerCards.concat(playerCards);
-  
+  sortCards(tempCards);
+  console.log(tempCards);
 }
 
-calculateHands(dealerCards, dealerCards);
+calculateHands(dealerCards, playerCards);
