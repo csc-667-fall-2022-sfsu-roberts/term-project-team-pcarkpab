@@ -1,6 +1,6 @@
 
 let dealerCards = [
-  {rank: 9, suit: "S"}, {rank: 10, suit: "S"}, {rank: 1, suit: "S"}, {rank: 11, suit: "S"}, {rank: 12, suit: "S"}
+  {rank: 9, suit: "S"}, {rank: 10, suit: "S"}, {rank: 1, suit: "S"}, {rank: 11, suit: "S"}, {rank: 2, suit: "S"}
 ]
 
 let playerCards = [
@@ -38,7 +38,7 @@ let calculateHands = (dealerCards, playerCards) => {
 let checkRoyalFlush = (sortedCards) => {
   let score = 0;
   // 10, 11, 11, 12, 13, 14
-  let isRoyalFlush = false;
+  let isStraight = true;
   let index = 10;
 
   let myMap = new Map();
@@ -54,6 +54,10 @@ let checkRoyalFlush = (sortedCards) => {
     myMap.set(card.rank, myMap.get(card.rank) + 1);
   }
  })
+
+
+ console.log(isStraight);
+
 
   console.log(myMap);
 
