@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-/* GET users listing. */
+/* GET home page. */
 router.get('/', function(req, res, next) {
-  res.send("You have reached the users route");
+  res.render("authenticated/lobby", {title:"Lobby Page"});
 });
+
 
 module.exports = router;
