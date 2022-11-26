@@ -11,10 +11,12 @@ if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
 }
 
+// Import routes
 var indexRouter = require('./routes/public/index');
 var testsRouter = require('./routes/public/tests');
 var lobbyRouter = require('./routes/protected/lobby');
 var gameRouter = require('./routes/protected/game');
+var usersRouter = require('./routes/protected/users');
 
 
 var app = express();
@@ -43,14 +45,17 @@ app.use('/', indexRouter);
 app.use('/tests', testsRouter);
 app.use('/lobby', lobbyRouter);
 app.use('/game', gameRouter);
+app.use('/users', usersRouter);
 
+
+// When a user encouters a webpage error
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = err;
   console.log(err);
 
   res.status(err.status || 500);
-  res.render("pages/error");
+  res.render("unauthenticated/error");
 })
 
 module.exports = app;
