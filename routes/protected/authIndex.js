@@ -11,7 +11,8 @@ router.get('/settings', function(req, res, next) {
 });
 
 router.get('/lobby', function(req, res, next) {
-  res.render("authenticated/lobby", {title:"Lobby Page"});
+  const {username, userId} = req.session;
+  res.render("authenticated/lobby", {title:"Lobby Page", username, userId});
 });
 
 router.get('/howtoplay_auth', function(req, res, next) {

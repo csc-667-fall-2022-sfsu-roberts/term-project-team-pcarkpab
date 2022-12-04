@@ -14,9 +14,13 @@ if(process.env.NODE_ENV === 'development') {
 //Public routes
 var indexRouter = require('./routes/public/index');
 var testsRouter = require('./routes/public/tests');
+var usersRouter = require('./routes/public/users');
 
 //Protected routes
 var authIndexRouter = require('./routes/protected/authIndex');
+
+//Others
+const sessionInstance = require('./app-config/session');
 
 var app = express();
 
@@ -24,6 +28,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(sessionInstance);
 app.use("/public", express.static(path.join(__dirname, 'public')));
 
 
@@ -41,8 +46,9 @@ app.set("view engine", "hbs");
 
 
 app.use('/', indexRouter);
-app.use('/tests', testsRouter);
 app.use('/', authIndexRouter);
+app.use('/tests', testsRouter);
+app.use('/users', usersRouter);
 
 
 app.use((err, req, res, next) => {
@@ -51,7 +57,7 @@ app.use((err, req, res, next) => {
   console.log(err);
 
   res.status(err.status || 500);
-  res.render("pages/error");
+  res.render("error");
 })
 
 module.exports = app;
