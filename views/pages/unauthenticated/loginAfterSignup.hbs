@@ -1,21 +1,21 @@
-{{>nav}}
+
 <div>
   <h2>Login Page After signing Up</h2>
   <p>(This version of the log in page comes after signing up)</p>
   <p>Account successfully made! Please log in to continue.</p>
   <p>Also leads to authenticated page regardless of what's entered for now</p>
 
-  <form>
+  <form id="login-form" method="POST" action="/users/login" enctype="application/x-www-form-urlencoded">
     <label>
       Username
     </label>
-    <input type="text">
+    <input type="text" id="username" name="username" required><br>
     <br>
     <label>
       Password
     </label>
-    <input type="password">
+    <input type="password" id="user-password" name="password" required><br>
     <br><br>
-    <a href="/lobby" class="button button2">Log In</button></a> 
+    <input type="submit" value="Log In"><br>
   </form>
 </div>
