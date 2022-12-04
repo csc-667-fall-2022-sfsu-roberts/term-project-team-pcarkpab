@@ -44,6 +44,12 @@ app.engine("hbs", engine({
 app.set("views", path.join(__dirname, "views/pages"));
 app.set("view engine", "hbs");
 
+app.use((req, res, next) =>{
+  if(req.session.authenticated){
+    res.locals.logged = true;
+  }
+  next();
+})
 
 app.use('/', indexRouter);
 app.use('/', authIndexRouter);

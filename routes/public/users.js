@@ -11,9 +11,13 @@ router.post('/login', function (req, res, next) {
 
   Users.login({username, password})
     .then((result) => {
+      if(!result.valid){
+        alert("Incorrect Username/Password");
+        res.redirect("/login");
+      }
       req.session.authenticated = true;
       req.session.username = result.username;
-      req.session.userId = result.id;
+      req.session.userId = result.userId;
 
       res.redirect("/lobby");
     })
@@ -34,6 +38,17 @@ router.post('/register', function (req, res, next) {
       res.redirect("/lobby");
     })
     .catch((err) => {next(err)});
+});
+
+router.get("/logout", (req,res,next)=>{
+  req.session.destroy((err) =>{
+    if(err){
+      next(err);
+    }else{
+      res.clearCookie('sid');
+      res.redirect('/');
+    }
+  })
 });
 
 module.exports = router;
