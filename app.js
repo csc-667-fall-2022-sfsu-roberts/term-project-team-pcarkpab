@@ -11,21 +11,16 @@ if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
 }
 
+//Public routes
 var indexRouter = require('./routes/public/index');
 var testsRouter = require('./routes/public/tests');
+var usersRouter = require('./routes/public/users');
 
-var lobbyRouter = require('./routes/protected/lobby');
-var gameRouter = require('./routes/protected/game');
+//Protected routes
+var authIndexRouter = require('./routes/protected/authIndex');
 
-
-//Added extra Authenticated Pages
-var aboutRouter  = require('./routes/protected/about_auth');
-var addPaymentRouter  = require('./routes/protected/addPayment');
-var howToPlayRouter  = require('./routes/protected/howtoplay_auth');
-var settingsRouter  = require('./routes/protected/settings');
-var waitingRoomRouter  = require('./routes/protected/waitingRoom');
-
-
+//Others
+const sessionInstance = require('./app-config/session');
 
 var app = express();
 
@@ -33,6 +28,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(sessionInstance);
 app.use("/public", express.static(path.join(__dirname, 'public')));
 
 
@@ -48,20 +44,17 @@ app.engine("hbs", engine({
 app.set("views", path.join(__dirname, "views/pages"));
 app.set("view engine", "hbs");
 
+app.use((req, res, next) =>{
+  if(req.session.authenticated){
+    res.locals.logged = true;
+  }
+  next();
+})
 
 app.use('/', indexRouter);
+app.use('/', authIndexRouter);
 app.use('/tests', testsRouter);
-
-//Protected router stuff
-app.use('/lobby', lobbyRouter);
-app.use('/game', gameRouter);
-app.use('/waitingRoom', waitingRoomRouter);
-
-//Extra protected Pages
-app.use('/about_auth', aboutRouter);
-app.use('/addPayment', addPaymentRouter);
-app.use('/howtoplay_auth', howToPlayRouter);
-app.use('/settings', settingsRouter);
+app.use('/users', usersRouter);
 
 
 app.use((err, req, res, next) => {
@@ -70,7 +63,7 @@ app.use((err, req, res, next) => {
   console.log(err);
 
   res.status(err.status || 500);
-  res.render("pages/error");
+  res.render("error");
 })
 
 module.exports = app;
