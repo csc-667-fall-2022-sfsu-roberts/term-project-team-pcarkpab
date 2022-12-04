@@ -13,8 +13,18 @@ if(process.env.NODE_ENV === 'development') {
 
 var indexRouter = require('./routes/public/index');
 var testsRouter = require('./routes/public/tests');
+
 var lobbyRouter = require('./routes/protected/lobby');
 var gameRouter = require('./routes/protected/game');
+
+
+//Added extra Authenticated Pages
+var aboutRouter  = require('./routes/protected/about_auth');
+var addPaymentRouter  = require('./routes/protected/addPayment');
+var howToPlayRouter  = require('./routes/protected/howtoplay_auth');
+var settingsRouter  = require('./routes/protected/settings');
+var waitingRoomRouter  = require('./routes/protected/waitingRoom');
+
 
 
 var app = express();
@@ -41,8 +51,18 @@ app.set("view engine", "hbs");
 
 app.use('/', indexRouter);
 app.use('/tests', testsRouter);
+
+//Protected router stuff
 app.use('/lobby', lobbyRouter);
 app.use('/game', gameRouter);
+app.use('/waitingRoom', waitingRoomRouter);
+
+//Extra protected Pages
+app.use('/about_auth', aboutRouter);
+app.use('/addPayment', addPaymentRouter);
+app.use('/howtoplay_auth', howToPlayRouter);
+app.use('/settings', settingsRouter);
+
 
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
