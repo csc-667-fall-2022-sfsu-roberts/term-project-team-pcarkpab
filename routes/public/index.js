@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render("unauthenticated/home", {title:"HOME PAGE"});
@@ -26,10 +25,6 @@ router.get('/howtoplay', function (req, res, next) {
 router.get('/about', function (req, res, next) {
   res.render("unauthenticated/about", {title:"About Page"});
 });
-
-
-
-
 
 module.exports = router;
 

@@ -40,7 +40,7 @@ module.exports = {
         allowNull: false,
         references: {
           model: {
-            tableName: 'users',
+            tableName: 'user',
             schema: 'public'
           },
           key: 'userId',
