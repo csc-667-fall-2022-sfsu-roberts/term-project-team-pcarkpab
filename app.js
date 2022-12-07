@@ -15,7 +15,7 @@ if(process.env.NODE_ENV === 'development') {
 var indexRouter = require('./routes/public/index');
 var testsRouter = require('./routes/public/tests');
 var usersRouter = require('./routes/public/users');
-
+var lobbyRouter = require('./routes/protected/lobby');
 //Protected routes
 var authIndexRouter = require('./routes/protected/authIndex');
 
@@ -55,7 +55,7 @@ app.use('/', indexRouter);
 app.use('/', authIndexRouter);
 app.use('/tests', testsRouter);
 app.use('/users', usersRouter);
-
+app.use('/lobby', lobbyRouter);
 
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
