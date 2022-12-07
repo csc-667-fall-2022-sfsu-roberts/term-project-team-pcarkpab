@@ -15,7 +15,7 @@ router.post('/login', function (req, res, next) {
         req.session.username = username;
         req.session.userId = userId;
 
-        res.redirect("/lobby");
+        res.redirect("/auth/lobby");
       }else{
         throw Error("Username or Password is invalid! Please try again");
       }  
@@ -40,7 +40,7 @@ router.post('/register', function (req, res, next) {
       }
     })
     .then((result) => { 
-      console.log(result);
+      
       req.session.authenticated = true;
       req.session.username = result.username;
       req.session.userId = result.userId;

@@ -21,6 +21,7 @@ var authIndexRouter = require('./routes/protected/authIndex');
 
 //Others
 const sessionInstance = require('./app-config/session');
+const protect = require('./app-config/protect');
 
 var app = express();
 
@@ -52,10 +53,10 @@ app.use((req, res, next) =>{
 })
 
 app.use('/', indexRouter);
-app.use('/', authIndexRouter);
+app.use('/auth', protect, authIndexRouter);
 app.use('/tests', testsRouter);
 app.use('/users', usersRouter);
-app.use('/lobby', lobbyRouter);
+app.use('/lobby', protect, lobbyRouter);
 
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
