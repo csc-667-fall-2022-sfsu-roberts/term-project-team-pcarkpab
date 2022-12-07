@@ -15,9 +15,11 @@ if(process.env.NODE_ENV === 'development') {
 var indexRouter = require('./routes/public/index');
 var testsRouter = require('./routes/public/tests');
 var usersRouter = require('./routes/public/users');
-var lobbyRouter = require('./routes/protected/lobby');
+
 //Protected routes
 var authIndexRouter = require('./routes/protected/authIndex');
+var lobbyRouter = require('./routes/protected/lobby');
+var chatRouter = require('./routes/protected/chat');
 
 //Others
 const sessionInstance = require('./app-config/session');
@@ -53,10 +55,12 @@ app.use((req, res, next) =>{
 })
 
 app.use('/', indexRouter);
-app.use('/auth', protect, authIndexRouter);
 app.use('/tests', testsRouter);
 app.use('/users', usersRouter);
+
+app.use('/auth', protect, authIndexRouter);
 app.use('/lobby', protect, lobbyRouter);
+app.use('/chat', protect, chatRouter);
 
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
