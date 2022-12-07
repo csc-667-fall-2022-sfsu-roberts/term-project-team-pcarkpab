@@ -17,9 +17,9 @@ const login = ({username, password}) => {
     })
     .then((passwordMatch) => {
       if(passwordMatch){
-        return tempUserId;
+        return Promise.resolve(tempUserId);
       }else{
-        return -1;
+        return Promise.resolve(-1);
       }
     })
     .catch((err) => Promise.reject(err));
@@ -44,9 +44,9 @@ const checkUsername = (username) => {
   .then((result) => {
     if(result){
       console.log("username exists");
-      return true;
+      return Promise.resolve(true);
     }else{
-      return false;
+      return Promise.resolve(false);
     }
   })
   .catch((err) => {Promise.resolve(false)});
