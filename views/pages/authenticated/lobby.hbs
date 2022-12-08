@@ -8,20 +8,28 @@
   <p>Also here's a link to starting a game below:</p>
 
   <form id="lobby-create" method="POST" action="/lobby/create" enctype="application/x-www-form-urlencoded">
-    <p>Creat Lobby</p>
+    <p>Create Lobby</p>
     <label>Minimum Bet</label><br>
     <input type="text" name="minimumBet"><br>
     <label>Game Password</label><br>
     <input type="text" name="gamePassword"><br>
 
-    <input type="submit" value="CREATE"> <br>
+    <input type="submit" class="button button1" value="Create New Room"> <br>
   </form>
 
+  <!-- <a href="/auth/game" class="button button1">Join game 1</button></a>-->
 
-  <a href="/auth/waitingRoom">Waiting Room</a>
+<br>
+  This is just a link to the waiting room, but it doesnt use POST /lobby/create
+  <a href="/auth/waitingRoom" class="button button1">Create New Room</button></a>
+  <!--a href="/auth/waitingRoom">Waiting Room</a>-->
 
+<div id="list-rooms">
+  <p id="p1">Testing the dynamic appearance of join game buttons appear below...</p>
+</div>
 
 <script src="/socket.io/socket.io.js" ></script>
 <script src="/public/js/test-socket.js"></script>
+<script src="/public/js/lobbyTest.js"></script>
 
 </div>
