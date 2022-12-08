@@ -11,13 +11,19 @@ if(process.env.NODE_ENV === 'development') {
   require("dotenv").config();
 }
 
-// Import routes
+//Public routes
 var indexRouter = require('./routes/public/index');
 var testsRouter = require('./routes/public/tests');
-var lobbyRouter = require('./routes/protected/lobby');
-var gameRouter = require('./routes/protected/game');
-var usersRouter = require('./routes/protected/users');
+var usersRouter = require('./routes/public/users');
 
+//Protected routes
+var authIndexRouter = require('./routes/protected/authIndex');
+var lobbyRouter = require('./routes/protected/lobby');
+var chatRouter = require('./routes/protected/chat');
+
+//Others
+const sessionInstance = require('./app-config/session');
+const protect = require('./app-config/protect');
 
 var app = express();
 
@@ -25,6 +31,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(sessionInstance);
 app.use("/public", express.static(path.join(__dirname, 'public')));
 
 
@@ -40,22 +47,28 @@ app.engine("hbs", engine({
 app.set("views", path.join(__dirname, "views/pages"));
 app.set("view engine", "hbs");
 
+app.use((req, res, next) =>{
+  if(req.session.authenticated){
+    res.locals.logged = true;
+  }
+  next();
+})
 
 app.use('/', indexRouter);
 app.use('/tests', testsRouter);
-app.use('/lobby', lobbyRouter);
-app.use('/game', gameRouter);
 app.use('/users', usersRouter);
 
+app.use('/auth', protect, authIndexRouter);
+app.use('/lobby', protect, lobbyRouter);
+app.use('/chat', protect, chatRouter);
 
-// When a user encouters a webpage error
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = err;
   console.log(err);
 
   res.status(err.status || 500);
-  res.render("unauthenticated/error");
+  res.render("error");
 })
 
 module.exports = app;

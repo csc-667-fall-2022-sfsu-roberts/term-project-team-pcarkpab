@@ -1,42 +1,18 @@
-<!--
-  @Front-end UI of login page 
--->
 
-<div class="grid-container">
-    <header class="site-header">
-        <section>
-            <h1>Login</h1>
-        </section>
-    </header>
-
-    <aside class="site-lsidebar">
-        <!-- Sidebar content goes here! -->
-    </aside>
-
-    <aside class="site-rsidebar">
-        <!-- Sidebar content goes here! -->
-    </aside>
-
-    <div class="site-content">
-        <p><br>Welcome, please enter your username and password to log in. <br><br></p>
-
-        <form method="POST" action='/users/login' enctype="application/x-www-form-urlencoded">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" requried name="username"><br><br>
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" requried name="password"><br><br>
-
-            <button type="submit" id="button">Log In</button><br><br>
-        </form>
-    </div>
-
-    <footer class="site-footer">
-        <nav>
-            <div>
-                <a class="login-register" href="registration">Or click here to register an account if you have not
-                    done so already!</a>
-            </div>
-        </nav>
-    </footer>
+<div>
+  <h2>Login Page</h2>
+  <p>Clicking on the log in button below would lead you to an authenticated page regardless... for now</p>
+  <form id="login-form" method="POST" action="/users/login" enctype="application/x-www-form-urlencoded">
+    <label>
+      Username
+    </label>
+    <input type="text" id="username" name="username" required><br>
+    <br>
+    <label>
+      Password
+    </label>
+    <input type="password" id="user-password" name="password" required><br>
+    <br><br>
+    <input type="submit" value="Log In"><br>
+  </form>
 </div>
