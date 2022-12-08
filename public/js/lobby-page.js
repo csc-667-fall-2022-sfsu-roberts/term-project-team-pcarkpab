@@ -5,6 +5,7 @@ const loadLobbyTable = () => {
 
   fetch("/lobby/list", {
     method: "get",
+    
   })
     .then((result) => {
       return result.json();
