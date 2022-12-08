@@ -45,7 +45,7 @@ router.post('/register', function (req, res, next) {
       req.session.username = result.username;
       req.session.userId = result.userId;
 
-      res.redirect("/lobby");
+      res.redirect("/auth/lobby");
     })
     .catch((err) => {
       //implement flash messages
