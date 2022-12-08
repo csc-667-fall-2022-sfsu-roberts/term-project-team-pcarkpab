@@ -44,3 +44,8 @@ you can see a preview of thar color */
   color: rgb(255, 215, 213);
   
 }
+
+.chat-box{
+  display: flex;
+  flex-direction: column;
+}

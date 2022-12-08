@@ -6,10 +6,22 @@
   <p>Also noticed how the nav bar changed? Feel free to test out the authenticated links in the bar as well :D</p>
   <br>
   <p>Also here's a link to starting a game below:</p>
-  <a href="/waitingRoom">Lobby Page</a>
 
-  <a href="/waitingRoom" class="button button1">Make new Room</button></a>
+  <form id="lobby-create" method="POST" action="/lobby/create" enctype="application/x-www-form-urlencoded">
+    <p>Creat Lobby</p>
+    <label>Minimum Bet</label><br>
+    <input type="text" name="minimumBet"><br>
+    <label>Game Password</label><br>
+    <input type="text" name="gamePassword"><br>
 
-  <a href="/game" class="button button1">Join Game</button></a>
+    <input type="submit" value="CREATE"> <br>
+  </form>
+
+
+  <a href="/auth/waitingRoom">Waiting Room</a>
+
+
+<script src="/socket.io/socket.io.js" ></script>
+<script src="/public/js/test-socket.js"></script>
 
 </div>
