@@ -28,7 +28,7 @@ const loadLobbyTable = () => {
         td5.innerText = element.playerCount + "/6";
 
         let playButton = document.createElement("button");
-        playButton.innerText = "play";
+        playButton.innerText = "Join";
         td6.appendChild(playButton);
 
         row.appendChild(td1);
