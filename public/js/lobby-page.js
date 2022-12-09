@@ -84,24 +84,8 @@ const loadLobbyTable = () => {
 //Load tables
 socket.on("lobby:0", ({gameId}) => {
   loadLobbyTable();
-})
+});
 
-socket.on("lobby:leave", ({gameId}) => {
-  console.log("I just left");
-  fetch(`/api/lobby/checkPlayerCount/${gameId}`, {
-    method: "get",
-  })
-    .then((result) => {
-      return result.json();
-    })
-    .then((result_json) => {
-      if (result_json.count == 0) {
-        fetch(`/api/lobby/delete/${gameId}`, { method: "post" })
-        .catch(err => console.log(err));
-      }
-    })
-    .catch(err => console.log(err));
-})
 
 loadLobbyTable();
 

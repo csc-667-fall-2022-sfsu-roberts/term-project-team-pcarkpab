@@ -8,7 +8,7 @@ const create = (username, minimumBet, gamePassword) => {
 
 const deleteLobby = (gameId) => {
   let baseSQL =
-  "DELETE FROM game WHERE \"gameId\"=${gameId};"
+  "DELETE FROM game WHERE \"gameId\"=${gameId} RETURNING \"gameId\";"
   return db.one(baseSQL, {gameId});
 }
 

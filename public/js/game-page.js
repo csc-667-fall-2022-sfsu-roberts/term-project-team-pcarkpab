@@ -20,6 +20,7 @@ leaveButton.onclick = () => {
 
 
 
+
 const sendMessage = document.getElementById(`send-message-button-${gameId}`);
 
 

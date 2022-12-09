@@ -83,25 +83,35 @@ router.post("/leave/:id", (req, res, next) => {
   const {userId} = req.session;
   const {id: gameId} = req.params;
   Lobby.removePlayer(userId, gameId)
+    .then(() => {
+      return Lobby.checkPlayerCount(gameId);
+    })
     .then((result) => {
-      req.app.io.emit("lobby:0", {gameId})
-      req.app.io.emit("lobby:leave", {gameId})
+      if(result.count == 0){
+        console.log("Lobby " + gameId + " is deleted");
+        return Lobby.deleteLobby(gameId);
+      }else{
+        return Promise.resolve(1);
+      }
+    })
+    .then(() => {
+      req.app.io.emit("lobby:0", {gameId});
       res.json({success: true});
     })
     .catch(err => console.log(err));
 })
 
-router.post("/delete/:id", (req, res, next) => {
-  console.log("I got here");
-  const {id: gameId} = req.params;
-  Lobby.deleteLobby(gameId)
-    .then((result) => {
-      req.app.io.emit("lobby:0", {
-        game: gameId,    
-      })
-      res.json(result);
-    })
-    .catch(err => console.log(err));
-})
+// router.post("/delete/:id", (req, res, next) => {
+//   console.log("I got here");
+//   const {id: gameId} = req.params;
+//   Lobby.deleteLobby(gameId)
+//     .then((result) => {
+//       req.app.io.emit("lobby:0", {
+//         game: gameId,    
+//       })
+//       res.json(result);
+//     })
+//     .catch(err => console.log(err));
+// })
 
 module.exports = router;
