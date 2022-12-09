@@ -32,7 +32,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 99;
+        z-index: 104;
   }
   .logo:hover .hlogo {
     display: inline;
@@ -89,6 +89,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 30px;
+    z-index: 103;
   }
 
   nav ul li{
@@ -118,7 +119,7 @@
 
   .icon2 {
     position: relative;
-    z-index: 100;
+    z-index: 105;
 
     max-width: 80px;
     max-height: 80px;
@@ -152,6 +153,7 @@
   .dropdown-nav {
     display: inline-block;
     position: relative;
+    z-index: 103;
   }
   .dropdown-content {
     display: none;
