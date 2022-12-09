@@ -1,5 +1,18 @@
-  #nav-bar{
-    display: flex;
+/* Fonts Imported */
+
+@font-face {
+  font-family: "AlegreyaHeaderFont";
+  src: url("../css/fonts/Alegreya-Regular.otf");
+}
+
+@font-face {
+  font-family: "CentaurLabelFont";
+  src: url("../css/fonts/Centaur.ttf")
+}
+
+
+#nav-bar{
+  display: flex;
   flex-direction: row;
   justify-content: space-around;
   height: 130px;
@@ -53,7 +66,7 @@
     margin: 20px 2px;
     transition-duration: 0.4s;
     cursor: pointer;
-    font-family: Verdana, sans-serif;
+    font-family: "AlegreyaHeaderFont";
     font-weight: bold;
   }
   
@@ -100,15 +113,14 @@
     display: inline-block;
     font-size: 32px; 
     padding: 15px;
-
-    font-family: Verdana, sans-serif;
+    font-family: "AlegreyaHeaderFont";
     text-decoration: none;
     font-size: 2rem;
     color:white;
-    
     transition-duration: 0.3s;
     cursor: pointer;
     position: relative;
+    text-shadow: 1px 0px 10px red;
   }
 
   .nav-item:hover {

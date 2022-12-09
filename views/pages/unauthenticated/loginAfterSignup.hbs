@@ -1,14 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css/Registration.css">
-    <link rel="stylesheet" type="text/css" href="../css/fonts/style.css">
-
-    <title>Hail to the Proxy -  Login</title>
-</head>
-
 
 <header>
     <h2>Login Page After signing Up</h2>
@@ -23,23 +12,17 @@
     <form id="login-form" method="POST" action="/users/login" enctype="application/x-www-form-urlencoded">
         <p id="Register">Log Into Account</p>
 
-      <div id="UsernameDIV">
-          <label>
+      <label>
         Username
-          </label>
-        <input type="text" id="username" name="username" placeholder="Enter Valid Username" required><br>
-      </div>
+      </label>
+      <input type="text" id="username" name="username" placeholder="Enter Valid Username" required><br>
       <br>
+      <label>
+        Password
+      </label>
+      <input type="password" id="user-password" name="password" placeholder="Enter Valid Password" required><br>
 
-      <div id="PasswordDIV">
-        <label>
-          Password
-        </label>
-        <input type="password" id="user-password" name="password" placeholder="Enter Valid Password" required><br>
-      </div>
-      <br>
-
-    <p id="Submit">Log In</p>
-      <input type="image" id="PokerLogoSubmit" src="../css/fonts/LoginSignupLogo2.png" alt="Submit">
+      <p id="Submit">Log In</p>
+    <input type="image" id="PokerLogoSubmit" src="..public/css/fonts/LoginSignupLogo2.png" alt="Submit">
     </form>
   </div>
