@@ -1,5 +1,5 @@
 const express = require('express');
-const Lobby = require('../../db/Lobby');
+const Lobby = require('../../../db/Lobby');
 const router = express.Router();
 
 router.post("/create", (req, res, next) =>{

@@ -20,7 +20,8 @@ router.get('/howtoplay_auth', function(req, res, next) {
 });
 
 router.get('/game', function(req, res, next) {
-  res.render("authenticated/game", {title:"Game Page"});
+  const {username, userId} = req.session;
+  res.render("authenticated/game", {title:"Game Page", username, userId});
 });
 
 router.get('/addPayment', function(req, res, next) {

@@ -3,7 +3,7 @@ const loadLobbyTable = () => {
 
   let lobbyTable = document.getElementById("lobby-table");
 
-  fetch("/lobby/list", {
+  fetch("/api/lobby/list", {
     method: "get",
     
   })
@@ -53,7 +53,7 @@ let createLobby = document.getElementById("create-lobby-button");
 createLobby.onclick = () => {
   let minimumBet = document.getElementById('create-minimumBet');
   let gamePassword = document.getElementById('create-gamePassword');
-  fetch("/lobby/create", {
+  fetch("/api/lobby/create", {
     method: "post",
     headers: { 'Content-Type': "application/json" },
     body: JSON.stringify({ minimumBet: minimumBet.value, gamePassword: gamePassword.value }),

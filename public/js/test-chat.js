@@ -5,7 +5,7 @@ const sendMessage = document.getElementById('send-message-button');
 
 sendMessage.onclick = () => {
   let message = document.getElementById('send-message-text');
-  fetch("/chat/0", {
+  fetch("/api/chat/0", {
     method: "post",
     headers: {'Content-Type' : "application/json"},
     body: JSON.stringify({message: message.value}),
