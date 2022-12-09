@@ -6,6 +6,12 @@ const create = (username, minimumBet, gamePassword) => {
   return db.one(baseSQL, { username, minimumBet, gamePassword });
 }
 
+const deleteLobby = (gameId) => {
+  let baseSQL =
+  "DELETE FROM game WHERE \"gameId\"=${gameId};"
+  return db.one(baseSQL, {gameId});
+}
+
 const list = () => {
   let baseSQL =
     "SELECT * FROM game";
@@ -37,4 +43,4 @@ const removePlayer = (userId, gameId) => {
   return db.one(baseSQL, {userId, gameId});
 }
 
-module.exports = { create, list, checkPlayerCount, checkAlreadyInLobby, addPlayer, removePlayer };
+module.exports = { create, deleteLobby, list, checkPlayerCount, checkAlreadyInLobby, addPlayer, removePlayer };

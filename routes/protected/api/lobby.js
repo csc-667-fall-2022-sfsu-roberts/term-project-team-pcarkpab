@@ -84,10 +84,22 @@ router.post("/leave/:id", (req, res, next) => {
   const {id: gameId} = req.params;
   Lobby.removePlayer(userId, gameId)
     .then((result) => {
+      req.app.io.emit("lobby:0", {gameId})
+      req.app.io.emit("lobby:leave", {gameId})
+      res.json({success: true});
+    })
+    .catch(err => console.log(err));
+})
+
+router.post("/delete/:id", (req, res, next) => {
+  console.log("I got here");
+  const {id: gameId} = req.params;
+  Lobby.deleteLobby(gameId)
+    .then((result) => {
       req.app.io.emit("lobby:0", {
         game: gameId,    
       })
-      res.json({success: true});
+      res.json(result);
     })
     .catch(err => console.log(err));
 })

@@ -1,7 +1,7 @@
 
 const removeAllChildNodes = (parent) => {
   while (parent.childNodes.length > 2) {
-      parent.removeChild(parent.lastChild);
+    parent.removeChild(parent.lastChild);
   }
 }
 
@@ -12,7 +12,7 @@ const loadLobbyTable = () => {
 
   fetch("/api/lobby/list", {
     method: "get",
-    
+
   })
     .then((result) => {
       return result.json();
@@ -20,7 +20,7 @@ const loadLobbyTable = () => {
     .then((result_json) => {
 
       removeAllChildNodes(lobbyTable);
-      
+
       result_json.forEach(element => {
         let row = document.createElement("tr");
         let td1 = document.createElement("td");
@@ -45,31 +45,31 @@ const loadLobbyTable = () => {
             td5.innerText = result_json.count + '/6';
           })
           .catch(err => console.log(err));
-      
+
         let playButton = document.createElement("button");
         playButton.innerText = "Join";
         playButton.onclick = () => {
-          fetch(`/api/lobby/join/${element.gameId}`, {method: "post"})
+          fetch(`/api/lobby/join/${element.gameId}`, { method: "post" })
             .then((result) => {
               return result.json();
             })
             .then((result_json) => {
-              if(result_json.gameId && result_json.gameId >= 0){
+              if (result_json.gameId && result_json.gameId >= 0) {
                 window.location.href = `/auth/game/${result_json.gameId}`;
-              }else{
+              } else {
                 alert("Game is full!");
               }
             })
             .catch(err => console.log(err));
         }
-        
+
         td6.appendChild(playButton);
 
         row.appendChild(td1);
         row.appendChild(td2);
         row.appendChild(td3);
         row.appendChild(td4);
-        
+
         row.appendChild(td5);
         row.appendChild(td6);
 
@@ -82,8 +82,25 @@ const loadLobbyTable = () => {
 }
 
 //Load tables
-socket.on("lobby:0", (gameId) => {
+socket.on("lobby:0", ({gameId}) => {
   loadLobbyTable();
+})
+
+socket.on("lobby:leave", ({gameId}) => {
+  console.log("I just left");
+  fetch(`/api/lobby/checkPlayerCount/${gameId}`, {
+    method: "get",
+  })
+    .then((result) => {
+      return result.json();
+    })
+    .then((result_json) => {
+      if (result_json.count == 0) {
+        fetch(`/api/lobby/delete/${gameId}`, { method: "post" })
+        .catch(err => console.log(err));
+      }
+    })
+    .catch(err => console.log(err));
 })
 
 loadLobbyTable();
@@ -103,10 +120,10 @@ createLobby.onclick = () => {
     .then((result_json) => {
       minimumBet.value = "";
       gamePassword.value = "";
-      if(result_json){
+      if (result_json) {
         window.location.href = `/auth/game/${result_json.gameId}`;
       }
-      
+
     })
     .catch((err) => console.log(err));
 };

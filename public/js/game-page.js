@@ -52,3 +52,4 @@ socket.on(`chat:${gameId}`, ({sender, message, timestamp}) => {
   chatBox.appendChild(div);
 
 })
+
