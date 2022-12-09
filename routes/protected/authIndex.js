@@ -19,11 +19,6 @@ router.get('/howtoplay_auth', function(req, res, next) {
   res.render("authenticated/howtoplay_auth", {title:"How to Play Page (Auth)"});
 });
 
-router.get('/game', function(req, res, next) {
-  const {username, userId} = req.session;
-  res.render("authenticated/game", {title:"Game Page", username, userId});
-});
-
 router.get('/addPayment', function(req, res, next) {
   res.render("authenticated/addPayment", {title:"Add Payment Page"});
 });

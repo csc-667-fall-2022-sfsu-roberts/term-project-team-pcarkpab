@@ -18,8 +18,10 @@ var usersRouter = require('./routes/public/api/users');
 
 //Protected routes
 var authIndexRouter = require('./routes/protected/authIndex');
+var gameRouter = require('./routes/protected/game');
 var lobbyRouter = require('./routes/protected/api/lobby');
 var chatRouter = require('./routes/protected/api/chat');
+
 
 //Others
 const sessionInstance = require('./app-config/session');
@@ -59,6 +61,7 @@ app.use('/api/tests', testsRouter);
 app.use('/api/users', usersRouter);
 
 app.use('/auth', protect, authIndexRouter);
+app.use('/auth/game', protect, gameRouter);
 app.use('/api/lobby', protect, lobbyRouter);
 app.use('/api/chat', protect, chatRouter);
 

@@ -23,4 +23,14 @@ router.get("/list", (req, res, next) => {
     .catch(err => console.log(err));
 })
 
+router.get("/checkPlayerCount/:id", (req, res, next) => {
+  const {id: gameId} = req.params;
+  Lobby.checkPlayerCount(gameId)
+    .then((result) => {
+      console.log(result);
+      res.send(result);
+    })
+    .catch(err => console.log(err));
+})
+
 module.exports = router;

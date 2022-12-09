@@ -11,7 +11,7 @@ const loadLobbyTable = () => {
       return result.json();
     })
     .then((result_json) => {
-      console.log(result_json);
+      
       result_json.forEach(element => {
         let row = document.createElement("tr");
         let td1 = document.createElement("td");
@@ -25,16 +25,29 @@ const loadLobbyTable = () => {
         td2.innerText = element.owner;
         td3.innerText = element.minimumBet;
         td4.innerText = element.gameStatus;
-        td5.innerText = element.playerCount + "/6";
 
-        let playButton = document.createElement("button");
+        fetch(`/api/lobby/checkPlayerCount/${element.gameId}`, {
+          method: "get",
+        })
+          .then((result) => {
+            return result.json();
+          })
+          .then((result_json) => {
+            td5.innerText = result_json[0].count + '/6';
+          })
+          .catch(err => console.log(err));
+      
+        let playButton = document.createElement("a");
         playButton.innerText = "Join";
+        playButton.setAttribute("href", `/auth/game/${element.gameId}`);
+        
         td6.appendChild(playButton);
 
         row.appendChild(td1);
         row.appendChild(td2);
         row.appendChild(td3);
         row.appendChild(td4);
+        
         row.appendChild(td5);
         row.appendChild(td6);
 
