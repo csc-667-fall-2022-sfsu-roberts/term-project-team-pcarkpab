@@ -44,3 +44,22 @@ you can see a preview of thar color */
   color: rgb(255, 215, 213);
   
 }
+
+.chat-box{
+  display: flex;
+  flex-direction: column;
+}
+
+#lobby-table{
+  background-color: rgb(54, 23, 23);
+  color: white;
+
+  border-radius: 20px;
+  border: 3px solid white;
+}
+
+.lobby-list th, td{
+  border: 3px solid white;
+  padding: 20px;
+}
+

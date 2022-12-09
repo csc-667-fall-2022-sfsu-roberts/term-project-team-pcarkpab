@@ -1,11 +1,37 @@
-
 <div>
   <h1>LOBBY PAGE, Authenticated</h1>
-  <p> Hello {{username}}, userId: {{userId}}</p>
-  <p>Now you're "logged in"! To log back out, just click the Log out button</p>
-  <p>Also noticed how the nav bar changed? Feel free to test out the authenticated links in the bar as well :D</p>
-  <br>
-  <p>Also here's a link to starting a game below:</p>
-  <a href="/waitingRoom">Lobby Page</a>
+  <h2> Welcome {{username}}, userId: {{userId}}</h2>
+  
+  <h3>List of Lobbies</h3>
+  <div class="lobby-list">
+    <table id="lobby-table">
+      <tr>
+        <th>Lobby ID</th>
+        <th>Owner</th>
+        <th>Minimum Bet</th>
+        <th>Game State</th>
+        <th>Player(s)</th>
+        <th>Play</th>
+      </tr>
+      
+    </table>
+  </div>
 
+
+  
+    <p>Creat Lobby</p>
+    <label>Minimum Bet</label><br>
+    <input type="text" id="create-minimumBet"><br>
+    <label>Game Password</label><br>
+    <input type="text" id="create-gamePassword"><br>
+
+    <button id="create-lobby-button"> CREATE </button><br>
+
+    <br>
+  <a href="/auth/waitingRoom">Waiting Room</a>
+
+
+<script src="/socket.io/socket.io.js" ></script>
+<script src="/public/js/test-socket.js"></script>
+<script src="/public/js/lobby-page.js"></script>
 </div>

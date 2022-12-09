@@ -4,16 +4,29 @@ const bcrypt = require('bcrypt');
 const login = ({username, password}) => {
   let baseSQL = 
   "SELECT \"userId\", username, password FROM users WHERE username=${username};"
-  return db.one(baseSQL, {username, password})
+  let tempUserId;
+ 
+  return db.one(baseSQL, {username})
     .then((result) => {
-      if(bcrypt.compare(password, result.password)){
-        return {valid: true, userId: result.userId, username: result.username};
+      if(result){
+        tempUserId = result.userId;
+        return bcrypt.compare(password, result.password);
+      }else{
+        return Promise.reject(-1);
       }
-    });
+    })
+    .then((passwordMatch) => {
+      if(passwordMatch){
+        return Promise.resolve(tempUserId);
+      }else{
+        return Promise.resolve(-1);
+      }
+    })
+    .catch((err) => Promise.reject(err));
 }
 
 const register = ({username, email, password}) => {
-  console.log("WHAT " + username + " " + email);
+
   let baseSQL = 
   "INSERT INTO users (username, email, password, \"globalMoney\") VALUES (${username}, ${email}, ${hashedPassword}, 500) RETURNING username, \"userId\";"
 
@@ -23,4 +36,20 @@ const register = ({username, email, password}) => {
   });
 }
 
-module.exports = {login, register};
+const checkUsername = (username) => {
+  console.log(username);
+  let baseSQL =
+  "SELECT username FROM users WHERE username=${username};";
+  return db.one(baseSQL, {username})
+  .then((result) => {
+    if(result){
+      console.log("username exists");
+      return Promise.resolve(true);
+    }else{
+      return Promise.resolve(false);
+    }
+  })
+  .catch((err) => {Promise.resolve(false)});
+}
+
+module.exports = {login, register, checkUsername};

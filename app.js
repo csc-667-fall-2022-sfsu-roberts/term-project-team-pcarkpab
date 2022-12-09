@@ -18,9 +18,12 @@ var usersRouter = require('./routes/public/users');
 
 //Protected routes
 var authIndexRouter = require('./routes/protected/authIndex');
+var lobbyRouter = require('./routes/protected/lobby');
+var chatRouter = require('./routes/protected/chat');
 
 //Others
 const sessionInstance = require('./app-config/session');
+const protect = require('./app-config/protect');
 
 var app = express();
 
@@ -52,10 +55,12 @@ app.use((req, res, next) =>{
 })
 
 app.use('/', indexRouter);
-app.use('/', authIndexRouter);
 app.use('/tests', testsRouter);
 app.use('/users', usersRouter);
 
+app.use('/auth', protect, authIndexRouter);
+app.use('/lobby', protect, lobbyRouter);
+app.use('/chat', protect, chatRouter);
 
 app.use((err, req, res, next) => {
   res.locals.message = err.message;

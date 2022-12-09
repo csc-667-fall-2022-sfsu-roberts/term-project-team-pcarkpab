@@ -8,36 +8,50 @@ router.get('/', function (req, res, next) {
 
 router.post('/login', function (req, res, next) {
   const {username, password} = req.body;
-
   Users.login({username, password})
-    .then((result) => {
-      if(!result.valid){
-        alert("Incorrect Username/Password");
-        res.redirect("/login");
-      }
-      req.session.authenticated = true;
-      req.session.username = result.username;
-      req.session.userId = result.userId;
+    .then((userId) => {
+      if(userId > 0){
+        req.session.authenticated = true;
+        req.session.username = username;
+        req.session.userId = userId;
 
-      res.redirect("/lobby");
+        res.redirect("/auth/lobby");
+      }else{
+        throw Error("Username or Password is invalid! Please try again");
+      }  
     })
-    .catch((err) => {next(err)});
-
+    .catch((err) => {
+      //implement flash messages
+      console.log("LOGIN ERROR: " + err);
+      res.redirect("/login");
+    });
 });
 
 router.post('/register', function (req, res, next) {
   const {username, email, password} = req.body;
   console.log("Im in register post request\n");
-  Users.register({username, email, password})
+  
+  Users.checkUsername(username)
+    .then((exists) => {
+      if(exists){
+        throw Error("Username already exists");
+      }else{
+        return Users.register({username, email, password});
+      }
+    })
     .then((result) => { 
-      console.log(result);
+      
       req.session.authenticated = true;
       req.session.username = result.username;
       req.session.userId = result.userId;
 
-      res.redirect("/lobby");
+      res.redirect("/auth/lobby");
     })
-    .catch((err) => {next(err)});
+    .catch((err) => {
+      //implement flash messages
+      console.log(err);
+      res.redirect("/signup");
+    });
 });
 
 router.get("/logout", (req,res,next)=>{
