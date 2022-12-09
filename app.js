@@ -65,6 +65,7 @@ app.use('/auth/game', protect, gameRouter);
 app.use('/api/lobby', protect, lobbyRouter);
 app.use('/api/chat', protect, chatRouter);
 
+
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
   res.locals.error = err;
