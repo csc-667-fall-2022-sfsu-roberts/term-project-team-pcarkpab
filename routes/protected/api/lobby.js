@@ -2,15 +2,25 @@ const express = require('express');
 const Lobby = require('../../../db/Lobby');
 const router = express.Router();
 
-router.post("/create", (req, res, next) =>{
+const MAX_PLAYER = 6;
+
+router.post("/create", (req, res, next) => {
   let minimumBet = req.body.minimumBet;
   let gamePassword = req.body.gamePassword;
   let username = req.session.username;
+  let userId = req.session.userId;
 
   Lobby.create(username, minimumBet, gamePassword)
     .then((result) => {
       console.log(result);
-      res.sendStatus(200);
+      return result.gameId;
+    })
+    .then((gameId) => {
+      Lobby.addPlayer(userId, gameId)
+        .then(() => {
+          res.json({ gameId });
+        })
+        .catch(err => console.log(err));
     })
     .catch(err => console.log(err));
 })
@@ -18,17 +28,57 @@ router.post("/create", (req, res, next) =>{
 router.get("/list", (req, res, next) => {
   Lobby.list()
     .then((result) => {
-      res.send(result);
+      res.json(result);
     })
     .catch(err => console.log(err));
 })
 
 router.get("/checkPlayerCount/:id", (req, res, next) => {
-  const {id: gameId} = req.params;
+  const { id: gameId } = req.params;
   Lobby.checkPlayerCount(gameId)
     .then((result) => {
-      console.log(result);
-      res.send(result);
+      res.json(result);
+    })
+    .catch(err => console.log(err));
+})
+
+
+router.post("/join/:id", (req, res, next) => {
+  const { id: gameId } = req.params;
+  const { userId } = req.session;
+  //Player already in lobby/game
+  Lobby.checkAlreadyInLobby(userId, gameId)
+    .then((exist) => {
+      if (exist) {
+        return res.json({ gameId });
+      }
+    })
+    .catch((err) => {
+      console.log("Expected Error: " + err.message);
+      //Check if the room is full
+      Lobby.checkPlayerCount(gameId)
+        .then((result) => {
+          if (result.count >= MAX_PLAYER) {
+            return res.json({ gameId: -1 });
+          } else {
+            Lobby.addPlayer(userId, gameId)
+              .then((result) => {
+                return res.json({ gameId: result.gameId });
+              })
+              .catch(err => console.log(err));
+          }
+        })
+        .catch(err => console.log(err));
+
+    });
+})
+
+router.post("/leave/:id", (req, res, next) => {
+  const {userId} = req.session;
+  const {id: gameId} = req.params;
+  Lobby.removePlayer(userId, gameId)
+    .then((result) => {
+      res.json({success: true});
     })
     .catch(err => console.log(err));
 })

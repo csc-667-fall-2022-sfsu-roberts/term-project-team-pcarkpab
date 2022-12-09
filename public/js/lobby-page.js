@@ -33,13 +33,26 @@ const loadLobbyTable = () => {
             return result.json();
           })
           .then((result_json) => {
-            td5.innerText = result_json[0].count + '/6';
+            td5.innerText = result_json.count + '/6';
           })
           .catch(err => console.log(err));
       
-        let playButton = document.createElement("a");
+        let playButton = document.createElement("button");
         playButton.innerText = "Join";
-        playButton.setAttribute("href", `/auth/game/${element.gameId}`);
+        playButton.onclick = () => {
+          fetch(`/api/lobby/join/${element.gameId}`, {method: "post"})
+            .then((result) => {
+              return result.json();
+            })
+            .then((result_json) => {
+              if(result_json.gameId && result_json.gameId >= 0){
+                window.location.href = `/auth/game/${result_json.gameId}`;
+              }else{
+                alert("Game is full!");
+              }
+            })
+            .catch(err => console.log(err));
+        }
         
         td6.appendChild(playButton);
 
@@ -72,9 +85,15 @@ createLobby.onclick = () => {
     body: JSON.stringify({ minimumBet: minimumBet.value, gamePassword: gamePassword.value }),
   })
     .then((result) => {
+      return result.json();
+    })
+    .then((result_json) => {
       minimumBet.value = "";
       gamePassword.value = "";
-      location.reload();
+      if(result_json){
+        window.location.href = `/auth/game/${result_json.gameId}`;
+      }
+      
     })
     .catch((err) => console.log(err));
 };
