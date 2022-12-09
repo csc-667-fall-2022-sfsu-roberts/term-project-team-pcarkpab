@@ -18,6 +18,9 @@ router.post("/create", (req, res, next) => {
     .then((gameId) => {
       Lobby.addPlayer(userId, gameId)
         .then(() => {
+          req.app.io.emit("lobby:0", {
+            game: gameId,    
+          })
           res.json({ gameId });
         })
         .catch(err => console.log(err));
@@ -63,6 +66,9 @@ router.post("/join/:id", (req, res, next) => {
           } else {
             Lobby.addPlayer(userId, gameId)
               .then((result) => {
+                req.app.io.emit("lobby:0", {
+                  game: gameId,    
+                })
                 return res.json({ gameId: result.gameId });
               })
               .catch(err => console.log(err));
@@ -78,6 +84,9 @@ router.post("/leave/:id", (req, res, next) => {
   const {id: gameId} = req.params;
   Lobby.removePlayer(userId, gameId)
     .then((result) => {
+      req.app.io.emit("lobby:0", {
+        game: gameId,    
+      })
       res.json({success: true});
     })
     .catch(err => console.log(err));

@@ -1,4 +1,11 @@
 
+const removeAllChildNodes = (parent) => {
+  while (parent.childNodes.length > 2) {
+      parent.removeChild(parent.lastChild);
+  }
+}
+
+
 const loadLobbyTable = () => {
 
   let lobbyTable = document.getElementById("lobby-table");
@@ -11,6 +18,8 @@ const loadLobbyTable = () => {
       return result.json();
     })
     .then((result_json) => {
+
+      removeAllChildNodes(lobbyTable);
       
       result_json.forEach(element => {
         let row = document.createElement("tr");
@@ -73,6 +82,10 @@ const loadLobbyTable = () => {
 }
 
 //Load tables
+socket.on("lobby:0", (gameId) => {
+  loadLobbyTable();
+})
+
 loadLobbyTable();
 
 let createLobby = document.getElementById("create-lobby-button");
