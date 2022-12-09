@@ -1,35 +1,37 @@
-
 <div>
   <h1>LOBBY PAGE, Authenticated</h1>
-  <p> Hello {{username}}, userId: {{userId}}</p>
-  <p>Now you're "logged in"! To log back out, just click the Log out button</p>
-  <p>Also noticed how the nav bar changed? Feel free to test out the authenticated links in the bar as well :D</p>
-  <br>
-  <p>Also here's a link to starting a game below:</p>
+  <h2> Welcome {{username}}, userId: {{userId}}</h2>
+  
+  <h3>List of Lobbies</h3>
+  <div class="lobby-list">
+    <table id="lobby-table">
+      <tr>
+        <th>Lobby ID</th>
+        <th>Owner</th>
+        <th>Minimum Bet</th>
+        <th>Game State</th>
+        <th>Player(s)</th>
+        <th>Play</th>
+      </tr>
+      
+    </table>
+  </div>
 
-  <form id="lobby-create" method="POST" action="/lobby/create" enctype="application/x-www-form-urlencoded">
-    <p>Create Lobby</p>
+
+  
+    <p>Creat Lobby</p>
     <label>Minimum Bet</label><br>
-    <input type="text" name="minimumBet"><br>
+    <input type="text" id="create-minimumBet"><br>
     <label>Game Password</label><br>
-    <input type="text" name="gamePassword"><br>
+    <input type="text" id="create-gamePassword"><br>
 
-    <input type="submit" class="button button1" value="Create New Room"> <br>
-  </form>
+    <button id="create-lobby-button"> CREATE </button><br>
 
-  <!-- <a href="/auth/game" class="button button1">Join game 1</button></a>-->
+    <br>
+  <a href="/auth/waitingRoom">Waiting Room</a>
 
-<br>
-  This is just a link to the waiting room, but it doesnt use POST /lobby/create
-  <a href="/auth/waitingRoom" class="button button1">Create New Room</button></a>
-  <!--a href="/auth/waitingRoom">Waiting Room</a>-->
-
-<div id="list-rooms">
-  <p id="p1">Testing the dynamic appearance of join game buttons appear below...</p>
-</div>
 
 <script src="/socket.io/socket.io.js" ></script>
 <script src="/public/js/test-socket.js"></script>
-<script src="/public/js/lobbyTest.js"></script>
-
+<script src="/public/js/lobby-page.js"></script>
 </div>

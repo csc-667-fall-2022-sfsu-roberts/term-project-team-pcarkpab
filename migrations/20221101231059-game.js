@@ -12,6 +12,12 @@ module.exports = {
         unique: true,
       },
 
+      owner:{
+        type: Sequelize.STRING(30),
+        defaultValue: null,
+        allowNull: true,
+      },
+
       pot:{
         type: Sequelize.INTEGER,
         defaultValue: null,
@@ -43,6 +49,13 @@ module.exports = {
         defaultValue: null,
         allowNull: true,
       },
+
+      playerCount:{
+        type: Sequelize.INTEGER,
+        defaultValue: null,
+        allowNull: true,
+      }
+
     }).then(() => queryInterface.addIndex('game', ['gameId']))
 
   },
