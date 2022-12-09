@@ -43,8 +43,8 @@ socket.on(`chat:${gameId}`, ({sender, message, timestamp}) => {
   const div = document.createElement("div");
   div.classList.add("message");
   const content = document.createElement("p");
-
-  let str = sender + ": " + message;
+  let newDate = new Date(timestamp).toLocaleTimeString();
+  let str = sender + ": " + message + " " + newDate;
   content.innerText = str;
   div.appendChild(content);
 
