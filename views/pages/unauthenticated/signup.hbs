@@ -1,39 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/Registration.css">
+    <link rel="stylesheet" type="text/css" href="../css/fonts/style.css">
 
-<div>
-  <h1>SIGN UP FOR POKER</h1>
-  <p>Clicking on the sign up button below would lead you back to the log in page</p>
-  <form id ="signup-form" method="POST" action="/users/register" enctype="application/x-www-form-urlencoded">
-    <label>
-      Username
-    </label>
-    <input type="text" id="username" name="username" required><br>
-    <br>
-    <label>
-      Email
-    </label>
-    <input type="email" id="user-email" name="email" required><br>
-    <br>
-    <label>
-      Password
-    </label>
-    <input type="password" id="user-password" name="password" required><br>
-    <br>
-    <label>
-      Confirm Password
-    </label>
-    <input type="password" id="confirm-password" name="cPassword" required><br>
-    <br>
-    <input type="checkbox" required>
-    <label>
-      You are 13 and older
-    </label>
-    <br>
-    <input type="checkbox">
-    <label>
-      I agree to your term and service.
-    </label>
-    <br><br>
+    <title>Hail to the Proxy -  Login</title>
+</head>
+<header>
+    <h2>Registration</h2>
+    <!-- <p>Clicking on the sign up button below would lead you back to the log in page</p> -->
+</header>
 
-    <input type="submit" value="Sign up"> 
-  </form>
-</div>
+<div class="container_Border">
+    <form id ="signup-form" method="POST" action="/users/register" enctype="application/x-www-form-urlencoded">
+        <p id="Register">Register a New Account</p>
+
+      <div id="UsernameDIV">
+        <label>
+          Create a New Username
+        </label>
+        <input type="text" id="username" name="username" placeholder="Enter Valid Username" required><br>
+      </div>
+      <br>
+
+      <div id="EmailDIV">
+        <label>
+         Create a New Email
+        </label>
+        <input type="email" id="user-email" name="email" placeholder="Enter Valid Email" required><br>
+      </div>
+      <br>
+
+      <div id="PasswordDIV">
+        <label>
+          Create a New Password
+        </label>
+        <input type="password" id="user-password" name="password" placeholder="Enter Valid Password" required><br>
+      </div>
+      <br>
+
+      <div id="ConfirmPasswordDIV">
+      <label>
+        Confirm Password
+      </label>
+      <input type="password" id="confirm-password" name="cPassword" placeholder="Confirm Password" required><br>
+      </div>
+      <br>
+
+      <div id="CheckDIV">
+      <input type="checkbox" required>
+      <label>
+        You are 13+ years of age.
+      </label>
+
+      <input type="checkbox">
+      <label>
+        I agree to your Terms of Use policy.
+      </label>
+      </div>
+      <br>
+
+      <p id="Submit">Sign Up</p>
+      <input type="image" id="PokerLogoSubmit" src="../css/fonts/LoginSignupLogo2.png" alt="Submit">
+
+    </form>
+  </div>
