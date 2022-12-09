@@ -38,7 +38,7 @@
 
   #middle-middle {
     display: grid;
-    grid-template-rows: 6fr 2fr;
+    grid-template-rows: 6fr 1.5fr;
     grid-template-columns: 1fr;
     grid-gap: 8px;
   }
@@ -50,7 +50,7 @@
   #middle-right {
     display: grid;
     position: relative;
-    grid-template-rows: 3fr 1fr;
+    grid-template-rows: 3fr 0.5fr;
     grid-template-columns: 1fr;
     grid-gap: 8px;
   }
@@ -346,8 +346,14 @@ position: absolute;
   margin-left: -1170px; 
 }
 
-
-
-
-
- 
+#poker-options{
+  display: flex;
+}
+#buttons{
+  display:flex;
+}
+#bet{
+  margin-top: 0px; 
+  margin-left: 50px; 
+  font-size: 2rem;
+}

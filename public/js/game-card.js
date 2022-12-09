@@ -67,8 +67,8 @@ function displayCard(num, idcard, flag) {
   let resultLeft = t1.concat(px);
   let resultRight = t2.concat(px);
 
-  document.write(resultLeft);
-  document.write(resultRight);
+  //document.write(resultLeft);
+  //document.write(resultRight);
   //document.write(card);
 
   document.getElementById(idcard).style.marginTop = resultRight;
