@@ -49,6 +49,7 @@ router.get("/checkPlayerCount/:id", (req, res, next) => {
 router.post("/join/:id", (req, res, next) => {
   const { id: gameId } = req.params;
   const { userId, username } = req.session;
+  let playerCount;
   //Player already in lobby/game
   Lobby.checkAlreadyInLobby(userId, gameId)
     .then((exist) => {
@@ -61,6 +62,7 @@ router.post("/join/:id", (req, res, next) => {
       //Check if the room is full
       Lobby.checkPlayerCount(gameId)
         .then((result) => {
+          playerCount = result.count + 1;
           if (result.count >= MAX_PLAYER) {
             return res.json({ gameId: -1 });
           } else {
@@ -74,6 +76,9 @@ router.post("/join/:id", (req, res, next) => {
                   message: "has joined the game",
                   timestamp: Date.now()
                 })
+                req.app.io.emit(`game-start:${gameId}`, {
+                  playerCount,
+                });
                 return res.json({ gameId: result.gameId });
               })
               .catch(err => console.log(err));

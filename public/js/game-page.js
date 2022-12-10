@@ -3,6 +3,20 @@ let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
 const gameId = pathnameSegments.pop();
 
+fetch(`/api/lobby/checkPlayerCount/${gameId}`, {method: "get"})
+.then((result) =>{
+  return result.json();
+})
+.then((result_json) => {
+  
+  if(result_json.count > 1){
+    let hideDisplay = document.getElementById(`game-table-${gameId}`);
+    hideDisplay.style.display = "block";
+    let loading = document.getElementById(`loading-${gameId}`);
+    loading.style.display = "none";
+  }
+})
+
 let leaveButton = document.getElementById("leave-game");
 
 leaveButton.onclick = () => {
@@ -67,5 +81,16 @@ socket.on(`console-chat:${gameId}`, ({sender, message, timestamp}) => {
 
   let chatBox = document.getElementById(`console-chat-${gameId}`);
   chatBox.appendChild(div);
+})
+
+socket.on(`game-start:${gameId}`, ({playerCount}) => {
+  console.log(playerCount);
+  if(playerCount > 1){
+    let gameTable = document.getElementById(`game-table-${gameId}`);
+    gameTable.style.display = "block";
+    let loading = document.getElementById(`loading-${gameId}`);
+    loading.style.display = "none";
+  }
+  
 })
 
