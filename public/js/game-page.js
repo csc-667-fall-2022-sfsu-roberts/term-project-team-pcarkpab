@@ -54,3 +54,18 @@ socket.on(`chat:${gameId}`, ({sender, message, timestamp}) => {
 
 })
 
+socket.on(`console-chat:${gameId}`, ({sender, message, timestamp}) => {
+  console.log({sender, message, timestamp});
+
+  const div = document.createElement("div");
+  div.classList.add("console-message");
+  const content = document.createElement("p");
+  let newDate = new Date(timestamp).toLocaleTimeString();
+  let str =  newDate + ": " + sender + " " + message;
+  content.innerText = str;
+  div.appendChild(content);
+
+  let chatBox = document.getElementById(`console-chat-${gameId}`);
+  chatBox.appendChild(div);
+})
+

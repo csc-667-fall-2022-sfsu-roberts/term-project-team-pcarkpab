@@ -48,7 +48,7 @@ router.get("/checkPlayerCount/:id", (req, res, next) => {
 
 router.post("/join/:id", (req, res, next) => {
   const { id: gameId } = req.params;
-  const { userId } = req.session;
+  const { userId, username } = req.session;
   //Player already in lobby/game
   Lobby.checkAlreadyInLobby(userId, gameId)
     .then((exist) => {
@@ -68,6 +68,11 @@ router.post("/join/:id", (req, res, next) => {
               .then((result) => {
                 req.app.io.emit("lobby:0", {
                   game: gameId,    
+                })
+                req.app.io.emit(`console-chat:${gameId}`, {
+                  sender: username,
+                  message: "has joined the game",
+                  timestamp: Date.now()
                 })
                 return res.json({ gameId: result.gameId });
               })
@@ -101,17 +106,6 @@ router.post("/leave/:id", (req, res, next) => {
     .catch(err => console.log(err));
 })
 
-// router.post("/delete/:id", (req, res, next) => {
-//   console.log("I got here");
-//   const {id: gameId} = req.params;
-//   Lobby.deleteLobby(gameId)
-//     .then((result) => {
-//       req.app.io.emit("lobby:0", {
-//         game: gameId,    
-//       })
-//       res.json(result);
-//     })
-//     .catch(err => console.log(err));
-// })
+
 
 module.exports = router;
