@@ -46,7 +46,7 @@ function makeRoomButton(gameid){
         btn.innerHTML = "Game {{gameid}} ";
         btn.type = "submit";
         btn.name = "formBtn";
-        btn.className = "button button1";
+        btn.className = "button1";
 
         var t = btn.setAttribute("href","/auth/game");
         document.body.appendChild(btn);

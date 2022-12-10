@@ -59,17 +59,22 @@ h3[id="Lobbytext1"] {
   text-align: center;
 }
 
-#lobby-table {
+#lobby-table, th, td {
   color: white;
   border-radius: 20px;
   border: 3px solid white;
   background-image: linear-gradient(red, yellow);
+  filter: drop-shadow(0 0 0.1rem rgb(0, 0, 0));
+  text-align: center;
+  padding: 5px 5px 5px 5px;
+  max-width: 200px;
 }
 
 .lobby-list {
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
+
 }
 
 th {
@@ -80,4 +85,10 @@ th {
   font-size: larger;
   color: rgb(255, 255, 255);
   text-shadow: 0px 0px 1px black;
+}
+
+.JoinButton {
+  font-family: 'CentaurLabelFont';
+  color: red;
+  background: black;
 }
