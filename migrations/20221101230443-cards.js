@@ -25,8 +25,8 @@ module.exports = {
    
     
     // Insert the cards into the cards table
-    for (let suit of ['HEARTS', 'CLUBS', 'DIAMONDS', 'SPADES']) {
-      for (let rank = 1; rank <= 13; rank++) {
+    for (let suit of ['CLUBS', 'SPADES', 'HEARTS', 'DIAMONDS']) {
+      for (let rank = 2; rank <= 14; rank++) {
         await queryInterface.bulkInsert('cards', [{ rank, suit }]);
       }
     }
