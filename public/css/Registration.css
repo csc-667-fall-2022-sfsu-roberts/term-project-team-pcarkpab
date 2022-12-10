@@ -1,4 +1,5 @@
-/*This CSS page describes the styling for the login and signup pages.*/
+/*This CSS page describes the styling for the login, signup 
+and lobby creation pages.*/
 
 /* Fonts Imported */
 
@@ -20,11 +21,11 @@
 
 /* Login/LoginAfterSignup.hbs */
 
-form[id="login-form"], form[id="signup-form"] {
+form[id="login-form"], form[id="signup-form"], form[id="lobby-form"] {
 margin: 15px 0px 20px 0px;
 }
 
-p[id="Register"] {
+p[id="Register"], h3[id="Lobbytext2"] {
   font-family: "CentaurLabelFont";
   text-align: center;
   font-size: 25px;
@@ -67,7 +68,8 @@ label {
 /*Div will be stylized so that they stand out.*/
 
 div[id="UsernameDIV"], div[id="EmailDIV"],
-div[id="PasswordDIV"], div[id="ConfirmPasswordDIV"] {
+div[id="PasswordDIV"], div[id="ConfirmPasswordDIV"],
+div[id="BetDIV"], div[id="GamePassDIV"] {
   display: grid;
   border-style: inset;
   box-sizing: border-box;
@@ -100,12 +102,12 @@ input {
 }
 
 input[id="username"], input[id="password"], input[id="user-email"], input[id="user-password"], 
-input[id="confirm-password"] {
-font-family: "AlegreyaHeaderFont";
-text-align: center;
+input[id="confirm-password"], input[id="create-minimumBet"], input[id="create-gamePassword"] {
+  font-family: "AlegreyaHeaderFont";
+  text-align: center;
 }
 
-input[id="PokerLogoSubmit"] {
+input[id="PokerLogoSubmit"], button[id="create-lobby-button"] {
   max-width: 120px;
   filter: drop-shadow(0 0 0.05rem rgb(0, 0, 0));
   margin-left: auto;
@@ -120,7 +122,6 @@ input[id="PokerLogoSubmit"] {
 input[id="PokerLogoSubmit"]:hover {
   filter: drop-shadow(0 0 0.3rem rgb(255, 0, 0));
   animation: fadein 0.5s;
-
 }
 
 
@@ -151,7 +152,7 @@ has a width of 500px along with a centered margin
 (margin-left/margin-right: auto). It also has a 
 drop shadow similar to a flex container I made from
 my first website.*/
-.container_Border {
+.container_Border, .Lobby_Border {
   position: static;
   display: flex;
   width: 500px;

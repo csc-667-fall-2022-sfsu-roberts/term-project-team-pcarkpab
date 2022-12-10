@@ -16,8 +16,8 @@ h1 {
   font-family: "AlegreyaHeaderFont";
   font-size: 45px;
   text-align: center;
-  color : rgb(0, 0, 0);
-  text-shadow: -1px 0 rgb(76, 0, 255), 0 1px rgb(76, 0, 255), 1px 0 rgb(76, 0, 255), 0 -1px rgb(76, 0, 255);
+  color: rgb(370, 0, 40);
+  text-shadow: -1px 0 rgb(76 0 255), 0 1px rgb(76 0 255), 1px 0 rgb(76 0 255), 0 -1px rgb(76 0 255);
   text-shadow: 1px 1px 2px black;
 }
 
@@ -39,12 +39,13 @@ p[id="Subtitle"] {
 
 
 p[id="Message"] {
-  display: none;
-  font-family: "CentaurLabelFont";
-  font-size: xx-large;
-  margin: auto;
-  overflow: auto;
-  text-align: center;
+    display: none;
+    font-family: "CentaurLabelFont";
+    font-size: xx-large;
+    margin: auto;
+    overflow: auto;
+    text-align: center;
+    text-shadow: 1px 1px 3px white;
 }
 
 
@@ -60,22 +61,18 @@ div[class="MessageDIV"] {
 
 button[id="PokerLogoSubmit"] {
   background-image: url(../css/fonts/LoginSignupLogo2.png);
-  /* max-width: 152px; */
-  filter: drop-shadow(0 0 0.05rem rgb(0, 0, 0));
+  filter: drop-shadow(0 0 0.2rem rgb(0, 0, 0));
   margin-left: auto;
   margin-right: auto;
-  height: auto;
-  width: auto;
-  background-size: 100% 100%;
+  background-size: 368px 207px;
   background-position: 0px 0px;
   background-repeat: no-repeat;
-  background-color: white;
+  background-color: transparent;
   padding: 140px 160px 80px 160px;
-  /* align-items: center; */
   text-align: center;
-  
-  
+  border: none;
 }
+
 
 button[id="PokerLogoSubmit"]:hover {
   filter: drop-shadow(0 0 0.1rem rgb(255, 0, 0));

@@ -149,13 +149,13 @@
     position: relative;
     left:-10%;
     top: 30px;
-
-    font-family: Verdana, sans-serif;
+    font-family: "AlegreyaHeaderFont";
     text-decoration: none;
     font-weight: bold;
     color:#efae7a; 
     font-size: 1.5rem;
   }
+  
   .user-name a:hover{
     color: #FFFFFF;
     transition: 0.2s;
@@ -178,17 +178,18 @@
     margin-left: -50px;
     background-color: #efae7a; 
     border: 3px solid #bf530b;
-
     border-radius: 5px;
   }
+
   .dropdown-content a {
     display: block;
     color: #000000;
     padding: 10px;
-    font-family: Verdana, sans-serif;
+    font-family: "CentaurLabelFont";
     text-decoration: none;
     font-size: 1em;
   }
+
   .dropdown-content a:hover {
     color: #FFFFFF;
     background-color: #d86b13; 

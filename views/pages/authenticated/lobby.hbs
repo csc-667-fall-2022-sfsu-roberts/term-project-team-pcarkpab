@@ -2,7 +2,7 @@
   <h1>LOBBY PAGE, Authenticated</h1>
   <h2> Welcome {{username}}, userId: {{userId}}</h2>
   
-  <h3>List of Lobbies</h3>
+  <h3 id="Lobbytext1">List of Lobbies</h3>
   <div class="lobby-list">
     <table id="lobby-table">
       <tr>
@@ -17,18 +17,39 @@
     </table>
   </div>
 
+<br>
 
-  
-    <p>Creat Lobby</p>
-    <label>Minimum Bet</label><br>
-    <input type="text" id="create-minimumBet"><br>
-    <label>Game Password</label><br>
-    <input type="text" id="create-gamePassword"><br>
+<div class="Lobby_Border">
+  <form id="lobby-form">
+      <h3 id="Lobbytext2">Create Lobby</h3>
 
-    <button id="create-lobby-button"> CREATE </button><br>
+      <div id="BetDIV">
+        <label>
+          Minimum Bet
+        </label>
+        <input type="text" id="create-minimumBet" placeholder="Enter Minimum Bet" required><br>
+      </div>
+      <br>
+    
 
-    <br>
-  <a href="/auth/waitingRoom">Waiting Room</a>
+      <div id="GamePassDIV">
+        <label>
+          Game Password
+        </label>
+        <input type="text" id="create-gamePassword" placeholder="Enter Game Password" required><br>
+      </div>
+      <br>
+
+
+      <button id="create-lobby-button" src="../css/fonts/LoginSignupLogo2.png"> CREATE </button><br>
+      <br>
+
+
+      <a href="/auth/waitingRoom">Waiting Room</a>
+
+
+    </form>
+  </div>
 
 
 <script src="/socket.io/socket.io.js" ></script>
