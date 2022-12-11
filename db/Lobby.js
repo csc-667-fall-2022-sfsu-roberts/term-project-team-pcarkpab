@@ -7,9 +7,19 @@ const create = (username, minimumBet, gamePassword) => {
 }
 
 const deleteLobby = (gameId) => {
-  let baseSQL =
-  "DELETE FROM game WHERE \"gameId\"=${gameId} RETURNING \"gameId\";"
-  return db.one(baseSQL, {gameId});
+  let baseSQL1 =
+  "DELETE FROM game WHERE \"gameId\"=${gameId};"
+  let baseSQL2 =
+  "DELETE FROM game_user WHERE \"gameId\"=${gameId};";
+  let baseSQL3 =
+  "DELETE FROM game_cards WHERE \"gameId\"=${gameId};";
+  return db.none(baseSQL1, {gameId})
+  .then(() => {
+    db.none(baseSQL2, {gameId});
+  })
+  .then(() => {
+    db.none(baseSQL3, {gameId});
+  });
 }
 
 const list = () => {

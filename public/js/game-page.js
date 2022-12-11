@@ -90,6 +90,8 @@ socket.on(`game-start:${gameId}`, ({playerCount}) => {
     gameTable.style.display = "block";
     let loading = document.getElementById(`loading-${gameId}`);
     loading.style.display = "none";
+    fetch(`/api/game/start/${gameId}`, {method: 'post'})
+    .catch(err => console.log(err));
   }
   
 })

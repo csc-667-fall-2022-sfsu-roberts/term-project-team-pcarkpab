@@ -51,13 +51,6 @@ module.exports = {
       gameUserId:{
         type: Sequelize.INTEGER,
         allowNull: true,
-        references: {
-          model: {
-            tableName: 'game_user',
-            schema: 'public'
-          },
-          key: 'gameUserId',
-        },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
@@ -78,21 +71,21 @@ module.exports = {
       
       
       isDiscarded:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: true,
-        default: 0,
+        defaultValue: false,
       },
 
       in_deck:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: true,
-        default: 0,
+        defaultValue: true,
       },
 
       on_table:{
-        type: Sequelize.INTEGER,
+        type: Sequelize.BOOLEAN,
         allowNull: true,
-        default: 0,
+        defaultValue: false,
       }
     })
 
