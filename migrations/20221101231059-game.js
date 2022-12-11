@@ -50,12 +50,6 @@ module.exports = {
         allowNull: true,
       },
 
-      playerCount:{
-        type: Sequelize.INTEGER,
-        defaultValue: null,
-        allowNull: true,
-      }
-
     }).then(() => queryInterface.addIndex('game', ['gameId']))
 
   },
