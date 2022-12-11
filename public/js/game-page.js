@@ -1,4 +1,37 @@
 
+const gameData = {
+  pot: 0,
+  playerCount: 4,
+  PlayerInfo: [
+    {userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'dealer', seatNumber: 0},
+    {userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'small-blind', seatNumber: 1},
+    {userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'big-blind', seatNumber: 2},
+    {userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'none', seatNumber: 3},
+  ],
+  dealerCards: [3, 50, 42],
+  currentBet: 0,
+  gamePhrase: 'ANTE',
+  userId: 1,
+}
+//Remove isdiscard
+//Add the dealer game_user
+//time out CHECK or FOLD
+
+//Assign seat number
+
+//Dealer dealing cards clockwise
+//drawCard(gameId, userId) for each player in a 2 times
+//drawCard for the dealer 3 times
+
+//Update game data
+
+//Set game status to ANTE
+//First player (seat 0) will automically bet the big blind
+//Next player (seat 1) will automically bet the small blind
+//Next player (seat 2) will BET/RAISE, CALL, or FOLD
+
+
+
 let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
 const gameId = pathnameSegments.pop();
