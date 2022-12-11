@@ -1,17 +1,26 @@
 
+const removeAllChildNodes = (parent) => {
+  while (parent.childNodes.length > 2) {
+    parent.removeChild(parent.lastChild);
+  }
+}
+
+
 const loadLobbyTable = () => {
 
   let lobbyTable = document.getElementById("lobby-table");
 
-  fetch("/lobby/list", {
+  fetch("/api/lobby/list", {
     method: "get",
-    
+
   })
     .then((result) => {
       return result.json();
     })
     .then((result_json) => {
-      console.log(result_json);
+
+      removeAllChildNodes(lobbyTable);
+
       result_json.forEach(element => {
         let row = document.createElement("tr");
         let td1 = document.createElement("td");
@@ -25,16 +34,42 @@ const loadLobbyTable = () => {
         td2.innerText = element.owner;
         td3.innerText = element.minimumBet;
         td4.innerText = element.gameStatus;
-        td5.innerText = element.playerCount + "/6";
+
+        fetch(`/api/lobby/checkPlayerCount/${element.gameId}`, {
+          method: "get",
+        })
+          .then((result) => {
+            return result.json();
+          })
+          .then((result_json) => {
+            td5.innerText = result_json.count + '/6';
+          })
+          .catch(err => console.log(err));
 
         let playButton = document.createElement("button");
         playButton.innerText = "Join";
+        playButton.onclick = () => {
+          fetch(`/api/lobby/join/${element.gameId}`, { method: "post" })
+            .then((result) => {
+              return result.json();
+            })
+            .then((result_json) => {
+              if (result_json.gameId && result_json.gameId >= 0) {
+                window.location.href = `/auth/game/${result_json.gameId}`;
+              } else {
+                alert("Game is full!");
+              }
+            })
+            .catch(err => console.log(err));
+        }
+
         td6.appendChild(playButton);
 
         row.appendChild(td1);
         row.appendChild(td2);
         row.appendChild(td3);
         row.appendChild(td4);
+
         row.appendChild(td5);
         row.appendChild(td6);
 
@@ -47,21 +82,32 @@ const loadLobbyTable = () => {
 }
 
 //Load tables
+socket.on("lobby:0", ({gameId}) => {
+  loadLobbyTable();
+});
+
+
 loadLobbyTable();
 
 let createLobby = document.getElementById("create-lobby-button");
 createLobby.onclick = () => {
   let minimumBet = document.getElementById('create-minimumBet');
   let gamePassword = document.getElementById('create-gamePassword');
-  fetch("/lobby/create", {
+  fetch("/api/lobby/create", {
     method: "post",
     headers: { 'Content-Type': "application/json" },
     body: JSON.stringify({ minimumBet: minimumBet.value, gamePassword: gamePassword.value }),
   })
     .then((result) => {
+      return result.json();
+    })
+    .then((result_json) => {
       minimumBet.value = "";
       gamePassword.value = "";
-      location.reload();
+      if (result_json) {
+        window.location.href = `/auth/game/${result_json.gameId}`;
+      }
+
     })
     .catch((err) => console.log(err));
 };
