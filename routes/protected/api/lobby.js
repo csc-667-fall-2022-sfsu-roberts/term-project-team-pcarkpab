@@ -71,9 +71,9 @@ router.post("/join/:id", (req, res, next) => {
                 req.app.io.emit("lobby:0", {
                   game: gameId,    
                 })
-                req.app.io.emit(`console-chat:${gameId}`, {
+                req.app.io.emit(`console:${gameId}`, {
                   sender: username,
-                  message: "has joined the game",
+                  message: `${username} has joined the game`,
                   timestamp: Date.now()
                 })
                 req.app.io.emit(`game-start:${gameId}`, {

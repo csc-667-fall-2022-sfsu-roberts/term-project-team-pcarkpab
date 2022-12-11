@@ -6,6 +6,12 @@ const setGameStatus = (gameId, gameStatus) => {
   return db.query(baseSQL, {gameStatus, gameId});
 }
 
+const setGamePhase = (gameId, gamePhase) => {
+  let baseSQL =
+    "UPDATE game SET \"gamePhase\" = ${gamePhase} WHERE \"gameId\"=${gameId}";
+  return db.query(baseSQL, {gamePhase, gameId});
+}
+
 const initializeGameDeck = (gameId) => {
   let baseSQL1 =
     "SELECT \"cardId\" FROM cards";
@@ -38,8 +44,44 @@ const shuffleDeck = (gameId) => {
   });
 }
 
+const getPlayerData = (userId, gameId) => {
+  let baseSQL =
+    "SELECT * FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\"=${userId}";
+  return db.one(baseSQL, {userId, gameId});
+}
+
+const getAllPlayersData = (gameId) => {
+  let baseSQL =
+    "SELECT * FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\">0";
+  return db.query(baseSQL, {gameId});
+} 
+
+const setPlayerDefault = (userId, gameId) => {
+  let baseSQL =
+  "UPDATE game_user SET \"chipsBet\"=0,\"blindStatus\"='NONE', status='IDLE' WHERE \"gameId\"=${gameId} AND \"userId\"=${userId}";
+  return db.query(baseSQL, {userId, gameId});
+}
+
+const setPlayerBlindStatus = (userId, gameId, blindStatus) => {
+  let baseSQL =
+    "UPDATE game_user SET \"blindStatus\" = ${blindStatus} WHERE \"gameId\"=${gameId} AND \"userId\"=${userId}";
+  return db.query(baseSQL, {userId, gameId, blindStatus});
+}
+
+const assignPlayerSeat = (userId, gameId, seatNumber) => {
+  let baseSQL =
+    "UPDATE game_user SET \"seatNumber\" = ${seatNumber} WHERE \"gameId\"=${gameId} AND \"userId\"=${userId}";
+  return db.query(baseSQL, {userId, gameId, seatNumber});
+}
+
 module.exports = {
   setGameStatus,
+  setGamePhase,
   initializeGameDeck,
   shuffleDeck,
+  getPlayerData,
+  getAllPlayersData,
+  setPlayerDefault,
+  setPlayerBlindStatus,
+  assignPlayerSeat,
 };

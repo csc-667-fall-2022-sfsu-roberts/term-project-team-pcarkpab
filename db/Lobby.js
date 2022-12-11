@@ -30,7 +30,7 @@ const list = () => {
 
 const checkPlayerCount = (gameId) => {
   let baseSQL =
-    "SELECT COUNT(*) AS count FROM game_user WHERE \"gameId\"=${gameId}";
+    "SELECT COUNT(*) AS count FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\">0";
   return db.one(baseSQL, {gameId});
 }
 
