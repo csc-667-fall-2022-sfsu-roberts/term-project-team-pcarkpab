@@ -1,5 +1,5 @@
 const express = require('express');
-const Users = require('../../../db/Users');
+const Users = require('../../db/Users');
 const router = express.Router();
 
 router.get('/', function (req, res, next) {

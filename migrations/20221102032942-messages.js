@@ -29,9 +29,22 @@ module.exports = {
         defaultValue: null,
         allowNull: true,
       },
-
+      gameUserId:{
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: {
+            tableName: 'game_user',
+            schema: 'public'
+          },
+          key: 'gameUserId',
+        },
+        defaultValue: null,
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
       
-    })
+    }).then(() => queryInterface.addIndex('messages', ['messageId', 'gameUserId']))
 
   },
 

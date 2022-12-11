@@ -1,419 +1,359 @@
-* {
+*{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins" , sans-serif;
 }
 
 #container {
+    background-color: rgb(32, 31, 34);
+    height: 1000px;
+    z-index: index 98;
+  }
+  #container > div {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    font-size: 4vw;
+    padding: 8px;
+  }
 
-  background-color: rgb(0, 0, 0);
-  height: 1000px;
-  z-index: index 98;
-}
 
-#container>div {
-  color: white;
-  font-size: 4vw;
-  padding: 8px;
-}
+  #middle {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 0.5fr 3.5fr 11fr;
+    grid-gap: 8px;
+  }
+  #middle > div {
+    background-color: rgb(33, 36, 33);
+    color: white;
+    font-size: 4vw;
+    padding: 8px;
+  }
 
+  #middle-left {
+    background: rgb(41, 47, 58);
+    padding: 8px
+  }
 
-.middle {
-  height: 100%;
-  display: grid;
-  grid-template-rows: 33% 33% 34%;
-  grid-template-columns: 20% 80%;
-  grid-template-areas:
-    "chat poker"
-    "chat poker"
-    "console poker"
-  ;
-  grid-gap: 8px;
-}
+  #middle-middle {
+    display: grid;
+    grid-template-rows: 6fr 1.5fr;
+    grid-template-columns: 1fr;
+    grid-gap: 8px;
+  }
+  #middle-middle > div {
+    background: rgb(41, 47, 58);
+    padding: 8px
+  }
 
-.middle>div {
-  color: white;
-  font-size: 32px;
-  padding: 8px;
-}
+  #middle-right {
+    display: grid;
+    position: relative;
+    grid-template-rows: 3fr 0.5fr;
+    grid-template-columns: 1fr;
+    grid-gap: 8px;
+  }
+  #middle-right > div {
+    background: rgb(47, 44, 52);
+    padding: 8px
+  }
 
-.game-chat {
-  grid-area: chat;
-  background-color: rgb(41, 47, 58);
-  padding: 8px
-}
+  #footer {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-gap: 8px;
+    height: 100px;
+  }
+  #footer > div {
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    font-size: 4vw;
+    padding: 8px;
+  }
 
-.console-chat {
-  grid-area: console;
-  background-color: rgb(41, 47, 58);
-  padding: 8px
-}
+  .table {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+    top: 7%;
+  }
 
-.poker-area {
-  grid-area: poker;
-  display: grid;
-  position: relative;
-  grid-template-rows: 80% 20%;
-  grid-template-columns: auto;
-  grid-template-areas: 
-  "game-table"
-  "buttons";
-  grid-gap: 8px;
-  background-color: rgb(0, 0, 0);
+  #c{
+    position: relative;
+    right: 55%;
+  }
+  #c2{
+    position: relative;
+    right: 105%;
+  }
+
+  .cards2 {
+    display: grid;
+    position: absolute;
+    border: 1px solid #4a6f3d;
+    top:32%;
+    right: 32%;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+     }
+
+  #cards {
+    display: flex;
+    position: absolute;
+    top:40px;
+    left:60px;
+    border: 1px solid #4a6f3d;
+     }
   
-}
 
+  .card1 {
+    max-width: 6%;
+    height: auto;
+    position: absolute;
+    top:30%;
+    left:33%;
+    border: 1px solid #4a6f3d;
+  }
+  .card2 {
+    max-width: 6%;
+    height: auto;
+    position: absolute;
+    top:30%;
+    left:40%;
+    border: 1px solid #4a6f3d;
+  }
+  .card3 {
+    max-width: 6%;
+    height: auto;
+    position: absolute;
+    top:30%;
+    left:47%;
+    border: 1px solid #4a6f3d;
+  }
+  .card4 {
+    max-width: 6%;
+    height: auto;
+    position: absolute;
+    top:30%;
+    left:54%;
+    border: 1px solid #4a6f3d;
+  }
+  .card5 {
+    max-width: 6%;
+    height: auto;
+    position: absolute;
+    top:30%;
+    left:61%;
+    border: 1px solid #4a6f3d;
+  }
 
-.game-table {
-  grid-area: game-table;
-  background-color: rgb(41, 47, 58);
-  background-image: url("../images/table.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  display: none;
-  padding: 8px;
-}
+  .icon {
+    position: relative;
+    z-index: 100;
+    max-width: 80px;
+    border-radius: 999em;
+    line-height: 0;
+    border: 5px solid rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+  }
 
-.game-buttons {
-  padding: 8px;
-  grid-area: buttons;
-  background-color: rgb(41, 47, 58);
-}
+  #playerInfo{
+    display: flex;
+    justify-content: center;
+    width: 120px;
+  }
 
-.loading {
-  display: flex;
-  background-color: rgb(41, 47, 58);
-  background-image: url("../images/table.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  text-align: center;
-}
+  #space{
+    height:30px;
+  }
 
-.loading > p {
-  font-size: 60px;
-  margin: auto;
-}
+  #player1 {
+    display: flex;
+    justify-content: left;
 
-#footer {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-gap: 8px;
-  height: 100px;
-}
+    position: absolute;
+    top:7%;
+    left:12%;
+  }
+  #player2 {
+    display: flex;
+    justify-content: left;
 
-#footer>div {
-  background-color: rgb(0, 0, 0);
-  color: rgb(255, 255, 255);
-  font-size: 4vw;
-  padding: 8px;
-}
+    position: absolute;
+    top:30%;
+    left:5%;
+  }
+  #player3 {
+    display: flex;
+    justify-content: left;
 
-.table {
-  position: relative;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 100%;
-  top: 7%;
-}
+    position: absolute;
+    top:53%;
+    left:12%;
+  }
+  #player4 {
+    display: flex;
+    justify-content: left;
 
-#c {
-  position: relative;
-  right: 55%;
-}
+    position: absolute;
+    top:7%;
+    left:75%;
+  }
 
-#c2 {
-  position: relative;
-  right: 105%;
-}
+  #player5 {
+    display: flex;
+    justify-content: left;
 
-.cards2 {
-  display: grid;
-  position: absolute;
-  border: 1px solid #4a6f3d;
-  top: 32%;
-  right: 32%;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-}
+    position: absolute;
+    top:30%;
+    left:82%;
+  }
 
-#cards {
-  display: flex;
-  position: absolute;
-  top: 40px;
-  left: 60px;
-  border: 1px solid #4a6f3d;
-}
+  #player6 {
+    display: flex;
+    justify-content: left;
 
+    position: absolute;
+    top:53%;
+    left:75%;
+  }
 
-.card1 {
-  max-width: 6%;
-  height: auto;
-  position: absolute;
-  top: 30%;
-  left: 33%;
-  border: 1px solid #4a6f3d;
-}
-
-.card2 {
-  max-width: 6%;
-  height: auto;
-  position: absolute;
-  top: 30%;
-  left: 40%;
-  border: 1px solid #4a6f3d;
-}
-
-.card3 {
-  max-width: 6%;
-  height: auto;
-  position: absolute;
-  top: 30%;
-  left: 47%;
-  border: 1px solid #4a6f3d;
-}
-
-.card4 {
-  max-width: 6%;
-  height: auto;
-  position: absolute;
-  top: 30%;
-  left: 54%;
-  border: 1px solid #4a6f3d;
-}
-
-.card5 {
-  max-width: 6%;
-  height: auto;
-  position: absolute;
-  top: 30%;
-  left: 61%;
-  border: 1px solid #4a6f3d;
-}
-
-.icon {
-  position: relative;
-  z-index: 100;
-  max-width: 80px;
-  border-radius: 999em;
-  line-height: 0;
-  border: 5px solid rgb(255, 255, 255);
-  background-color: rgb(0, 0, 0);
-}
-
-#playerInfo {
-  display: flex;
-  justify-content: center;
-  width: 120px;
-}
-
-#space {
-  height: 30px;
-}
-
-#player1 {
-  display: flex;
-  justify-content: left;
-
-  position: absolute;
-  top: 7%;
-  left: 12%;
-}
-
-#player2 {
-  display: flex;
-  justify-content: left;
-
-  position: absolute;
-  top: 30%;
-  left: 5%;
-}
-
-#player3 {
-  display: flex;
-  justify-content: left;
-
-  position: absolute;
-  top: 53%;
-  left: 12%;
-}
-
-#player4 {
-  display: flex;
-  justify-content: left;
-
-  position: absolute;
-  top: 7%;
-  left: 75%;
-}
-
-#player5 {
-  display: flex;
-  justify-content: left;
-
-  position: absolute;
-  top: 30%;
-  left: 82%;
-}
-
-#player6 {
-  display: flex;
-  justify-content: left;
-
-  position: absolute;
-  top: 53%;
-  left: 75%;
-}
-
-#playerMain {
-  /*display: flex;
+  #playerMain {
+    /*display: flex;
     justify-content: left;*/
 
-  position: absolute;
-  width: 300px;
-  top: 62%;
-  left: 44%;
-}
+    position: absolute;
+    width: 300px;
+    top:62%;
+    left:44%;
+  }
 
 
 
-#player-name {
-  position: absolute;
-  top: 80%;
-  height: 35%;
-  z-index: 102;
-  border-radius: 25px;
-  background-color: rgb(231, 191, 86);
-  border: 3px solid rgb(132, 101, 23);
+  #player-name{
+    position: absolute;
+    top:80%;
+    height: 35%;
+    z-index: 102;
+    border-radius: 25px;
+    background-color: rgb(231, 191, 86);
+    border: 3px solid rgb(132, 101, 23);
 
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 1px;
-  padding-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 1px;
+    padding-bottom: 3px;
 
-  color: rgb(142, 29, 29);
-  font-family: Verdana, sans-serif;
-  font-weight: bold;
-  font-size: 0.30em;
-}
+    color: rgb(142, 29, 29);
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 0.30em;
+  }
 
-#money-amount {
-  position: absolute;
-  top: 107%;
-  height: 27%;
-  z-index: 102;
-  border-radius: 25px;
-  background-color: rgb(57, 57, 57);
+  #money-amount{
+    position: absolute;
+    top:107%;
+    height: 27%;
+    z-index: 102;
+    border-radius: 25px;
+    background-color: rgb(57, 57, 57);
 
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-top: 3px;
-  padding-bottom: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
 
-  color: rgb(242, 242, 242);
-  font-family: Verdana, sans-serif;
-  font-weight: bold;
-  font-size: 0.24em;
-}
+    color: rgb(242, 242, 242);
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 0.24em;
+  }
 
 /*More card css*/
 
-.cardContainer {
-  width: 38px;
-  /*57, 66%*/
-  height: 53px;
-  /*79*/
+.cardContainer{
+  width: 38px; /*57, 66%*/
+  height: 53px; /*79*/
   overflow: hidden;
-  display: block;
+  display:block;
+}
+#c1{ /*Default values of a blank card*/
+  margin-top: 0px; 
+  margin-left: -570px; 
 }
 
-#c1 {
-  /*Default values of a blank card*/
-  margin-top: 0px;
-  margin-left: -570px;
-}
-
-#mainCards {
+#mainCards{
   display: inline-flex;
   margin: 6px;
-  position: absolute;
+position: absolute;
   left: 42%;
   top: 55%;
-}
+} 
 
-.cardContainerBig1 {
-  width: 70px;
-  height: 89px;
+.cardContainerBig1{
+  width: 70px; 
+  height: 89px; 
   overflow: hidden;
-  display: block;
+  display:block;
   transform: rotate(320deg);
 }
-
-.cardContainerBig2 {
-  width: 70px;
-  height: 89px;
+.cardContainerBig2{
+  width: 70px; 
+  height: 89px; 
   overflow: hidden;
-  display: block;
+  display:block;
   transform: rotate(220deg);
 }
-
-#m_l {
-  margin-top: 0px;
-  margin-left: -1170px;
+#m_l{
+  margin-top: 0px; 
+  margin-left: -1170px; 
+}
+#m_r{
+  margin-top: 0px; 
+  margin-left: -1170px; 
 }
 
-#m_r {
-  margin-top: 0px;
-  margin-left: -1170px;
-}
 
-
-.cardContainerBig {
-  width: 70px;
-  height: 89px;
+.cardContainerBig{
+  width: 70px; 
+  height: 89px; 
   overflow: hidden;
-  display: block;
+  display:block;
 }
-
-#cards {
+#cards{
   display: flex;
 }
-
-#card1 {
-  margin-top: 0px;
-  margin-left: -1170px;
+#card1{
+  margin-top: 0px; 
+  margin-left: -1170px; 
+}
+#card2{
+  margin-top: 0px; 
+  margin-left: -1170px; 
+}
+#card3{
+  margin-top: 0px; 
+  margin-left: -1170px; 
+}
+#card4{
+  margin-top: 0px; 
+  margin-left: -1170px; 
+}
+#card5{
+  margin-top: 0px; 
+  margin-left: -1170px; 
 }
 
-#card2 {
-  margin-top: 0px;
-  margin-left: -1170px;
-}
-
-#card3 {
-  margin-top: 0px;
-  margin-left: -1170px;
-}
-
-#card4 {
-  margin-top: 0px;
-  margin-left: -1170px;
-}
-
-#card5 {
-  margin-top: 0px;
-  margin-left: -1170px;
-}
-
-.game-buttons {
+#poker-options{
   display: flex;
 }
-
-#buttons {
-  display: flex;
+#buttons{
+  display:flex;
 }
-
-#bet {
-  margin-top: 0px;
-  margin-left: 50px;
+#bet{
+  margin-top: 0px; 
+  margin-left: 50px; 
   font-size: 2rem;
 }

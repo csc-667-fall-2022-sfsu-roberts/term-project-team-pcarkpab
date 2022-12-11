@@ -34,6 +34,20 @@ module.exports = {
         unique: true,
       },
 
+      userId:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: {
+            tableName: 'users',
+            schema: 'public'
+          },
+          key: 'userId',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+
       gameId:{
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -51,43 +65,35 @@ module.exports = {
       gameUserId:{
         type: Sequelize.INTEGER,
         allowNull: true,
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
-      },
-
-      cardId:{
-        type: Sequelize.INTEGER,
-        allowNull: true,
         references: {
           model: {
-            tableName: 'cards',
+            tableName: 'game_user',
             schema: 'public'
           },
-          key: 'cardId',
+          key: 'gameUserId',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
       
-      
       isDiscarded:{
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.INTEGER,
         allowNull: true,
-        defaultValue: false,
+        default: 0,
       },
 
       in_deck:{
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.INTEGER,
         allowNull: true,
-        defaultValue: true,
+        default: 0,
       },
 
       on_table:{
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.INTEGER,
         allowNull: true,
-        defaultValue: false,
+        default: 0,
       }
-    })
+    }).then(() => queryInterface.addIndex('game_cards', ['gameId', 'userId', 'gameUserId']))
 
   },
 

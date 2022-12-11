@@ -14,11 +14,11 @@ displayCard(45, "p3_r", smallCard);
 displayCard(29, "p4_l", smallCard);
 displayCard(27, "p4_r", smallCard);
 //Player 5
-//displayCard(51, "p5_l", smallCard);
-//displayCard(8, "p5_r", smallCard);
+displayCard(51, "p5_l", smallCard);
+displayCard(8, "p5_r", smallCard);
 //Player 6
-//displayCard(4, "p6_l", smallCard);
-//displayCard(6, "p6_r", smallCard);
+displayCard(4, "p6_l", smallCard);
+displayCard(6, "p6_r", smallCard);
 
 displayCard(1, "m_l", bigCard);
 displayCard(52, "m_r", bigCard);

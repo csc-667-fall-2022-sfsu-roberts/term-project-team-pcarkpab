@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const db = require('../../../db/database');
+const db = require('../../db/database');
 
 router.get("/", (request, response) => {
   db.any(`INSERT INTO test_table ("testString") VALUES ('Hello at 
