@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="../css/about.css">
-    <link rel="stylesheet" type="text/css" href="../css/fonts/style.css">
-    <script type="text/javascript" src="/routes/public/display.js"></script>
     <title>About</title>
 </head>
 <div>
@@ -27,3 +24,16 @@
         </p>
   </div>
 </div>
+
+<script> 
+  /*This function allows the user to click the icon to make the
+Message on the About Page appear.*/
+function messageAppear() {
+    var x = document.getElementById("Message");
+    if (x.style.display == "grid") {
+      x.style.display = "none";
+    } else {
+      x.style.display = "grid";
+    }
+  }
+</script>

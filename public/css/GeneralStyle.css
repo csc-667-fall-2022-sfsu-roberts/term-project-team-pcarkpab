@@ -9,8 +9,24 @@ body {
   background-color: rgb(33,36,33);
 }
 
-a{
+a {
   color: rgb(156, 201, 241);
+}
+
+
+a[id="waiting-room"] {
+  display: block;
+  text-align: center;
+  font-family: 'CentaurLabelFont';
+  text-decoration: auto;
+  border-style: outset;
+  text-shadow: 0px 1px 2px rgb(35 30 30);
+  padding: 5px 5px 5px 5px;
+  border-color: red;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+  border-right-width: 2px;
 }
 
 /*These are Primary colors I used so far that you can use for designing, 
@@ -59,23 +75,41 @@ h3[id="Lobbytext1"] {
   text-align: center;
 }
 
+/* This rule describes the styling for the lobby table
+ and the game information; containing a red and black 
+ gradient, the table will animate smoothly over time.*/
 #lobby-table, th, td {
-  color: white;
-  border-radius: 20px;
-  border: 3px solid white;
-  background-image: linear-gradient(red, yellow);
-  filter: drop-shadow(0 0 0.1rem rgb(0, 0, 0));
-  text-align: center;
-  padding: 5px 5px 5px 5px;
-  max-width: 200px;
+    color: white;
+    border-radius: 20px;
+    border: 3px solid white;
+    background-image: linear-gradient(red, black);
+    filter: drop-shadow(0 0 0.1rem rgb(0, 0, 0));
+    text-align: center;
+    padding: 5px 5px 5px 5px;
+    max-width: 200px;
+    animation: redandblack 5s ease infinite;
+    background-size: 200% 200%;
 }
+
+@keyframes redandblack {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 50% 50%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
 
 .lobby-list {
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
-
 }
+
 
 th {
   border: 2px solid white;
@@ -89,6 +123,9 @@ th {
 
 .JoinButton {
   font-family: 'CentaurLabelFont';
+  text-shadow: 0px 0px 0.5px black;
   color: red;
-  background: black;
+  border-style: outset;
+  border-color: white;
+  cursor: pointer;
 }
