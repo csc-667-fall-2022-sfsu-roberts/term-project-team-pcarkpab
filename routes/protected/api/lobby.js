@@ -6,11 +6,10 @@ const MAX_PLAYER = 6;
 
 router.post("/create", (req, res, next) => {
   let minimumBet = req.body.minimumBet;
-  let gamePassword = req.body.gamePassword;
   let username = req.session.username;
   let userId = req.session.userId;
 
-  Lobby.create(username, minimumBet, gamePassword)
+  Lobby.create(username, minimumBet)
     .then((result) => {
       console.log(result);
       return result.gameId;
@@ -71,9 +70,9 @@ router.post("/join/:id", (req, res, next) => {
                 req.app.io.emit("lobby:0", {
                   game: gameId,    
                 })
-                req.app.io.emit(`console-chat:${gameId}`, {
+                req.app.io.emit(`console:${gameId}`, {
                   sender: username,
-                  message: "has joined the game",
+                  message: `${username} has joined the game`,
                   timestamp: Date.now()
                 })
                 req.app.io.emit(`game-start:${gameId}`, {

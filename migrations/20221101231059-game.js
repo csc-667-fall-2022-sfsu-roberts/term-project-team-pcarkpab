@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    
+  async up(queryInterface, Sequelize) {
+
     return queryInterface.createTable('game', {
-      gameId:{
+      gameId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
@@ -12,38 +12,32 @@ module.exports = {
         unique: true,
       },
 
-      owner:{
+      owner: {
         type: Sequelize.STRING(30),
         defaultValue: null,
         allowNull: true,
       },
 
-      pot:{
+      pot: {
         type: Sequelize.INTEGER,
         defaultValue: null,
         allowNull: true,
       },
 
-      minimumBet:{
+      minimumBet: {
         type: Sequelize.INTEGER,
-        defaultValue: null,
-        allowNull: true,
-      }, 
-
-      gamePassword:{
-        type: Sequelize.STRING(30),
         defaultValue: null,
         allowNull: true,
       },
 
-      gamePhase:{
+      gamePhase: {
         type: Sequelize.ENUM,
         values: ['PREGAME', 'ANTE', 'ASSIGNCARDS', 'PREFLOP', 'FLOP', 'TURN', 'RIVER', 'FINALREVEAL', 'GAMEEND'],
         defaultValue: null,
         allowNull: true,
       },
 
-      gameStatus:{
+      gameStatus: {
         type: Sequelize.ENUM,
         values: ['WAITINGROOM', 'INGAME', 'FINISHEDGAME', 'SESSSIONEND'],
         defaultValue: null,
@@ -54,13 +48,19 @@ module.exports = {
 
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     /**
      * Add reverting commands here.
      *
      * Example:
      * await queryInterface.dropTable('users');
      */
-    return queryInterface.dropTable('game');
+    return queryInterface.dropTable('game')
+      .then(() => {
+        return queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_game_gamePhase";');
+      })
+      .then(() => {
+        return queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_game_gameStatus";');
+      });
   }
 };

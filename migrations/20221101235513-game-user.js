@@ -2,32 +2,10 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
-    /**
-     * `gameUserID` INT NOT NULL AUTO_INCREMENT,
-  `gameID` INT NOT NULL,
-  `userID` INT NOT NULL,
-  `chipsHeld` INT NULL DEFAULT NULL,
-  `chipsBet` INT NULL DEFAULT NULL,
-  `status` ENUM('INGAME', 'SPECTATOR', 'IDLE', 'LEFTGAME', 'LOSER', 'WINNER') NULL DEFAULT NULL,
-  `isFold` TINYINT NULL,
-  PRIMARY KEY (`gameUserID`),
-  UNIQUE INDEX `idgame_user_UNIQUE` (`gameUserID` ASC) VISIBLE,
-  INDEX `fk_game_user_game_idx` (`gameID` ASC) VISIBLE,
-  INDEX `fk_game_user_user1_idx` (`userID` ASC) VISIBLE,
-  CONSTRAINT `fk_game_user_game`
-    FOREIGN KEY (`gameID`)
-    REFERENCES `poker`.`game` (`gameID`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_game_user_user1`
-    FOREIGN KEY (`userID`)
-    REFERENCES `poker`.`user` (`userID`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-     */
+  async up(queryInterface, Sequelize) {
+
     return queryInterface.createTable('game_user', {
-      gameUserId:{
+      gameUserId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
@@ -35,21 +13,13 @@ module.exports = {
         unique: true,
       },
 
-      userId:{
+      userId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {
-          model: {
-            tableName: 'users',
-            schema: 'public'
-          },
-          key: 'userId',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+
       },
 
-      gameId:{
+      gameId: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -62,47 +32,54 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      
-      chipsHeld:{
+
+      chipsHeld: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        default: null,
+        defaultValue: 0,
       },
 
-      chipsBet:{
+      chipsBet: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        default: null,
+        defaultValue: 0,
       },
 
-      isFold:{
-        type: Sequelize.INTEGER,
+      isTurn: {
+        type: Sequelize.BOOLEAN,
         allowNull: true,
+        defaultValue: false,
       },
 
-      blindStatus:{
+      blindStatus: {
         type: Sequelize.ENUM,
-        values: ['NONE', 'BIGBLIND', 'SMALLBLIND'],
-        default: null,
+        values: ['NONE', 'BIGBLIND', 'SMALLBLIND', 'DEALER'],
+        defaultValue: 'NONE',
         allowNull: true,
       },
 
-      status:{
+      status: {
         type: Sequelize.ENUM,
-        values: ['INGAME', 'SPECTATOR', 'IDLE', 'LEFTGAME', 'LOSER', 'WINNER'],
-        default: null,
+        values: ['SPECTATOR', 'IDLE', 'RAISE', 'CALL', 'CHECK', 'FOLD'],
+        defaultValue: 'SPECTATOR',
         allowNull: true,
       },
 
-      seatNumber:{
+      seatNumber: {
         type: Sequelize.INTEGER,
         allowNull: true,
       }
 
-    }).then(() => queryInterface.addIndex('game_user', ['gameId', 'userId', 'gameUserId']))
+    })
   },
 
-  async down (queryInterface, Sequelize) {
-    return queryInterface.dropTable('game_user');
+  async down(queryInterface, Sequelize) {
+    return queryInterface.dropTable('game_user')
+      .then(() => {
+        return queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_game_user_status";');
+      })
+      .then(() => {
+        return queryInterface.sequelize.query('DROP TYPE IF EXISTS "enum_game_user_blindStatus";');
+      })
   }
 };

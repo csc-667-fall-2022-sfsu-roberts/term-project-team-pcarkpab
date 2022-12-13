@@ -93,18 +93,17 @@ loadLobbyTable();
 let createLobby = document.getElementById("create-lobby-button");
 createLobby.onclick = () => {
   let minimumBet = document.getElementById('create-minimumBet');
-  let gamePassword = document.getElementById('create-gamePassword');
   fetch("/api/lobby/create", {
     method: "post",
     headers: { 'Content-Type': "application/json" },
-    body: JSON.stringify({ minimumBet: minimumBet.value, gamePassword: gamePassword.value }),
+    body: JSON.stringify({ minimumBet: minimumBet.value }),
   })
     .then((result) => {
       return result.json();
     })
     .then((result_json) => {
       minimumBet.value = "";
-      gamePassword.value = "";
+
       if (result_json) {
         window.location.href = `/auth/game/${result_json.gameId}`;
       }

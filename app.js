@@ -21,6 +21,7 @@ var authIndexRouter = require('./routes/protected/authIndex');
 var gameRouter = require('./routes/protected/game');
 var lobbyRouter = require('./routes/protected/api/lobby');
 var chatRouter = require('./routes/protected/api/chat');
+var consoleRouter = require('./routes/protected/api/console');
 var gameapiRouter = require('./routes/protected/api/gameapi');
 
 
@@ -65,6 +66,7 @@ app.use('/auth', protect, authIndexRouter);
 app.use('/auth/game', protect, gameRouter);
 app.use('/api/lobby', protect, lobbyRouter);
 app.use('/api/chat', protect, chatRouter);
+app.use('/api/console', protect, consoleRouter);
 app.use('/api/game', protect, gameapiRouter);
 
 

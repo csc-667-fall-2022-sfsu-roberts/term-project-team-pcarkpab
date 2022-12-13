@@ -2,8 +2,8 @@ const db = require('./database');
 
 const create = (username, minimumBet, gamePassword) => {
   let baseSQL =
-    "INSERT INTO game (owner, pot, \"minimumBet\", \"gamePassword\", \"gamePhase\", \"gameStatus\") VALUES (${username}, 0, ${minimumBet}, ${gamePassword}, 'PREGAME', 'WAITINGROOM') RETURNING \"gameId\"";
-  return db.one(baseSQL, { username, minimumBet, gamePassword });
+    "INSERT INTO game (owner, pot, \"minimumBet\", \"gamePhase\", \"gameStatus\") VALUES (${username}, 0, ${minimumBet}, 'PREGAME', 'WAITINGROOM') RETURNING \"gameId\"";
+  return db.one(baseSQL, { username, minimumBet});
 }
 
 const deleteLobby = (gameId) => {
@@ -30,7 +30,7 @@ const list = () => {
 
 const checkPlayerCount = (gameId) => {
   let baseSQL =
-    "SELECT COUNT(*) AS count FROM game_user WHERE \"gameId\"=${gameId}";
+    "SELECT COUNT(*) AS count FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\">0";
   return db.one(baseSQL, {gameId});
 }
 
