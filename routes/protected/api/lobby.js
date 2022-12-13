@@ -6,11 +6,10 @@ const MAX_PLAYER = 6;
 
 router.post("/create", (req, res, next) => {
   let minimumBet = req.body.minimumBet;
-  let gamePassword = req.body.gamePassword;
   let username = req.session.username;
   let userId = req.session.userId;
 
-  Lobby.create(username, minimumBet, gamePassword)
+  Lobby.create(username, minimumBet)
     .then((result) => {
       console.log(result);
       return result.gameId;

@@ -10,3 +10,7 @@ router.post('/start/:id', (req, res, next) =>{
 
 
 module.exports = router;
+
+router.post('/getGameData/:id', (req, res, next) => {
+  
+})

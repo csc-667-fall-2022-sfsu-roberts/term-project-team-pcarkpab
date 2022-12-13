@@ -30,12 +30,6 @@ module.exports = {
         allowNull: true,
       },
 
-      gamePassword: {
-        type: Sequelize.STRING(30),
-        defaultValue: null,
-        allowNull: true,
-      },
-
       gamePhase: {
         type: Sequelize.ENUM,
         values: ['PREGAME', 'ANTE', 'ASSIGNCARDS', 'PREFLOP', 'FLOP', 'TURN', 'RIVER', 'FINALREVEAL', 'GAMEEND'],
