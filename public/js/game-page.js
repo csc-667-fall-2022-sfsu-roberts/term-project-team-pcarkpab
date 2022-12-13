@@ -16,8 +16,7 @@ const gameData = {
   ],
   dealerCards: [3, 50, 42],
   currentBet: 0,
-  gamePhrase: 'BLIND-BET',
-  userId: 1,
+  gamePhase: 'BLIND-BET',
 }
 //Remove isdiscard
 //Add the dealer game_user
@@ -31,6 +30,7 @@ const gameData = {
 //small blind and big blind bet, 
 
 //Phase: assign cards
+
 
 socket.on(`game-phase:assign-card`, () => {
   //game data will be also be update
@@ -59,14 +59,14 @@ socket.on(`game-phase:betting-round`, () => {
 
 })
 
-// let raiseButton = document.getElementById(`raise-button-${gameId}`)
-// raiseButton.onclick(()=> {
-//   for(let playerInfo in gameData.PlayerInfo){
-//     if(playerInfo.userId == gameData.userId && playerInfo.isTurn){
-       // fetch('api/game/bet or check or fold')
-//     }
-//   }
-// })
+let raiseButton = document.getElementById(`raise-button-${gameId}`)
+raiseButton.onclick(()=> {
+  for(let playerInfo in gameData.PlayerInfo){
+    if(currentUserId == gameData.userId && playerInfo.isTurn){
+       //fetch('api/game/bet or check or fold')
+    }
+  }
+})
 
 
 fetch(`/api/lobby/checkPlayerCount/${gameId}`, { method: "get" })
@@ -120,7 +120,6 @@ sendMessage.onclick = () => {
 
 socket.on(`chat:${gameId}`, ({ sender, message, timestamp }) => {
   console.log({ sender, message, timestamp });
-
   const div1 = document.createElement("div");
   div1.classList.add("sender-chat");
   
@@ -169,10 +168,20 @@ socket.on(`console:${gameId}`, ({ sender, message, timestamp }) => {
   chatBox.appendChild(div);
 })
 
+socket.on(`player-join:${gameId}`, ({playerCount, gameStatus}) => {
+  if(playerCount > 1 && gameStatus == 'WAITINGROOM'){
+    fetch(`/api/game/start/${gameId}`, {
+      method: "post",
+      headers: { 'Content-Type': "application/json" },
+      body: JSON.stringify({ playerCount }),
+    })
+    .catch(err => console.log(err));
+  }
+})
 
-socket.on(`game-start:${gameId}`, ({ playerCount }) => {
-  console.log(playerCount);
-  if (playerCount > 1) {
+
+socket.on(`game-start:${gameId}`, () => {
+  
     let gameTable = document.getElementById(`game-table-${gameId}`);
     gameTable.style.display = "block";
     let loading = document.getElementById(`loading-${gameId}`);
@@ -190,7 +199,7 @@ socket.on(`game-start:${gameId}`, ({ playerCount }) => {
     // Set a 15 seconds delay before calling fetch()
     setTimeout(() => {
       console.log("GAME STARTING");
-      fetch(`/api/game/start/${gameId}`, { method: 'post' })
+      fetch(`/api/game/initialize/${gameId}`, { method: 'post' })
         .catch(err => console.log(err));
 
       fetch(`/api/console/${gameId}`, {
@@ -201,6 +210,6 @@ socket.on(`game-start:${gameId}`, ({ playerCount }) => {
       .catch((err) => console.log(err));
 
     }, START_DELAY * 1000 + 3000); // 15000 milliseconds = 15 seconds
-  }
+  
 })
 

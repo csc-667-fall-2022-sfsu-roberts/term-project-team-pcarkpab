@@ -6,11 +6,14 @@ const setGameStatus = (gameId, gameStatus) => {
   return db.query(baseSQL, {gameStatus, gameId});
 }
 
+
 const setGamePhase = (gameId, gamePhase) => {
   let baseSQL =
     "UPDATE game SET \"gamePhase\" = ${gamePhase} WHERE \"gameId\"=${gameId}";
   return db.query(baseSQL, {gamePhase, gameId});
 }
+
+
 
 const initializeGameDeck = (gameId) => {
   let baseSQL1 =
