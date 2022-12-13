@@ -26,6 +26,7 @@ const initialize = (gameId) => {
       players.map(player => { 
         Game.setPlayerDefault(player.userId, gameId)
         .then(() => {
+          console.log("SeatNum: " + i);
           Game.assignPlayerSeat(player.userId, gameId, i);
         })
         .then(() => {

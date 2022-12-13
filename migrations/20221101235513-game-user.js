@@ -36,32 +36,32 @@ module.exports = {
       chipsHeld: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        default: null,
+        defaultValue: 0,
       },
 
       chipsBet: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        default: null,
+        defaultValue: 0,
       },
 
-      isFold: {
+      isTurn: {
         type: Sequelize.BOOLEAN,
         allowNull: true,
-        default: false,
+        defaultValue: false,
       },
 
       blindStatus: {
         type: Sequelize.ENUM,
         values: ['NONE', 'BIGBLIND', 'SMALLBLIND', 'DEALER'],
-        default: null,
+        defaultValue: 'NONE',
         allowNull: true,
       },
 
       status: {
         type: Sequelize.ENUM,
         values: ['SPECTATOR', 'IDLE', 'RAISE', 'CALL', 'CHECK', 'FOLD'],
-        default: null,
+        defaultValue: 'SPECTATOR',
         allowNull: true,
       },
 

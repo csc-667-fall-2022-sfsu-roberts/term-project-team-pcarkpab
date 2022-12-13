@@ -48,11 +48,9 @@ module.exports = {
         onDelete: 'CASCADE',
       },
 
-      gameUserId:{
+      userId:{
         type: Sequelize.INTEGER,
         allowNull: true,
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
       },
 
       cardId:{
