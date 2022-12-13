@@ -88,16 +88,36 @@ sendMessage.onclick = () => {
 socket.on(`chat:${gameId}`, ({sender, message, timestamp}) => {
   console.log({sender, message, timestamp});
 
-  const div = document.createElement("div");
-  div.classList.add("message");
-  const content = document.createElement("p");
+  const div1 = document.createElement("div");
+  div1.classList.add("sender-chat");
+  
+  //const content1 = document.createElement("sender-chat");
+  const content1 = document.createElement("p");
+  div1.innerText = sender;
+  //div1.innerText = sender;
+  div1.appendChild(content1);
+
+  const div2 = document.createElement("div");
+  div2.classList.add("message");
+  div2.classList.add("c-bubble");
+  div2.classList.add("left-bubble");
+  const content2 = document.createElement("p");
+  div2.innerText = message;
+  div2.appendChild(content2);
+
+  const div3 = document.createElement("div");
+  div3.classList.add("date-chat");
+  //const content3 = document.createElement("date-chat");
   let newDate = new Date(timestamp).toLocaleTimeString();
-  let str = sender + ": " + message + " " + newDate;
-  content.innerText = str;
-  div.appendChild(content);
+  //let str = sender + ": " + message + " " + newDate;
+  const content3 = document.createElement("p");
+  div3.innerText = newDate;
+  div3.appendChild(content3);
 
   let chatBox = document.getElementById(`chat-${gameId}`);
-  chatBox.appendChild(div);
+  chatBox.appendChild(div1);
+  chatBox.appendChild(div2);
+  chatBox.appendChild(div3);
 
 })
 

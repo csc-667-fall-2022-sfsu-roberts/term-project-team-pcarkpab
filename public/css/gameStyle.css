@@ -8,7 +8,7 @@
 #container {
 
   background-color: rgb(0, 0, 0);
-  height: 1000px;
+  height: 800px;
   z-index: index 98;
 }
 
@@ -40,7 +40,7 @@
 
 .game-chat {
   grid-area: chat;
-  background-color: rgb(41, 47, 58);
+  background-color: rgb(24, 21, 20);
   padding: 8px
 }
 
@@ -54,9 +54,11 @@
   grid-area: poker;
   display: grid;
   position: relative;
-  grid-template-rows: 80% 20%;
+  grid-template-rows: 10% 70% 20%;
+  /*grid-template-rows: 80% 20%;*/
   grid-template-columns: auto;
   grid-template-areas: 
+  "poker-header"
   "game-table"
   "buttons";
   grid-gap: 8px;
@@ -66,6 +68,7 @@
 
 
 .game-table {
+  position: relative;
   grid-area: game-table;
   background-color: rgb(41, 47, 58);
   background-image: url("../images/table.png");
@@ -79,6 +82,7 @@
   padding: 8px;
   grid-area: buttons;
   background-color: rgb(41, 47, 58);
+  position:relative;
 }
 
 .loading {
@@ -120,19 +124,19 @@
 
 #c {
   position: relative;
-  right: 55%;
+  right: 10%;
 }
 
 #c2 {
   position: relative;
-  right: 105%;
+  right: 2%;
 }
 
 .cards2 {
   display: grid;
   position: absolute;
   border: 1px solid #4a6f3d;
-  top: 32%;
+  top: 36%;
   right: 32%;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
@@ -141,10 +145,40 @@
   display: flex;
   position: absolute;
   top: 40px;
-  left: 60px;
+  left: 30px;
   border: 1px solid #4a6f3d;
 }
 
+#cardstack{
+  position: absolute;
+  top: 8%;
+  left: 39%;
+  max-width: 80%;
+}
+#pot{
+  position: absolute;
+  top: 4%;
+  left: 47%;
+}
+#pot-text{
+  position: absolute;
+  top: 26%;
+  left: 49%;
+  height: 5%;
+  z-index: 102;
+  border-radius: 5px;
+  background-color: rgb(37, 37, 37);
+
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+
+  color: rgb(242, 242, 242);
+  font-family: Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 0.5em;
+}
 
 .card1 {
   max-width: 6%;
@@ -201,78 +235,141 @@
   background-color: rgb(0, 0, 0);
 }
 
+.empty-spot {
+  /*position: absolute;*/
+  z-index: 99;
+  max-width: 80px;
+}
+
 #playerInfo {
   display: flex;
   justify-content: center;
   width: 120px;
 }
 
+.blindStatus {
+  display: block;
+  position:relative;
+  text-align: center;
+  width: 75%;
+  height: 25%;
+  z-index: 102;
+  border-radius: 25px;
+  background-color: rgb(255, 255, 255);
+  border: 3px solid rgb(193, 193, 193);
+
+  padding:3px;
+
+  color: rgb(0, 0, 0);
+  font-family: Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 0.30em;
+}
+.blind-l{
+  left: -120%;
+}
+.blind-r{
+  right: -180%;
+}
+
 #space {
   height: 30px;
 }
 
-#player1 {
-  display: flex;
+.players{
   justify-content: left;
-
   position: absolute;
-  top: 7%;
-  left: 12%;
+  transition: all 0.2s ease-in-out;
 }
-
-#player2 {
-  display: flex;
-  justify-content: left;
-
-  position: absolute;
-  top: 30%;
-  left: 5%;
-}
-
-#player3 {
-  display: flex;
-  justify-content: left;
-
-  position: absolute;
-  top: 53%;
-  left: 12%;
-}
-
-#player4 {
-  display: flex;
-  justify-content: left;
-
-  position: absolute;
-  top: 7%;
-  left: 75%;
-}
-
-#player5 {
-  display: flex;
-  justify-content: left;
-
-  position: absolute;
-  top: 30%;
-  left: 82%;
+.players:hover {
+  color: rgba(255, 255, 255, 1);
+  box-shadow: 0 5px 15px rgba(145, 92, 182, .4);
 }
 
 #player6 {
+  top: 7%;
+  left: 12%;
   display: flex;
-  justify-content: left;
+}
 
-  position: absolute;
-  top: 53%;
-  left: 75%;
+#player5 {
+  top: 40%;
+  left: 5%;
+  display: flex;
+}
+
+#player4 {
+  top: 70%;
+  left: 12%;
+  display: flex;
+}
+
+#player1 {
+  top: 7%;
+  left: 64.5%;
+  display: flex;
+}
+
+#player2 {
+  top: 40%;
+  left: 71.5%;
+  display: flex;
+}
+
+#player3 {
+  top: 70%;
+  left: 64.5%;
+  display: flex;
 }
 
 #playerMain {
-  /*display: flex;
-    justify-content: left;*/
-
+  display: flex;
   position: absolute;
   width: 300px;
-  top: 62%;
+  top: 80%;
   left: 44%;
+}
+
+#e6 {
+  top: 7%;
+  left: 14%;
+  position:absolute;
+}
+
+#e5 {
+  top: 40%;
+  left: 7%;
+  position:absolute;
+}
+
+#e4 {
+  top: 70%;
+  left: 14%;
+  position:absolute;
+}
+
+#e1 {
+  top: 7%;
+  left: 77%;
+  position:absolute;
+}
+
+#e2 {
+  top: 40%;
+  left: 84%;
+  position:absolute;
+}
+
+#e3 {
+  top: 70%;
+  left: 77%;
+  position:absolute;
+}
+
+#e7{
+  top: 80%;
+  left: 46%;
+  position:absolute;
 }
 
 
@@ -319,7 +416,7 @@
 /*More card css*/
 
 .cardContainer {
-  width: 38px;
+  width: 37px;
   /*57, 66%*/
   height: 53px;
   /*79*/
@@ -329,7 +426,7 @@
 
 #c1 {
   /*Default values of a blank card*/
-  margin-top: 0px;
+  margin-top: -200px;
   margin-left: -570px;
 }
 
@@ -337,24 +434,8 @@
   display: inline-flex;
   margin: 6px;
   position: absolute;
-  left: 42%;
-  top: 55%;
-}
-
-.cardContainerBig1 {
-  width: 70px;
-  height: 89px;
-  overflow: hidden;
-  display: block;
-  transform: rotate(320deg);
-}
-
-.cardContainerBig2 {
-  width: 70px;
-  height: 89px;
-  overflow: hidden;
-  display: block;
-  transform: rotate(220deg);
+  left: 46%;
+  top: 71%;
 }
 
 #m_l {
@@ -406,6 +487,7 @@
 
 .game-buttons {
   display: flex;
+  position:relative;
 }
 
 #buttons {
@@ -416,4 +498,164 @@
   margin-top: 0px;
   margin-left: 50px;
   font-size: 2rem;
+}
+
+.glow {
+  /*position: absolute;*/
+  z-index: 99;
+  max-width: 150px;
+}
+
+#g6 {
+  top: 1.25%;
+  left: 10.5%;
+  position:absolute;
+  display: block;
+}
+
+#g5 {
+  top: 34%;
+  left: 3.5%;
+  position:absolute;
+  display: block;
+}
+
+#g4 {
+  top: 64.25%;
+  left: 10.5%;
+  position:absolute;
+  display: block;
+}
+
+#g1 {
+  top: 1.25%;
+  left: 73.25%;
+  position:absolute;
+  display: block;
+}
+
+#g2 {
+  top: 34%;
+  left: 80.25%;
+  position:absolute;
+  display: block;
+}
+
+#g3 {
+  top: 64.25%;
+  left: 73.25%;
+  position:absolute;
+  display: block;
+}
+
+#g7{
+  top: 80%;
+  left: 46%;
+  position:absolute;
+  display: block;
+}
+
+.bl{
+  left:22%;
+}
+
+.bubble {
+  z-index:103;
+  top: -26%;
+  position: relative;
+  font-family: Verdana, sans-serif;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+  width: 100px; 
+  border-radius: 30px;
+  padding: 7px;
+  text-align: center;
+  color: rgb(255, 255, 255);
+}
+
+.fbubble-bottom-right:before {
+  content: "";
+  z-index: 102;
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 12px solid transparent;
+  border-bottom: 20px solid transparent;
+  left: 50px;
+  bottom: -14px;
+  background-color: rgb(49, 42, 143);
+  border: 2px solid #586bb1; 
+}
+
+
+.fbubble-bottom-left:before {
+  content: "";
+  z-index: 102;
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-right: 12px solid transparent;
+  border-bottom: 20px solid transparent;
+  left: 10px;
+  bottom: -14px;
+  background-color: rgb(49, 42, 143);
+  border: 2px solid #586bb1; 
+}
+
+.bfold {
+  background-color: rgb(49, 42, 143);
+  border: 2px solid #586bb1; 
+}
+
+.bbet{
+  background-color: rgb(185, 36, 31);
+  border: 2px solid #bf530b;
+}
+
+
+
+.bbubble-bottom-left:before {
+  content: "";
+  z-index: 102;
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-right: 12px solid transparent;
+  border-bottom: 20px solid transparent;
+  left: 10px;
+  bottom: -14px;
+  background-color: rgb(185, 36, 31);
+  border: 2px solid #bf530b;
+}
+
+
+
+.bbubble-bottom-right:before {
+  content: "";
+  z-index: 102;
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 12px solid transparent;
+  border-bottom: 20px solid transparent;
+  left: 50px;
+  bottom: -14px;
+  background-color: rgb(185, 36, 31);
+  border: 2px solid #bf530b;
+}
+
+#info-container {
+  position: relative;
+  top:55%;
+  left: 34.5%;
+  font-family: Verdana sans-serif;
+  font-size: 18px;
+  line-height: 24px;
+  width: 300px;
+  background: rgba(81, 160, 110, 0.4);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  color: rgb(255, 255, 255);
 }

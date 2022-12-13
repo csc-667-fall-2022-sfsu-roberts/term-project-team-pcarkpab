@@ -1,0 +1,22 @@
+/*This file contains the stylings for the FAQ, Help and How To Play pages.*/
+
+
+/* Fonts Imported */
+
+@font-face {
+    font-family: "AlegreyaHeaderFont";
+    src: url("../css/fonts/Alegreya-Regular.otf");
+  }
+
+  @font-face {
+    font-family: "CentaurLabelFont";
+    src: url("../css/fonts/Centaur.ttf")
+  }
+
+/*--- CSS Styling for Help ---*/
+
+
+/*--- CSS Styling for How to Play ---*/
+
+
+/*--- CSS Styling for FAQ ---*/
