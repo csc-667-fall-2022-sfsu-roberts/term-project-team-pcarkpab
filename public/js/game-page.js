@@ -4,8 +4,8 @@ let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
 const gameId = pathnameSegments.pop();
 
-let gameData = {
 
+let gameData = {
   pot: 0,
   playerCount: 4,
   PlayerInfo: [
@@ -31,7 +31,7 @@ let gameData = {
 
 //Phase: assign cards
 
-/*
+
 socket.on(`game-phase:assign-card`, () => {
   //game data will be also be update
   //adding the assign card animation (appears clockwise)
@@ -41,14 +41,14 @@ socket.on(`game-phase:assign-card`, () => {
 
 socket.on(`game-phase:flop`, () => {
   //game status will be updated
-}) */
+})
 
 
 socket.on(`update-gameData:${gameId}`, ({ data }) => {
   gameData = data;
   console.log(gameData);
 })
-/*
+
 socket.on(`game-phase:betting-round`, () => {
 
 })
