@@ -18,16 +18,15 @@ const gameData = {
 
 */
 
-const getData = (userId, gameId) => {
+const getData = (gameId) => {
   const data = {};
-  data.userId = userId;
 
   return Game.getAllPlayersData(gameId)
     .then((players) => {
       data.playerCount = players.length;
       let cardsArr;
       let playerInfo = players.map((player) => {
-        return Game.getPlayerCards(userId, gameId)
+        return Game.getPlayerCards(player.userId, gameId)
           .then((cards) => {
             cardsArr = cards.map((card) => {
               return cards.cardId;
