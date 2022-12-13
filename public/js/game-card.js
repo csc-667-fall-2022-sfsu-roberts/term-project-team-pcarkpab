@@ -1,7 +1,12 @@
 const bigCard = 2;
 const smallCard = 1;
-
-
+/*
+assignCards()
+//Assign seat number
+function assignCards(test){
+  document.write(test)
+  //for( i = 1; i < 7; i++){}
+}*/
 //Player 1
 
 //Player 2

@@ -4,7 +4,7 @@ let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
 const gameId = pathnameSegments.pop();
 
-
+const test = 2;
 const gameData = {
   pot: 0,
   playerCount: 4,
@@ -31,7 +31,7 @@ const gameData = {
 
 //Phase: assign cards
 
-
+/*
 socket.on(`game-phase:assign-card`, () => {
   //game data will be also be update
   //adding the assign card animation (appears clockwise)
@@ -41,7 +41,7 @@ socket.on(`game-phase:assign-card`, () => {
 
 socket.on(`game-phase:flop`, () => {
   //game status will be updated
-})
+}) */
 
 
 socket.on(`update-gamedata:${gameId}`,() => {
@@ -54,7 +54,7 @@ socket.on(`update-gamedata:${gameId}`,() => {
     renderPlayersOnTable();
   })
 })
-
+/*
 socket.on(`game-phase:betting-round`, () => {
 
 })
@@ -67,7 +67,7 @@ raiseButton.onclick(()=> {
     }
   }
 })
-
+*/
 
 fetch(`/api/lobby/checkPlayerCount/${gameId}`, { method: "get" })
   .then((result) => {
