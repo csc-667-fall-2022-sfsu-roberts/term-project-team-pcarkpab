@@ -42,7 +42,6 @@ const getData = (gameId) => {
               money: player.chipsHeld,
               betAmount: player.chipsBet,
               cards: cardsArr,
-              isTurn: player.isTurn,
               playerStatus: player.status,
               blindStatus: player.blindStatus,
               seatNumber: player.seatNumber,
@@ -56,11 +55,12 @@ const getData = (gameId) => {
       data.playerInfo = playerInfo;
     })
     .then(() => {
-      console.log(data);
       return Game.getGame(gameId)
         .then((result) => {
           data.gamePhase = result.gamePhase;
           data.pot = result.pot;
+          data.isTurn = result.isTurn;
+          data.minimumBet = result.minimumBet;
         })
     })
     .then(() => {

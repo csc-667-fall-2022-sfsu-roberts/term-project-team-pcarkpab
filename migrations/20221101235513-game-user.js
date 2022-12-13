@@ -45,12 +45,6 @@ module.exports = {
         defaultValue: 0,
       },
 
-      isTurn: {
-        type: Sequelize.BOOLEAN,
-        allowNull: true,
-        defaultValue: false,
-      },
-
       blindStatus: {
         type: Sequelize.ENUM,
         values: ['NONE', 'BIGBLIND', 'SMALLBLIND', 'DEALER'],
@@ -60,7 +54,7 @@ module.exports = {
 
       status: {
         type: Sequelize.ENUM,
-        values: ['SPECTATOR', 'IDLE', 'RAISE', 'CALL', 'CHECK', 'FOLD'],
+        values: ['SPECTATOR', 'IDLE', 'RAISE', 'BET', 'CALL', 'CHECK', 'FOLD'],
         defaultValue: 'SPECTATOR',
         allowNull: true,
       },
