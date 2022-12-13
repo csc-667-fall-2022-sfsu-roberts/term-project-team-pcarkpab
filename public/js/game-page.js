@@ -5,7 +5,7 @@ const pathnameSegments = pathname.split('/');
 const gameId = pathnameSegments.pop();
 
 
-const gameData = {
+let gameData = {
   pot: 0,
   playerCount: 4,
   PlayerInfo: [
@@ -44,29 +44,23 @@ socket.on(`game-phase:flop`, () => {
 })
 
 
-socket.on(`update-gamedata:${gameId}`,() => {
-  fetch(`/api/game/getData/${gameId}`, {method: "get"})
-  .then((result) => {
-    return result.json();
-  })
-  .then((result_json) => {
-    gameData = result_json;
-    renderPlayersOnTable();
-  })
+socket.on(`update-gameData:${gameId}`, ({ data }) => {
+  gameData = data;
+  console.log(gameData);
 })
 
 socket.on(`game-phase:betting-round`, () => {
 
 })
 
-let raiseButton = document.getElementById(`raise-button-${gameId}`)
-raiseButton.onclick(()=> {
-  for(let playerInfo in gameData.PlayerInfo){
-    if(currentUserId == gameData.userId && playerInfo.isTurn){
-       //fetch('api/game/bet or check or fold')
-    }
-  }
-})
+// let raiseButton = document.getElementById(`raise-button-${gameId}`)
+// raiseButton.onclick(() => {
+//   for (let playerInfo in gameData.PlayerInfo) {
+//     if (currentUserId == gameData.userId && playerInfo.isTurn) {
+//       //fetch('api/game/bet or check or fold')
+//     }
+//   }
+// })
 
 
 fetch(`/api/lobby/checkPlayerCount/${gameId}`, { method: "get" })
@@ -122,7 +116,7 @@ socket.on(`chat:${gameId}`, ({ sender, message, timestamp }) => {
   console.log({ sender, message, timestamp });
   const div1 = document.createElement("div");
   div1.classList.add("sender-chat");
-  
+
   //const content1 = document.createElement("sender-chat");
   const content1 = document.createElement("p");
   div1.innerText = sender;
@@ -168,38 +162,52 @@ socket.on(`console:${gameId}`, ({ sender, message, timestamp }) => {
   chatBox.appendChild(div);
 })
 
-socket.on(`player-join:${gameId}`, ({playerCount, gameStatus}) => {
-  if(playerCount > 1 && gameStatus == 'WAITINGROOM'){
+socket.on(`player-join:${gameId}`, ({ playerCount, gameStatus }) => {
+  if (playerCount > 1 && gameStatus == 'WAITINGROOM') {
     fetch(`/api/game/start/${gameId}`, {
       method: "post",
       headers: { 'Content-Type': "application/json" },
       body: JSON.stringify({ playerCount }),
     })
-    .catch(err => console.log(err));
+      .catch(err => console.log(err));
   }
 })
 
 
 socket.on(`game-start:${gameId}`, () => {
-  
-    let gameTable = document.getElementById(`game-table-${gameId}`);
-    gameTable.style.display = "block";
-    let loading = document.getElementById(`loading-${gameId}`);
-    loading.style.display = "none";
-    
+
+  let gameTable = document.getElementById(`game-table-${gameId}`);
+  gameTable.style.display = "block";
+  let loading = document.getElementById(`loading-${gameId}`);
+  loading.style.display = "none";
+  startGame();
+
+})
+
+async function startGame() {
+
+  await new Promise((resolve) => {
     setTimeout(() => {
       fetch(`/api/console/${gameId}`, {
         method: "post",
         headers: { 'Content-Type': "application/json" },
         body: JSON.stringify({ message: `Game will start in ${START_DELAY} seconds` }),
       })
+        .then(() => {
+          // Resolve the promise once the fetch request is complete
+          resolve();
+        })
         .catch((err) => console.log(err));
     }, 3000);
-    
-    // Set a 15 seconds delay before calling fetch()
+  });
+
+  await new Promise((resolve) => {
     setTimeout(() => {
       console.log("GAME STARTING");
       fetch(`/api/game/initialize/${gameId}`, { method: 'post' })
+        .then(() => {
+          fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+        })
         .catch(err => console.log(err));
 
       fetch(`/api/console/${gameId}`, {
@@ -207,9 +215,10 @@ socket.on(`game-start:${gameId}`, () => {
         headers: { 'Content-Type': "application/json" },
         body: JSON.stringify({ message: `Game is starting now! Good luck!` }),
       })
-      .catch((err) => console.log(err));
+        .catch((err) => console.log(err));
 
-    }, START_DELAY * 1000 + 3000); // 15000 milliseconds = 15 seconds
-  
-})
-
+      // Resolve the promise once the fetch request is complete
+      resolve();
+    }, START_DELAY * 1000); // 15000 milliseconds = 15 seconds
+  });
+}

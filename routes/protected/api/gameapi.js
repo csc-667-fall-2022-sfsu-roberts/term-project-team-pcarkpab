@@ -31,14 +31,14 @@ router.post('/updateData/:id', (req, res, next) => {
     .catch(err => console.log(err));
 })
 
-router.get('/getData/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
-  return GameLogic.getData(gameId)
-    .then((data) => {
-      res.json(data);
-    })
-    .catch(err => console.log(err));
-})
+// router.get('/getData/:id', (req, res, next) => {
+//   const {id: gameId} = req.params;
+//   GameLogic.getData(gameId)
+//     .then((data) => {
+//       res.json(data);
+//     })
+//     .catch(err => console.log(err));
+// })
 
 module.exports = router;
 
