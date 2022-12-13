@@ -47,6 +47,7 @@ const loadLobbyTable = () => {
           .catch(err => console.log(err));
 
         let playButton = document.createElement("button");
+        playButton.classList.add("lobby-play-button");
         playButton.innerText = "Join";
         playButton.onclick = () => {
           fetch(`/api/lobby/join/${element.gameId}`, { method: "post" })
