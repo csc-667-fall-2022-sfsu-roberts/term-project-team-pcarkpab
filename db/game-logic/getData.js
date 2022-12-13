@@ -25,11 +25,11 @@ const getData = (gameId) => {
     .then((players) => {
       data.playerCount = players.length;
       let cardsArr;
-      let playerInfo = players.map((player) => {
+      let playerInfo = players.map(async (player) => {
         return Game.getPlayerCards(player.userId, gameId)
           .then((cards) => {
             cardsArr = cards.map((card) => {
-              return cards.cardId;
+              return card.cardId;
             })
           })
           .then(() =>{

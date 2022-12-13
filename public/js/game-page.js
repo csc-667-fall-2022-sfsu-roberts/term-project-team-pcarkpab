@@ -1,4 +1,4 @@
-const START_DELAY = 15;
+const START_DELAY = 10;
 
 let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
@@ -202,13 +202,10 @@ async function startGame() {
   });
 
   await new Promise((resolve) => {
-    setTimeout(() => {
+    setTimeout(async () => {
       console.log("GAME STARTING");
-      fetch(`/api/game/initialize/${gameId}`, { method: 'post' })
-        .then(() => {
-          fetch(`/api/game/updateData/${gameId}`, { method: "post" });
-        })
-        .catch(err => console.log(err));
+      // Wait for the initialize request to finish before calling updateData
+      await fetch(`/api/game/initialize/${gameId}`, { method: 'post' });   
 
       fetch(`/api/console/${gameId}`, {
         method: "post",
@@ -221,4 +218,6 @@ async function startGame() {
       resolve();
     }, START_DELAY * 1000); // 15000 milliseconds = 15 seconds
   });
+
+  await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
 }
