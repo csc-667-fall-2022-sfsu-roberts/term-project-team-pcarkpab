@@ -8,6 +8,7 @@ router.post('/initialize/:id', (req, res, next) =>{
 
   GameLogic.initialize(gameId)
     .then(() => {
+      console.log("GAME INITIALIZED");
       res.json({success: true});
     })
     .catch(err => console.log(err));
@@ -26,6 +27,7 @@ router.post('/updateData/:id', (req, res, next) => {
   const {id: gameId} = req.params;
   GameLogic.getData(gameId)
     .then((data) => {
+      console.log("Game data updated");
       req.app.io.emit(`update-gameData:${gameId}`, {data});
     })
     .catch(err => console.log(err));
