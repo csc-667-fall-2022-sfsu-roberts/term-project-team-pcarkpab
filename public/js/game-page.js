@@ -1,17 +1,22 @@
 const START_DELAY = 15;
 
+let pathname = window.location.pathname;
+const pathnameSegments = pathname.split('/');
+const gameId = pathnameSegments.pop();
+
+
 const gameData = {
   pot: 0,
   playerCount: 4,
   PlayerInfo: [
-    { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'dealer', seatNumber: 0 },
-    { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'small-blind', seatNumber: 1 },
+    { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'DEALER', seatNumber: 0 },
+    { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'SMALLBLIND', seatNumber: 1 },
     { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'big-blind', seatNumber: 2 },
     { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'none', seatNumber: 3 },
   ],
   dealerCards: [3, 50, 42],
   currentBet: 0,
-  gamePhrase: 'ANTE',
+  gamePhrase: 'BLIND-BET',
   userId: 1,
 }
 //Remove isdiscard
@@ -19,23 +24,50 @@ const gameData = {
 //time out CHECK or FOLD
 
 //Assign seat number
+//init deck, shuffle deck, set blind status
 
-//Dealer dealing cards clockwise
-//drawCard(gameId, userId) for each player in a 2 times
-//drawCard for the dealer 3 times
+//Start game
+//Phase: Blind bet
+//small blind and big blind bet, 
 
-//Update game data
+//Phase: assign cards
 
-//Set game status to ANTE
-//First player (seat 0) will automically bet the big blind
-//Next player (seat 1) will automically bet the small blind
-//Next player (seat 2) will BET/RAISE, CALL, or FOLD
+socket.on(`game-phase:assign-card`, () => {
+  //game data will be also be update
+  //adding the assign card animation (appears clockwise)
+  //Timeout gamecard assign 0.5 seconds per card
+  //fetch('start-next-gamephase')
+})
+
+socket.on(`game-phase:flop`, () => {
+  //game status will be updated
+})
 
 
+socket.on(`update-gamedata:${gameId}`,() => {
+  fetch(`/api/game/getData/${gameId}`, {method: "get"})
+  .then((result) => {
+    return result.json();
+  })
+  .then((result_json) => {
+    gameData = result_json;
+    renderPlayersOnTable();
+  })
+})
 
-let pathname = window.location.pathname;
-const pathnameSegments = pathname.split('/');
-const gameId = pathnameSegments.pop();
+socket.on(`game-phase:betting-round`, () => {
+
+})
+
+// let raiseButton = document.getElementById(`raise-button-${gameId}`)
+// raiseButton.onclick(()=> {
+//   for(let playerInfo in gameData.PlayerInfo){
+//     if(playerInfo.userId == gameData.userId && playerInfo.isTurn){
+       // fetch('api/game/bet or check or fold')
+//     }
+//   }
+// })
+
 
 fetch(`/api/lobby/checkPlayerCount/${gameId}`, { method: "get" })
   .then((result) => {
@@ -136,6 +168,7 @@ socket.on(`console:${gameId}`, ({ sender, message, timestamp }) => {
   let chatBox = document.getElementById(`console-chat-${gameId}`);
   chatBox.appendChild(div);
 })
+
 
 socket.on(`game-start:${gameId}`, ({ playerCount }) => {
   console.log(playerCount);
