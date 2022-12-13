@@ -10,26 +10,34 @@ function assignCards(test){
 //Player 1
 
 //Player 2
-displayCard(6, "p2_l", smallCard);
-displayCard(28, "p2_r", smallCard);
+/*
+displayCard(null, "p2_l", smallCard);
+displayCard(null, "p2_r", smallCard);  
 //Player 3
 displayCard(23, "p3_l", smallCard);
 displayCard(45, "p3_r", smallCard);
 //Player 4
-/*displayCard(29, "p4_l", smallCard);
-displayCard(27, "p4_r", smallCard); */
+displayCard(29, "p4_l", smallCard);
+displayCard(27, "p4_r", smallCard); 
 //Player 5
 displayCard(51, "p5_l", smallCard);
 displayCard(8, "p5_r", smallCard);
 //Player 6
 displayCard(53, "p6_l", smallCard);
-displayCard(53, "p6_r", smallCard);
+displayCard(53, "p6_r", smallCard);*/
 
 displayCard(null, "mid1", bigCard);
 displayCard(null, "mid2", bigCard);
 displayCard(null, "mid3", bigCard);
 displayCard(null, "mid4", bigCard);
 displayCard(null, "mid5", bigCard);
+
+function setCardsEmpty(){
+  for( i = 1; i < 7; i++){
+    displayCard(null, "p"+i+"_l", smallCard);
+displayCard(null, "p"+i+"_r", smallCard);
+  }
+}
 
 function displayCard(num, idcard, flag) {
 
