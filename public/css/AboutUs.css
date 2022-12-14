@@ -16,7 +16,7 @@
     font-family: "AlegreyaHeaderFont";
     font-size: 45px;
     text-align: center;
-    color: rgb(370, 0, 40);
+    color: rgb(203, 57, 20);
     text-shadow: -1px 0 rgb(76 0 255), 0 1px rgb(76 0 255), 1px 0 rgb(76 0 255), 0 -1px rgb(76 0 255);
     text-shadow: 1px 1px 2px black;
   }
@@ -25,14 +25,28 @@
   font-family: "CentaurLabelFont";
   text-align: center;
   font-size: 30px;
+  padding-top: 1%;
   text-shadow: 0 0 black;
   font-weight: bold;
   }
+
+  p[id="Description2"] {
+    font-family: "CentaurLabelFont";
+    text-align: center;
+    font-size: 25px;
+    padding-top: 1%;
+    color:white;
+    text-shadow: 0 0 black;
+    font-weight: bold;
+    }
+    
   
   p[id="Subtitle"] {
     font-family: "CentaurLabelFont";
-    font-size: xx-small;
+    font-size: small;
     margin: auto;
+    padding-top: 2%;;
+    color: rgb(190, 133, 116);
     overflow: auto;
     text-align: center;
   }
@@ -41,7 +55,7 @@
   p[id="Message"] {
       display: none;
       font-family: "CentaurLabelFont";
-      font-size: xx-large;
+      font-size: x-large;
       margin: auto;
       overflow: auto;
       text-align: center;
@@ -54,8 +68,7 @@
     margin-left: auto;
     margin-right: auto;
     position: relative;
-    max-width: 325px;
-    max-height: 250px;
+    max-width: 65%;
   }
   
   

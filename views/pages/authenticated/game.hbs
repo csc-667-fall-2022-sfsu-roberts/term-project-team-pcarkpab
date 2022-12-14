@@ -1,5 +1,4 @@
-<div id="container">
-
+<div id = "g-contain">
     <div class="middle">
 
         <div class="game-chat">
@@ -23,7 +22,8 @@
         </div>
 
         <div class="console-chat">
-            <div id="console-chat-{{gameId}}">
+            <div id="console-name">Game Console</div>
+            <div id="console-chat-{{gameId}}" class="console-box">
                 <div class="console-message">
                     <p>Console Log</p>
                 </div>
@@ -68,7 +68,7 @@
                 {{!-- <img class="table" src="/public/images/table.png"> --}}
 
                 <div id="cardstack">
-                    <img src="/public/images/cardStack.png">
+                    <img src="/public/images/cardstack.png">
                 </div>
                 <div id="pot">
                     <img src="/public/images/pot.png">
@@ -340,7 +340,7 @@
 
 
             <div id="game-buttons-{{gameId}}" class="game-buttons">
-                <div id="play-buttons">
+                 <div id="play-buttons">
                     <button id="raise-button-{{gameId}}" class="button button1">Raise</button></a>
                     <button id="fold-button-{{gameId}}" class="button button1">Fold</button></a>
                     <button id="call-button-{{gameId}}" class="button button1">Call</button></a>
@@ -350,10 +350,10 @@
                     <input type="range" min="1" max="100" value="1" class="slider" id="slider-{{gameId}}">
                     <p>Amount to raise: <span id="demo"></span></p>
                 </div>
-                <div id="bet">
+                <!--<div id="bet">
                     <label>Input Bet</label><br>
                     <input type="text" id="create-Bet"><br>
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -364,5 +364,7 @@
     <script src="/public/js/toggle-player.js"></script>
     <script src="/public/js/game-card.js"></script>
     <script src="/public/js/game-page.js"></script>
-    
+    <script src="/public/js/test.js"></script>
 </div>
+ <div id="reg-space"></div>
+ </div>

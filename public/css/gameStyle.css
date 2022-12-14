@@ -2,12 +2,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
 }
 
 #container {
-
-  background-color: rgb(0, 0, 0);
+  background-color: rgb(33, 36, 33);
   height: 800px;
   z-index: index 98;
 }
@@ -18,35 +16,35 @@
   padding: 8px;
 }
 
-
+#g-contain{
+  background-color: rgb(33, 36, 33);
+}
 .middle {
   height: 100%;
   display: grid;
-  grid-template-rows: 33% 33% 34%;
+  background-color: rgb(33, 36, 33);
+  grid-template-rows: 60% 40%;
   grid-template-columns: 20% 80%;
   grid-template-areas:
     "chat poker"
-    "chat poker"
     "console poker"
   ;
-  grid-gap: 8px;
 }
 
 .middle>div {
   color: white;
   font-size: 24px;
-  padding: 8px;
 }
 
 .game-chat {
   grid-area: chat;
-  background-color: rgb(24, 21, 20);
+  background-color: rgb(33, 36, 33);
   padding: 8px
 }
 
 .console-chat {
   grid-area: console;
-  background-color: rgb(41, 47, 58);
+  background-color: rgb(33, 36, 33);
   padding: 8px
 }
 
@@ -62,15 +60,14 @@
   "game-table"
   "buttons";
   grid-gap: 8px;
-  background-color: rgb(0, 0, 0);
-  
+  background-color: rgb(33, 36, 33);
 }
 
 
 .game-table {
   position: relative;
   grid-area: game-table;
-  background-color: rgb(41, 47, 58);
+  background-color: rgb(13, 16, 13);
   background-image: url("../images/table.png");
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -81,7 +78,7 @@
 .game-buttons {
   padding: 8px;
   grid-area: buttons;
-  background-color: rgb(41, 47, 58);
+  background-color: rgb(33, 36, 33);
   position:relative;
 }
 
@@ -660,4 +657,9 @@
   padding: 14px;
   text-align: center;
   color: rgb(255, 255, 255);
+}
+
+::placeholder { 
+  color: rgb(33, 28, 28);
+  opacity: 1; 
 }

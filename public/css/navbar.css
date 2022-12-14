@@ -41,7 +41,7 @@
   .hlogo{
     display: none;
     padding-left: 5px;
-    max-width: 97%;
+    max-width: 105%;
         position: absolute;
         top: 0;
         left: 0;
@@ -57,7 +57,6 @@
   }
   .button {
     border-radius: 1em;
-    padding: 20px 30px;
     text-align: center;
     font-size: 0.30em;
     font-weight: bold;
@@ -71,6 +70,7 @@
   }
   
   .button1 {
+    padding: 20px 30px;
     background-color: #d86b13; 
     color: black; 
     border: 2px solid #bf530b; 
@@ -83,6 +83,7 @@
   .button1:link { text-decoration: none; }
 
   .button2 {
+    padding: 20px 30px;
     background-color: rgb(219, 42, 36);
     color: rgb(255, 215, 213);
     border: 2px solid rgb(161, 30, 26);
@@ -94,6 +95,20 @@
     color: white;
   }
   .button2:link { text-decoration: none; }
+
+  .button3 {
+    position: relative;
+    top:-10px;
+    padding: 15px 20px;
+    background-color: rgb(219, 42, 36);
+    color: rgb(255, 215, 213);
+    border: 2px solid rgb(161, 30, 26);
+  }
+  .button3:hover {
+    background-color: rgb(247, 105, 100);
+    color: white;
+  }
+  .button3:link { text-decoration: none; }
 
 
   .nav-containers{
@@ -125,12 +140,13 @@
 
   .nav-item:hover {
     background-color: #b3611e; 
+    text-decoration: none;
     color: white;
   }
 
   .icon2 {
     position: relative;
-    z-index: 100;
+    z-index: 105;
 
     max-width: 80px;
     max-height: 80px;
@@ -173,6 +189,7 @@
     box-shadow: 0px 10px 10px 0px rgba(0,0,0,0.4);
   }
   .dropdown-nav:hover .dropdown-content {
+    z-index: 104;
     display: block;
     width: 150%;
     margin-left: -50px;
@@ -195,3 +212,67 @@
     background-color: #d86b13; 
     transition: 0.2s;
   }
+
+#nav-footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(0,0,0);
+    margin-top: auto;
+    bottom: 0;
+    width: 100%;
+
+    position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 4.5rem; 
+   
+}
+
+#f-left{
+  display:flex;
+  align-items: flex-start;
+  max-width: 50%;
+}
+
+p[id="Descrip"]{
+  color:#ee7d20;
+  padding-left: 15px;
+  padding-top: 20px;
+}
+p[id="Descrip"]:hover{
+  color: #FFFFFF;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.f-container{
+  padding-left: 30px;
+}
+
+.f-containers{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 30px;
+}
+
+.f-item , .f-item a{
+  display: inline-block;
+  padding-left: 10px;
+  font-family: "AlegreyaHeaderFont";
+  text-decoration: none;
+  font-size: 1rem;
+  color:rgb(207, 133, 104);
+  transition-duration: 0.3s;
+  cursor: pointer;
+  position: relative;
+  text-shadow: 1px 0px 10px red;
+}
+
+.f-item:hover {
+  text-decoration: none;
+  color: white;
+}

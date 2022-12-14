@@ -27,7 +27,7 @@ and lobby creation pages.*/
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  height: 30vw;
+  height: -5vw;
   }
   
   p[id="Register"], h3[id="Lobbytext2"] {
@@ -55,7 +55,7 @@ and lobby creation pages.*/
     font-family: "AlegreyaHeaderFont";
       font-size: 45px;
       text-align: center;
-      color: rgb(370, 0, 40);
+      color: rgb(177, 40, 25);
       text-shadow: -1px 0 rgb(76 0 255), 0 1px rgb(76 0 255), 1px 0 rgb(76 0 255), 0 -1px rgb(76 0 255);
       text-shadow: 1px 1px 2px black;
   }
@@ -112,7 +112,7 @@ and lobby creation pages.*/
     text-align: center;
   }
   
-  input[id="PokerLogoSubmit"], input[id="create-lobby-button"] {
+  img[id="PokerLogoSubmit"], input[id="create-lobby-button"] {
     max-width: 120px;
     filter: drop-shadow(0 0 0.05rem rgb(0, 0, 0));
     margin-left: auto;
@@ -160,9 +160,9 @@ and lobby creation pages.*/
   .container_Border, .Lobby_Border {
     position: relative;
     display: flex;
-    width: 300px;
+    width: 320px;
     height: auto;
-    margin: 10px auto;
+    margin: auto;
     border: 1px solid black;
     border-radius: 50px;
     background: #000000;
@@ -170,4 +170,8 @@ and lobby creation pages.*/
     align-items: flex-start;
     align-content: center;
     justify-content: center;
+  }
+
+  #reg-space{
+    height: 100px;
   }
