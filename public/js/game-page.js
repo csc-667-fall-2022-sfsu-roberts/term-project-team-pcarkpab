@@ -160,7 +160,6 @@ function renderPlayers() {
 await new Promise(resolve => setTimeout(() => {
     
   }, 1000));
-
 */
 
 socket.on(`phase-blindBet:${gameId}`, async () => {
