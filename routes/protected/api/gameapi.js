@@ -39,6 +39,16 @@ router.post('/updateData/:id', (req, res, next) => {
     .catch(err => console.log(err));
 })
 
+router.get('/getData/:id', (req, res, next) => {
+  const {id: gameId} = req.params;
+  GameLogic.getData(gameId)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch(err => console.log(err));
+})
+
+
 router.post('/phaseBlindBet/:id', (req, res, next) => {
   
   const {id: gameId} = req.params;
@@ -54,8 +64,7 @@ router.post('/phaseBlindBet/:id', (req, res, next) => {
     }
   })
   .then((seatNumber) => {
-    seatNumber++;
-    return Games.setPlayerTurn(seatNumber, gameId);
+    return GameLogic.nextTurn(gameId, seatNumber);
   })
   .then((result) => {
     console.log("blind bet phase");
@@ -64,6 +73,26 @@ router.post('/phaseBlindBet/:id', (req, res, next) => {
   })
   .catch(err => console.log(err));
 })
+
+//phaseAssignCards/${gameId}
+router.post('/phaseAssignCards/:id', (req, res, next) => {
+  
+  const {id: gameId} = req.params;
+  Games.setGamePhase(gameId, 'ASSIGNCARDS')
+  .then(() => {
+    return GameLogic.assignCards(gameId);
+  })
+  .then(() => {
+    return GameLogic.getData(gameId);
+  })
+  .then((result) => {
+    console.log("Assign card phase");
+    //req.app.io.emit(`phase-blindBet:${gameId}`, {});
+    res.json({success: true});
+  })
+  .catch(err => console.log(err));
+})
+
 router.get('/getData/:id', (req, res, next) => {
   const {id: gameId} = req.params;
   GameLogic.getData(gameId)

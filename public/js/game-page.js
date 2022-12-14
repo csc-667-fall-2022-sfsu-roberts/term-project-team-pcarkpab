@@ -45,23 +45,32 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
           body: JSON.stringify({ userId: player.userId, betAmount: Math.floor(gameData.minimumBet / 2) }),
         })
         flag = true;
+        setTimeout(async () => {
+          await fetch(`/api/game/nextTurn/${gameId}`, {
+            method: "post",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify({ isTurn: gameData.isTurn }),
+          })
+          await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+        }, 1000);
 
       } else if (player.blindStatus == "BIGBLIND") {
-        console.log("It works");
         await fetch(`/api/game/playerBet/${gameId}`, {
           method: "post",
           headers: { 'Content-Type': "application/json" },
           body: JSON.stringify({ userId: player.userId, betAmount: gameData.minimumBet }),
         })
+        setTimeout(async () => {
+          await fetch(`/api/game/nextTurn/${gameId}`, {
+            method: "post",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify({ isTurn: gameData.isTurn }),
+          })
+          await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+          await fetch(`/api/game/phaseAssignCards/${gameId}`, { method: "post" });
+        }, 1000);
       }
-      setTimeout(async () => {
-        await fetch(`/api/game/nextTurn/${gameId}`, {
-          method: "post",
-          headers: { 'Content-Type': "application/json" },
-          body: JSON.stringify({ isTurn: gameData.isTurn }),
-        })
-        await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
-      }, 1000);
+      
     }else if(flag && player.seatNumber == gameData.isTurn){
       if (player.blindStatus == "BIGBLIND") {
         console.log("It works");
@@ -273,6 +282,5 @@ async function startGame() {
   });
 
   await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
-  await fetch(`/api/game/`, { method: 'post' });
   await fetch(`/api/game/phaseBlindBet/${gameId}`, { method: "post" });
 }
