@@ -1,4 +1,4 @@
-const START_DELAY = 15;
+const START_DELAY = 5;
 
 let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
@@ -34,16 +34,82 @@ let updateGameData = async () => {
   }
 }
 
-socket.on(`update-gameData:${gameId}`, ({ data }) => {
-  gameData = data;
-  console.log("Update GameData");
-  console.log(gameData);
-  renderPlayers();
-  if (gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
-    displayPlayerCards();
+socket.on(`update-gameData:${gameId}`, async ({ data }) => {
+  try {
+    gameData = data;
+    console.log("Update GameData");
+    console.log(gameData);
+    renderPlayers();
+    if (gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
+      displayPlayerCards();
+    }
+    setTurn();
+    setValues();
+
+    //UPDATE BUTTON
+    let callButton = document.getElementById(`call-button-${gameId}`);
+    let raiseButton = document.getElementById(`raise-button-${gameId}`);
+    let checkButton = document.getElementById(`check-button-${gameId}`);
+    let foldButton = document.getElementById(`fold-button-${gameId}`);
+
+    if (gameData.gamePhase != 'PREGAME' && gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
+      let flag = false;
+      gameData.playerInfo.forEach((player) => {
+        if (player.userId == currentUserId && player.seatNumber == gameData.isTurn) {
+          flag = true;
+        }
+      })
+      if (flag) {
+        callButton.onclick = async() => {
+          console.log(currentUserId + " with seatNumber " +  gameData.isTurn);
+          await fetch(`/api/game/playerBet/${gameId}`, {
+            method: "post",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify({ userId: currentUserId, betAmount: gameData.currentBet }),
+          });
+          await new Promise(resolve => setTimeout(async () => {
+            try {
+              await fetch(`/api/game/nextTurn/${gameId}`, {
+                method: "post",
+                headers: { 'Content-Type': "application/json" },
+                body: JSON.stringify({ isTurn: gameData.isTurn }),
+              })
+              await updateGameData();
+              resolve();
+            } catch (err) {
+              console.log(err);
+            }
+          }, 1000));
+          await updateGameData();
+        }
+        raiseButton.onclick = () => {
+          console.log("RAISE");
+        }
+        checkButton.onclick = () => {
+          console.log("CHECK");
+        }
+        foldButton.onclick = () => {
+          console.log("FOLD");
+        }
+      }else{
+        callButton.onclick = () => {
+          console.log("not your turn");
+        }
+        raiseButton.onclick = () => {
+          console.log("not your turn");
+        }
+        checkButton.onclick = () => {
+          console.log("not your turn");
+        }
+        foldButton.onclick = () => {
+          console.log("not your turn");
+        }
+      }
+    }
+  } catch (err) {
+    console.log(err);
   }
-  setTurn();
-  setValues();
+
 })
 
 
@@ -87,7 +153,7 @@ function setTable() {
       //document.write("undefined for "+ i);
       continue;
     } else {
-      ii = i + 1
+      ii = gameData.playerInfo[i].seatNumber + 1;
       var a = document.querySelector("#player" + ii + " #player-name");
       var b = document.querySelector("#player" + ii + " #money-amount");
       a.innerHTML = gameData.playerInfo[i].username;
@@ -147,7 +213,7 @@ function renderPlayers() {
 
     } else {
       //document.write("Seats " + gameData.playerInfo[i].seatNumber + " are occupied.")
-      dp = i + 1;
+      dp = gameData.playerInfo[i].seatNumber + 1;
       let p = "player";
       let ps = dp.toString(10);
       let pss = p.concat(ps);
@@ -217,7 +283,6 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
                 body: JSON.stringify({ isTurn: gameData.isTurn }),
               })
               await updateGameData();
-              setValues();
               resolve();
             } catch (err) {
               console.log(err);
@@ -261,7 +326,9 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
 socket.on(`phase-assignCards:${gameId}`, async () => {
   try {
     //Making sure it only update once
-    await updateGameData();
+    if (currentUserId == gameData.playerInfo[0].userId) {
+      await updateGameData();
+    }
 
     await new Promise(resolve => setTimeout(async () => {
       try {
@@ -281,6 +348,8 @@ socket.on(`phase-assignCards:${gameId}`, async () => {
       await fetch(`/api/game/phasePreFlop/${gameId}`, { method: 'post' });
       await updateGameData();
     }
+
+
   } catch (err) {
     console.log(err);
   }
@@ -296,6 +365,7 @@ socket.on(`game-phase:flop`, () => {
 socket.on(`game-phase:betting-round`, () => {
 
 })
+
 
 // let raiseButton = document.getElementById(`raise-button-${gameId}`)
 // raiseButton.onclick(() => {
