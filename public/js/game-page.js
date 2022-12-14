@@ -15,7 +15,7 @@ let gameData = {
     // { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, playerStatus: 'idle', blindStatus: 'none', seatNumber: 3 },
   ],
   dealerCards: [],
-  isTurn: 0,
+  isTurn: -1,
   currentBet: 0,
   minimumBet: 0,
 

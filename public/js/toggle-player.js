@@ -170,7 +170,7 @@ function hideturn(isTurn) {
     for( i = 1; i < 7; i++){
         var a = document.querySelector("#g"+i);
         a.style.display = "none";
-        if(i == isTurn){
+        if(i == (isTurn + 1)){
             a.style.display = "block";
         }
 }}
