@@ -42,6 +42,23 @@ function toggler(dis) {
     }
   }
 
+function toggleOn(dis) {
+  var d = document.getElementById(dis);
+  if(d.style.display === "flex"){
+
+  }else{
+    d.style.display = "flex";
+  }
+}
+
+function toggleOff(dis) {
+  var d = document.getElementById(dis);
+  if(d.style.display === "none"){
+
+  }else{
+    d.style.display = "none";
+  }
+}
 
 
 function sleep(ms) {
@@ -153,7 +170,7 @@ function hideturn(isTurn) {
     for( i = 1; i < 7; i++){
         var a = document.querySelector("#g"+i);
         a.style.display = "none";
-        if(i == isTurn){
+        if(i == (isTurn + 1)){
             a.style.display = "block";
         }
 }}
