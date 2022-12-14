@@ -30,9 +30,16 @@ module.exports = {
         allowNull: true,
       },
 
+      
+      isTurn: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue: -1,
+      },
+
       gamePhase: {
         type: Sequelize.ENUM,
-        values: ['PREGAME', 'ANTE', 'ASSIGNCARDS', 'PREFLOP', 'FLOP', 'TURN', 'RIVER', 'FINALREVEAL', 'GAMEEND'],
+        values: ['PREGAME', 'BLINDBET', 'ASSIGNCARDS', 'PREFLOP', 'FLOP', 'TURN', 'RIVER', 'FINALREVEAL', 'GAMEEND'],
         defaultValue: null,
         allowNull: true,
       },

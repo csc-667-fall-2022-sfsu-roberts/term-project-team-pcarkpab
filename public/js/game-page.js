@@ -8,14 +8,17 @@ const gameId = pathnameSegments.pop();
 let gameData = {
   pot: 0,
   playerCount: 4,
-  PlayerInfo: [
-    { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, isTurn: true, playerStatus: 'idle', blindStatus: 'DEALER', seatNumber: 0 },
-    { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'SMALLBLIND', seatNumber: 1 },
-    { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'BIGBLIND', seatNumber: 2 },
-    { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'none', seatNumber: 3 },
+  playerInfo: [
+    { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, playerStatus: 'idle', blindStatus: 'DEALER', seatNumber: 0 },
+    { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, playerStatus: 'idle', blindStatus: 'SMALLBLIND', seatNumber: 1 },
+    { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, playerStatus: 'idle', blindStatus: 'big-blind', seatNumber: 2 },
+    { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, playerStatus: 'idle', blindStatus: 'none', seatNumber: 3 },
   ],
-  dealerCards: [3, 50, 42, 35, 17],
-  currentBet: 5,
+  dealerCards: [3, 50, 42],
+  isTurn: 1,
+  currentBet: 0,
+  minimumBet: 50,
+
   gamePhase: 'BLIND-BET',
 }
 
@@ -158,6 +161,57 @@ function renderPlayers(){
 //small blind and big blind bet, 
 
 //Phase: assign cards
+
+socket.on(`phase-blindBet:${gameId}`, async () => {
+  let flag = false;
+  await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+  for (let player of gameData.playerInfo) {
+    if (player.userId == currentUserId && player.seatNumber == gameData.isTurn) {
+      if (player.blindStatus == "SMALLBLIND") {
+        await fetch(`/api/game/playerBet/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ userId: player.userId, betAmount: Math.floor(gameData.minimumBet / 2) }),
+        })
+        flag = true;
+
+      } else if (player.blindStatus == "BIGBLIND") {
+        console.log("It works");
+        await fetch(`/api/game/playerBet/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ userId: player.userId, betAmount: gameData.minimumBet }),
+        })
+      }
+      setTimeout(async () => {
+        await fetch(`/api/game/nextTurn/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ isTurn: gameData.isTurn }),
+        })
+        await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+      }, 1000);
+    }else if(flag && player.seatNumber == gameData.isTurn){
+      if (player.blindStatus == "BIGBLIND") {
+        console.log("It works");
+        await fetch(`/api/game/playerBet/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ userId: player.userId, betAmount: gameData.minimumBet }),
+        })
+      }
+      flag = false;
+      setTimeout(async () => {
+        await fetch(`/api/game/nextTurn/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ isTurn: gameData.isTurn }),
+        })
+        await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+      }, 1000);
+    }
+  }
+})
 
 
 socket.on(`game-phase:assign-card`, () => {
@@ -333,7 +387,7 @@ async function startGame() {
     setTimeout(async () => {
       console.log("GAME STARTING");
       // Wait for the initialize request to finish before calling updateData
-      await fetch(`/api/game/initialize/${gameId}`, { method: 'post' });   
+      await fetch(`/api/game/initialize/${gameId}`, { method: 'post' });
 
       fetch(`/api/console/${gameId}`, {
         method: "post",
@@ -348,4 +402,6 @@ async function startGame() {
   });
 
   await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+  await fetch(`/api/game/`, { method: 'post' });
+  await fetch(`/api/game/phaseBlindBet/${gameId}`, { method: "post" });
 }

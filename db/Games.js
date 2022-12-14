@@ -58,7 +58,13 @@ const getPlayerData = (userId, gameId) => {
 
 const getAllPlayersData = (gameId) => {
   let baseSQL =
-    "SELECT * FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\">0";
+    "SELECT * FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\">0 ";
+  return db.query(baseSQL, { gameId });
+}
+
+const getActivePlayersData = (gameId) => {
+  let baseSQL =
+    "SELECT * FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\">0 AND status!='SPECTATOR'";
   return db.query(baseSQL, { gameId });
 }
 
@@ -92,6 +98,48 @@ const getGame = (gameId) => {
   return db.one(baseSQL, { gameId });
 }
 
+const setPlayerBet = (userId, gameId, betAmount) => {
+  let baseSQL =
+  "UPDATE game_user SET \"chipsBet\" = ${betAmount} WHERE \"gameId\"=${gameId} AND \"userId\"=${userId}";
+  return db.query(baseSQL, {userId, gameId, betAmount});
+}
+
+const setPlayerTurn = (seatNumber, gameId) => {
+  let baseSQL =
+  "UPDATE game SET \"isTurn\" = ${seatNumber} WHERE \"gameId\"=${gameId}";
+  return db.query(baseSQL, {seatNumber, gameId});
+}
+
+const setPlayerStatus = (userId, gameId, status) => {
+  let baseSQL =
+    "UPDATE game_user SET \"status\" = ${status} WHERE \"gameId\"=${gameId} AND \"userId\"=${userId}";
+  return db.query(baseSQL, { userId, gameId, status });
+}
+
+const addPlayerMoney = (userId, gameId, money) => {
+  let baseSQL =
+  "UPDATE game_user SET \"chipsHeld\" = \"chipsHeld\" + ${money} WHERE \"gameId\"=${gameId} AND \"userId\"=${userId}";
+  return db.query(baseSQL, { userId, gameId, money });
+}
+
+const deducePlayerMoney = (userId, gameId, money) => {
+  let baseSQL =
+  "UPDATE game_user SET \"chipsHeld\" = \"chipsHeld\" - ${money} WHERE \"gameId\"=${gameId} AND \"userId\"=${userId}";
+  return db.query(baseSQL, { userId, gameId, money });
+}
+
+const checkActivePlayer = (gameId) => {
+  let baseSQL =
+    "SELECT COUNT(*) AS count FROM game_user WHERE status!='SPECTATOR' AND \"gameId\"=${gameId}";
+  return db.one(baseSQL, {gameId});
+}
+
+const addGamePot = (gameId, amount) => {
+  let baseSQL =
+  "UPDATE game SET pot = pot + ${amount} WHERE \"gameId\"=${gameId}";
+  return db.query(baseSQL, { gameId, amount });
+}
+
 module.exports = {
   setGameStatus,
   setGamePhase,
@@ -104,4 +152,12 @@ module.exports = {
   setPlayerBlindStatus,
   assignPlayerSeat,
   getGame,
+  setPlayerBet,
+  setPlayerTurn,
+  setPlayerStatus,
+  addPlayerMoney,
+  deducePlayerMoney,
+  checkActivePlayer,
+  getActivePlayersData,
+  addGamePot,
 };
