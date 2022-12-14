@@ -111,3 +111,56 @@ createLobby.onclick = () => {
     })
     .catch((err) => console.log(err));
 };
+
+
+const sendMessage = document.getElementById(`send-message-button-0`);
+
+
+sendMessage.onclick = () => {
+  let message = document.getElementById(`send-message-text-0`);
+
+  fetch(`/api/chat/0`, {
+    method: "post",
+    headers: { 'Content-Type': "application/json" },
+    body: JSON.stringify({ message: message.value }),
+  })
+    .then(() => {
+      message.value = "";
+    })
+    .catch((err) => console.log(err));
+};
+
+socket.on(`chat:0`, ({ sender, message, timestamp }) => {
+  console.log({ sender, message, timestamp });
+  const div1 = document.createElement("div");
+  div1.classList.add("sender-chat");
+
+  //const content1 = document.createElement("sender-chat");
+  const content1 = document.createElement("p");
+  div1.innerText = sender;
+  //div1.innerText = sender;
+  div1.appendChild(content1);
+
+  const div2 = document.createElement("div");
+  div2.classList.add("message");
+  div2.classList.add("c-bubble");
+  div2.classList.add("left-bubble");
+  const content2 = document.createElement("p");
+  div2.innerText = message;
+  div2.appendChild(content2);
+
+  const div3 = document.createElement("div");
+  div3.classList.add("date-chat");
+  //const content3 = document.createElement("date-chat");
+  let newDate = new Date(timestamp).toLocaleTimeString();
+  //let str = sender + ": " + message + " " + newDate;
+  const content3 = document.createElement("p");
+  div3.innerText = newDate;
+  div3.appendChild(content3);
+
+  let chatBox = document.getElementById(`chat-0`);
+  chatBox.appendChild(div1);
+  chatBox.appendChild(div2);
+  chatBox.appendChild(div3);
+
+})

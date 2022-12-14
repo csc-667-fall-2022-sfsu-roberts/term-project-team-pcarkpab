@@ -1,4 +1,4 @@
-const START_DELAY = 15;
+const START_DELAY = 3;
 
 let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
@@ -78,14 +78,17 @@ function setTable() {
   }
 }
 
-function setPlayerCards() {
-  gameData.playerInfo.forEach((player) => {
-      console.log(player);
-      console.log(player.cards[0]);
+async function setPlayerCards() {
+  for (const player of gameData.playerInfo) {
+    await new Promise(resolve => setTimeout(() => {
       displayCard(player.cards[0], "p" + (player.seatNumber + 1) + "_l", smallCard);
+      resolve();
+    }, 500));
+    await new Promise(resolve => setTimeout(() => {
       displayCard(player.cards[1], "p" + (player.seatNumber + 1) + "_r", smallCard);
-   
-  })
+      resolve();
+    }, 500));
+  }
 }
 
 function setTurn() {
@@ -153,6 +156,13 @@ function renderPlayers() {
 
 //Phase: assign cards
 
+/*
+await new Promise(resolve => setTimeout(() => {
+    
+  }, 1000));
+
+*/
+
 socket.on(`phase-blindBet:${gameId}`, async () => {
   renderPlayers();
   await updateGameData();
@@ -173,6 +183,7 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
             body: JSON.stringify({ isTurn: gameData.isTurn }),
           })
           await updateGameData();
+          setValues();
         }, 1000);
 
       } else if (player.blindStatus == "BIGBLIND") {
@@ -190,7 +201,8 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
             body: JSON.stringify({ isTurn: gameData.isTurn }),
           })
           await updateGameData();
-          await fetch(`/api/game/phaseAssignCards/${gameId}`, { method: "post" });
+          setValues();
+          fetch(`/api/game/phaseAssignCards/${gameId}`, { method: "post" });
         }, 2000);
       }
     }
@@ -201,15 +213,14 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
 
 socket.on(`phase-assignCards:${gameId}`, async () => {
   //Making sure it only update once
-  if(currentUserId == gameData.playerInfo[0].userId){
+  if (currentUserId == gameData.playerInfo[0].userId) {
     await updateGameData();
   }
-  setTimeout(() => {
+  await new Promise(resolve => setTimeout(() => {
     setPlayerCards();
     setTurn();
-    setFlop();
-    setValues();
-  }, 1000)
+   
+  }, 1000))
 
   setTimeout(() => {
     setTurnc();
@@ -220,8 +231,8 @@ socket.on(`phase-assignCards:${gameId}`, async () => {
   //adding the assign card animation (appears clockwise)
   //Timeout gamecard assign 0.5 seconds per card
 
-  if(currentUserId == gameData.playerInfo[0].userId){
-    await fetch(`/api/game/phaseFlop/${gameId}`, {method: 'post'});
+  if (currentUserId == gameData.playerInfo[0].userId) {
+    await fetch(`/api/game/phaseFlop/${gameId}`, { method: 'post' });
   }
 })
 
