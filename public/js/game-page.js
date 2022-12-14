@@ -18,8 +18,137 @@ let gameData = {
   isTurn: 1,
   currentBet: 0,
   minimumBet: 50,
+
   gamePhase: 'BLIND-BET',
 }
+
+
+renderPlayers()
+setTable()
+setTurn()
+setValues()
+
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value; // Display the default slider value
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+
+
+function setFlop(){
+  moveCard1(gameData.dealerCards[0])
+  moveCard2(gameData.dealerCards[1])
+  moveCard3(gameData.dealerCards[2])
+}
+
+function setTurnc(){
+  moveCard4(gameData.dealerCards[3])
+}
+
+function setRiver(){
+  moveCard5(gameData.dealerCards[4])
+}
+
+function setValues(){
+  var a = document.getElementById("pot-text");
+  a.innerHTML = "Pot: $" + gameData.pot + ".00";
+  var b = document.getElementById("last-bet");
+  b.innerHTML = "Bet value: " + gameData.currentBet + ".00";
+}
+
+function setTable(){
+  let ii = 0;
+  for( i = 0; i < 6; i++){
+    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+      //document.write("undefined for "+ i);
+      continue;
+    } else{
+      ii = i+1
+      var a = document.querySelector("#player"+ii+ " #player-name");
+      var b = document.querySelector("#player"+ii+ " #money-amount");
+      a.innerHTML = gameData.PlayerInfo[i].username;
+      b.innerHTML = gameData.PlayerInfo[i].money;
+   }
+  }
+}
+
+function setPlayerCards(){
+  let dp = 0;
+  for( i = 0; i < 6; i++){
+    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+      //document.write("undefined for "+ i);
+      continue;
+    } else{
+      dp = i+1;
+      displayCard(gameData.PlayerInfo[i].cards[0], "p"+dp+"_l", smallCard);
+      displayCard(gameData.PlayerInfo[i].cards[1], "p"+dp+"_r", smallCard);
+   }
+  }
+}
+
+function setTurn(){
+  document.write(" In setturn");
+  for( i = 0; i < 6; i++){
+    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+      document.write("undefine for "+ i);
+      continue;
+    }
+    if (gameData.PlayerInfo[i].isTurn == true){
+      document.write(" In setturn true");
+      document.write(" Is turn set for player " +i);
+      hideturn(i+1);
+    } else {
+      document.write(" Player " + i + " exists but not true ...");
+    }
+  }
+}
+
+function renderPlayers(){
+  setCardsEmpty()
+  const smallCard = 1;
+  var sblind = 0;
+  var bblind = 0;
+  var dealer = 0;
+  let dp = 0;
+  //document.write(gameData.PlayerInfo[1].playerStatus)
+  for( i = 0; i < 6; i++){
+    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+      dp = i +1;
+      //document.write("player " + dp + " not in game")
+      let p = "player";
+      let ps =  dp.toString(10);
+      let pss = p.concat(ps);
+      toggler(pss);
+      
+    } else{
+      //document.write("Seats " + gameData.PlayerInfo[i].seatNumber + " are occupied.")
+      dp = i+1;
+
+      if(gameData.PlayerInfo[i].blindStatus == "SMALLBLIND"){
+        sblind = dp;
+      } else if (gameData.PlayerInfo[i].blindStatus == "BIGBLIND"){
+        bblind = dp;
+      } else if (gameData.PlayerInfo[i].blindStatus == "DEALER"){
+        dealer = dp;
+      }
+    }
+  }
+  hideBlind(sblind, bblind, dealer)
+}
+
+
+/* function moveCard1() {
+    var b = document.getElementById("m-card1");
+    document.getElementById('m-card1').className = "c1-place"
+    sleep(650).then(() => {
+        displayCard(1, "mid1", bigCard);
+        b.style.display = "none";
+    });*/
+
+
+
 //Remove isdiscard
 //Add the dealer game_user
 //time out CHECK or FOLD

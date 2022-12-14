@@ -4,8 +4,8 @@ var smallBlind = 5;
 var bigBlind = 6;
 
 
-hideBlind(smallBlind, bigBlind)
-hideturn(isTurn)
+//hideBlind(smallBlind, bigBlind)
+//hideturn(isTurn)
 /**Im biased against the middle player lmao*/
 
 function toggle1() {
@@ -33,8 +33,8 @@ function toggle6() {
     toggler()
 }
 
-function toggler() {
-    var d = document.getElementById(divPass);
+function toggler(dis) {
+    var d = document.getElementById(dis);
     if (d.style.display === "none")
         d.style.display = "flex"
     else {
@@ -42,17 +42,6 @@ function toggler() {
     }
   }
 
-  function toggle7() {
-    var d = document.getElementById("playerMain");
-    var c = document.getElementById("mainCards");
-    if (d.style.display === "none" && c.style.display === "none") {
-      d.style.display = "flex";
-      c.style.display = "inline-flex";
-    } else {
-      d.style.display = "none";
-      c.style.display = "none";
-    }
-  }
 
 
 function sleep(ms) {
@@ -66,54 +55,54 @@ function sleep(ms) {
 
 // When user click right button
   // set box right position to right
-
+/*
   document.getElementById('move-c1').onclick = moveCard1;
   document.getElementById('move-c2').onclick = moveCard2;
   document.getElementById('move-c3').onclick = moveCard3;
   document.getElementById('move-c4').onclick = moveCard4;
-  document.getElementById('move-c5').onclick = moveCard5;
+  document.getElementById('move-c5').onclick = moveCard5;*/
 
   document.getElementById('return').onclick = returnCard;
   
 
-  function moveCard1() {
+  function moveCard1(c) {
     var b = document.getElementById("m-card1");
     document.getElementById('m-card1').className = "c1-place"
     sleep(650).then(() => {
-        displayCard(1, "mid1", bigCard);
+        displayCard(c, "mid1", bigCard);
         b.style.display = "none";
     });
     
     }
-  function moveCard2() {
+  function moveCard2(c) {
     var b = document.getElementById("m-card2");
     document.getElementById('m-card2').className = "c2-place"
     sleep(650).then(() => {
-        displayCard(18, "mid2", bigCard);
+        displayCard(c, "mid2", bigCard);
         b.style.display = "none";
     });
     }
-  function moveCard3() {
+  function moveCard3(c) {
     var b = document.getElementById("m-card3");
     document.getElementById('m-card3').className = "c3-place"
     sleep(650).then(() => {
-        displayCard(37, "mid3", bigCard);
+        displayCard(c, "mid3", bigCard);
         b.style.display = "none";
     });
     }
-  function moveCard4() {
+  function moveCard4(c) {
     var b = document.getElementById("m-card4");
     document.getElementById('m-card4').className = "c4-place"
     sleep(650).then(() => {
-        displayCard(48, "mid4", bigCard);
+        displayCard(c, "mid4", bigCard);
         b.style.display = "none";
     });
     }
-  function moveCard5() {
+  function moveCard5(c) {
     var b = document.getElementById("m-card5");
     document.getElementById('m-card5').className = "c5-place"
     sleep(650).then(() => {
-        displayCard(42, "mid5", bigCard);
+        displayCard(c, "mid5", bigCard);
         b.style.display = "none";
     });
     }
@@ -141,7 +130,7 @@ function sleep(ms) {
 });
   }
 
-function hideBlind(smallB, bigB) {
+function hideBlind(smallB, bigB, dealer) {
 
     for( i = 1; i < 7; i++){
         var a = document.querySelector("#player"+i+ " .blindStatus");
@@ -151,9 +140,12 @@ function hideBlind(smallB, bigB) {
             a.style.display = "block";}
         else if(i == bigB){
             a.innerHTML = "Big Blind";
+            a.style.display = "block"; }
+        else if(i == dealer){
+            a.innerHTML = "DEALER";
             a.style.display = "block";
         }
-    }
+      }
 }
   
 
