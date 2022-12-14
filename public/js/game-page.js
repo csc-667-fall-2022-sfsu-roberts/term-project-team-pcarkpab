@@ -19,7 +19,7 @@ let gameData = {
   currentBet: 0,
   minimumBet: 50,
 
-  gamePhase: 'BLIND-BET',
+  gamePhase: 'BLINDBET',
 }
 
 
@@ -32,67 +32,67 @@ var slider = document.getElementById("myRange");
 var output = document.getElementById("demo");
 output.innerHTML = slider.value; // Display the default slider value
 // Update the current slider value (each time you drag the slider handle)
-slider.oninput = function() {
+slider.oninput = function () {
   output.innerHTML = this.value;
 }
 
 
-function setFlop(){
+function setFlop() {
   moveCard1(gameData.dealerCards[0])
   moveCard2(gameData.dealerCards[1])
   moveCard3(gameData.dealerCards[2])
 }
 
-function setTurnc(){
+function setTurnc() {
   moveCard4(gameData.dealerCards[3])
 }
 
-function setRiver(){
+function setRiver() {
   moveCard5(gameData.dealerCards[4])
 }
 
-function setValues(){
+function setValues() {
   var a = document.getElementById("pot-text");
   a.innerHTML = "Pot: $" + gameData.pot + ".00";
   var b = document.getElementById("last-bet");
   b.innerHTML = "Bet value: " + gameData.currentBet + ".00";
 }
 
-function setTable(){
+function setTable() {
   let ii = 0;
-  for( i = 0; i < 6; i++){
-    if (typeof gameData.playerInfo[i] == 'undefined'){
+  for (i = 0; i < 6; i++) {
+    if (typeof gameData.playerInfo[i] == 'undefined') {
       //document.write("undefined for "+ i);
       continue;
-    } else{
-      ii = i+1
-      var a = document.querySelector("#player"+ii+ " #player-name");
-      var b = document.querySelector("#player"+ii+ " #money-amount");
+    } else {
+      ii = i + 1
+      var a = document.querySelector("#player" + ii + " #player-name");
+      var b = document.querySelector("#player" + ii + " #money-amount");
       a.innerHTML = gameData.playerInfo[i].username;
       b.innerHTML = gameData.playerInfo[i].money;
-   }
+    }
   }
 }
 
-function setPlayerCards(){
+function setPlayerCards() {
   let dp = 0;
-  for( i = 0; i < 6; i++){
-    if (typeof gameData.playerInfo[i] == 'undefined'){
+  for (i = 0; i < 6; i++) {
+    if (typeof gameData.playerInfo[i] == 'undefined') {
       //document.write("undefined for "+ i);
       continue;
-    } else{
-      dp = i+1;
-      displayCard(gameData.playerInfo[i].cards[0], "p"+dp+"_l", smallCard);
-      displayCard(gameData.playerInfo[i].cards[1], "p"+dp+"_r", smallCard);
-   }
+    } else {
+      dp = i + 1;
+      displayCard(gameData.playerInfo[i].cards[0], "p" + dp + "_l", smallCard);
+      displayCard(gameData.playerInfo[i].cards[1], "p" + dp + "_r", smallCard);
+    }
   }
 }
 
-function setTurn(){
+function setTurn() {
   hideturn(gameData.isTurn);
 }
 
-function renderPlayers(){
+function renderPlayers() {
   setCardsEmpty()
   const smallCard = 1;
   var sblind = 0;
@@ -100,24 +100,24 @@ function renderPlayers(){
   var dealer = 0;
   let dp = 0;
   //document.write(gameData.playerInfo[1].playerStatus)
-  for( i = 0; i < 6; i++){
-    if (typeof gameData.playerInfo[i] == 'undefined'){
-      dp = i +1;
+  for (i = 0; i < 6; i++) {
+    if (typeof gameData.playerInfo[i] == 'undefined') {
+      dp = i + 1;
       //document.write("player " + dp + " not in game")
       let p = "player";
-      let ps =  dp.toString(10);
+      let ps = dp.toString(10);
       let pss = p.concat(ps);
       toggler(pss);
-      
-    } else{
-      //document.write("Seats " + gameData.playerInfo[i].seatNumber + " are occupied.")
-      dp = i+1;
 
-      if(gameData.playerInfo[i].blindStatus == "SMALLBLIND"){
+    } else {
+      //document.write("Seats " + gameData.playerInfo[i].seatNumber + " are occupied.")
+      dp = i + 1;
+
+      if (gameData.playerInfo[i].blindStatus == "SMALLBLIND") {
         sblind = dp;
-      } else if (gameData.playerInfo[i].blindStatus == "BIGBLIND"){
+      } else if (gameData.playerInfo[i].blindStatus == "BIGBLIND") {
         bblind = dp;
-      } else if (gameData.playerInfo[i].blindStatus == "DEALER"){
+      } else if (gameData.playerInfo[i].blindStatus == "DEALER") {
         dealer = dp;
       }
     }
@@ -150,17 +150,18 @@ function renderPlayers(){
 //Phase: assign cards
 
 socket.on(`phase-blindBet:${gameId}`, async () => {
-  let flag = false;
+
   await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
   for (let player of gameData.playerInfo) {
-    if (player.userId == currentUserId && player.seatNumber == gameData.isTurn) {
+    if (player.userId == currentUserId) {
       if (player.blindStatus == "SMALLBLIND") {
+        //PLAYER BET
         await fetch(`/api/game/playerBet/${gameId}`, {
           method: "post",
           headers: { 'Content-Type': "application/json" },
           body: JSON.stringify({ userId: player.userId, betAmount: Math.floor(gameData.minimumBet / 2) }),
         })
-        flag = true;
+        //UPDATE TURN
         setTimeout(async () => {
           await fetch(`/api/game/nextTurn/${gameId}`, {
             method: "post",
@@ -171,11 +172,13 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
         }, 1000);
 
       } else if (player.blindStatus == "BIGBLIND") {
+        //PLAYER BET
         await fetch(`/api/game/playerBet/${gameId}`, {
           method: "post",
           headers: { 'Content-Type': "application/json" },
           body: JSON.stringify({ userId: player.userId, betAmount: gameData.minimumBet }),
         })
+        //UPDATE TURN
         setTimeout(async () => {
           await fetch(`/api/game/nextTurn/${gameId}`, {
             method: "post",
@@ -184,27 +187,8 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
           })
           await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
           await fetch(`/api/game/phaseAssignCards/${gameId}`, { method: "post" });
-        }, 1000);
+        }, 2000);
       }
-      
-    }else if(flag && player.seatNumber == gameData.isTurn){
-      if (player.blindStatus == "BIGBLIND") {
-        console.log("It works");
-        await fetch(`/api/game/playerBet/${gameId}`, {
-          method: "post",
-          headers: { 'Content-Type': "application/json" },
-          body: JSON.stringify({ userId: player.userId, betAmount: gameData.minimumBet }),
-        })
-      }
-      flag = false;
-      setTimeout(async () => {
-        await fetch(`/api/game/nextTurn/${gameId}`, {
-          method: "post",
-          headers: { 'Content-Type': "application/json" },
-          body: JSON.stringify({ isTurn: gameData.isTurn }),
-        })
-        await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
-      }, 1000);
     }
   }
 })
