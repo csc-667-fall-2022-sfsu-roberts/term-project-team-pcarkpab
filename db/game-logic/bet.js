@@ -6,7 +6,10 @@ const bet = (userId, gameId, betAmount) => {
       return Games.deducePlayerMoney(userId, gameId, betAmount);
     })
     .then(() => {
-      return Games.setPlayerStatus(userId, gameId, 'CALL');
+      return Games.addGamePot(gameId, betAmount);
+    })
+    .then(() => {
+      return Games.setPlayerStatus(userId, gameId, 'BET');
     })
     .then(() => {
       return Games.setPlayerBet(0, gameId, betAmount);

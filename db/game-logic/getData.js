@@ -21,7 +21,7 @@ const gameData = {
 const getData = (gameId) => {
   const data = {};
 
-  return Game.getAllPlayersData(gameId)
+  return Game.getActivePlayersData(gameId)
     .then((players) => {
       data.playerCount = players.length;
       let cardsArr;

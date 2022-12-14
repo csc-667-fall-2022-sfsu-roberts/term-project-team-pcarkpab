@@ -88,8 +88,13 @@ router.post('/playerBet/:id', (req, res, next) => {
 
 router.post('/nextTurn/:id', (req, res, next) => {
   const {id: gameId} = req.params;
-  console.log("NEXT");
-  res.json({success: true});
+  const {isTurn} = req.body;
+
+  GameLogic.nextTurn(gameId, isTurn)
+    .then(() => {   
+      res.json({success: true});
+    })
+
 })
 
 module.exports = router;

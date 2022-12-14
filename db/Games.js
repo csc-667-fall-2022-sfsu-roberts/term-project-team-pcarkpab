@@ -58,7 +58,13 @@ const getPlayerData = (userId, gameId) => {
 
 const getAllPlayersData = (gameId) => {
   let baseSQL =
-    "SELECT * FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\">0";
+    "SELECT * FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\">0 ";
+  return db.query(baseSQL, { gameId });
+}
+
+const getActivePlayersData = (gameId) => {
+  let baseSQL =
+    "SELECT * FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\">0 AND status!='SPECTATOR'";
   return db.query(baseSQL, { gameId });
 }
 
@@ -122,6 +128,18 @@ const deducePlayerMoney = (userId, gameId, money) => {
   return db.query(baseSQL, { userId, gameId, money });
 }
 
+const checkActivePlayer = (gameId) => {
+  let baseSQL =
+    "SELECT COUNT(*) FROM game_user WHERE status!='SPECTATOR'";
+  return db.one(baseSQL, {gameId});
+}
+
+const addGamePot = (gameId, amount) => {
+  let baseSQL =
+  "UPDATE game SET pot = pot + ${amount} WHERE \"gameId\"=${gameId}";
+  return db.query(baseSQL, { gameId, amount });
+}
+
 module.exports = {
   setGameStatus,
   setGamePhase,
@@ -139,4 +157,7 @@ module.exports = {
   setPlayerStatus,
   addPlayerMoney,
   deducePlayerMoney,
+  checkActivePlayer,
+  getActivePlayersData,
+  addGamePot,
 };
