@@ -2,6 +2,7 @@ const Games = require('../Games');
 const Lobby = require('../Lobby');
 
 const initialize = (gameId) => {
+  //I
   let playerCount;
   return Games.setGameStatus(gameId, 'INGAME')
     .then(() => {
@@ -20,33 +21,27 @@ const initialize = (gameId) => {
     .then(() => {
       return Games.getAllPlayersData(gameId);
     })
-    .then(async (players) => {
+    .then((players) => {
       let i = 0;
       playerCount = players.length;
-      for (let player of players) {
-
-        try {
-          await Games.setPlayerDefault(player.userId, gameId);
-
-          await Games.assignPlayerSeat(player.userId, gameId, i);
-
-          if (i == 0) {
-
+      return Promise.all(players.map((player) => {
+        return Games.setPlayerDefault(player.userId, gameId)
+          .then(() => {
+            return Games.assignPlayerSeat(player.userId, gameId, i);
+          })
+          .then(() => {
+            if (i == 0) {
+              Games.setPlayerBlindStatus(player.userId, gameId, 'DEALER');
+            } else if (i == 2 || playerCount == 2) {
+              Games.setPlayerBlindStatus(player.userId, gameId, 'BIGBLIND');
+            } else if (i == 1) {
+              Games.setPlayerBlindStatus(player.userId, gameId, 'SMALLBLIND');
+            }
             i++;
-            await Games.setPlayerBlindStatus(player.userId, gameId, 'DEALER');
-          } else if (i == 2 || playerCount == 2) {
-            i++;
-            await Games.setPlayerBlindStatus(player.userId, gameId, 'BIGBLIND');
-          } else if (i == 1) {
-            i++;
-            await Games.setPlayerBlindStatus(player.userId, gameId, 'SMALLBLIND');
-          } else {
-            i++;
-          }
-        } catch (err) {
-          console.log(err);
-        }
-      }
+            return Promise.resolve();
+          })
+          .catch(err => console.log(err));
+      }))
     })
     .then(() => {
       return Promise.resolve(gameId);

@@ -50,12 +50,6 @@ const shuffleDeck = (gameId) => {
     });
 }
 
-const getDeck = (gameId) => {
-  let baseSQL =
-    "SELECT \"cardId\" FROM game_cards WHERE \"gameId\"=${gameId}";
-  return db.query(baseSQL, {gameId});
-} 
-
 const getPlayerData = (userId, gameId) => {
   let baseSQL =
     "SELECT * FROM game_user WHERE \"gameId\"=${gameId} AND \"userId\"=${userId}";
@@ -146,25 +140,11 @@ const addGamePot = (gameId, amount) => {
   return db.query(baseSQL, { gameId, amount });
 }
 
-const checkPlayerStatusWithSeatNum = (gameId, seatNumber) => {
-  let baseSQL =
-    "SELECT status FROM game_user WHERE \"gameId\"=${gameId} AND \"seatNumber\"=${seatNumber}";
-  return db.query(baseSQL, { gameId, seatNumber});
-}
-
-const assignPlayerCard = (userId, gameId, cardId) => {
-  let baseSQL =
-    "UPDATE game_cards SET \"userId\"=${userId}, in_deck=false, on_table=true WHERE \"gameId\"=${gameId} AND \"cardId\"=${cardId}";
-  return db.query(baseSQL, {userId, gameId, cardId});
-}
-
 module.exports = {
   setGameStatus,
   setGamePhase,
   initializeGameDeck,
   shuffleDeck,
-  getDeck,
-  assignPlayerCard,
   getPlayerData,
   getAllPlayersData,
   getPlayerCards,
@@ -180,5 +160,4 @@ module.exports = {
   checkActivePlayer,
   getActivePlayersData,
   addGamePot,
-  checkPlayerStatusWithSeatNum,
 };

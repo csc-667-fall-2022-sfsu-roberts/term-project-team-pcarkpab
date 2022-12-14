@@ -22,40 +22,38 @@ const getData = (gameId) => {
   const data = {};
 
   return Game.getActivePlayersData(gameId)
-    .then(async (players) => {
+    .then((players) => {
       data.playerCount = players.length;
       let cardsArr;
-      const playerInfo = [];
-
-      // Use a for loop to process each player's information
-      for (const player of players) {
-        try {
-          // Get the player's cards
-          const cards = await Game.getPlayerCards(player.userId, gameId);
-          // Resolve each card's ID
-          cardsArr = await Promise.all(cards.map(card => Promise.resolve(card.cardId)));
-          // Get the player's username
-          const result = await Users.getUsername(player.userId);
-
-          playerInfo.push({
-            userId: player.userId,
-            username: result.username,
-            money: player.chipsHeld,
-            betAmount: player.chipsBet,
-            cards: cardsArr,
-            playerStatus: player.status,
-            blindStatus: player.blindStatus,
-            seatNumber: player.seatNumber,
-          });
-        } catch (err) {
-          console.log(err);
-        }
-      }
-
-      data.playerInfo = playerInfo;
-      return Promise.resolve();
+      let playerInfo = players.map(async (player) => {
+        return Game.getPlayerCards(player.userId, gameId)
+          .then((cards) => {
+            cardsArr = cards.map((card) => {
+              return card.cardId;
+            })
+          })
+          .then(() =>{
+            return Users.getUsername(player.userId);
+          })
+          .then((result) => {
+            return {
+              userId: player.userId,
+              username: result.username,
+              money: player.chipsHeld,
+              betAmount: player.chipsBet,
+              cards: cardsArr,
+              playerStatus: player.status,
+              blindStatus: player.blindStatus,
+              seatNumber: player.seatNumber,
+            };
+          })
+          .catch(err => console.log(err));
+      });
+      return Promise.all(playerInfo);
     })
-
+    .then((playerInfo) => {
+      data.playerInfo = playerInfo;
+    })
     .then(() => {
       return Game.getGame(gameId)
         .then((result) => {
@@ -63,27 +61,19 @@ const getData = (gameId) => {
           data.pot = result.pot;
           data.isTurn = result.isTurn;
           data.minimumBet = result.minimumBet;
-          return Promise.resolve();
         })
     })
     .then(() => {
       return Game.getPlayerData(0, gameId)
-        .then((result) => {
-          data.currentBet = result.chipsBet;
-          return Promise.resolve();
-        })
+      .then((result) => {
+        data.currentBet = result.chipsBet;
+      })
     })
     .then(() => {
       return Game.getPlayerCards(0, gameId)
-        .then((result) => {
-          return Promise.all(result.map((card) => {
-            return Promise.resolve(card.cardId)
-          }));
-        })
-    })
-    .then((cards) => {
-      data.dealerCards = cards;
-      return Promise.resolve();
+      .then((result) => {
+        data.dealerCard = result.map((card) => card.cardId);
+      })
     })
     .then(() => {
       return Promise.resolve(data);

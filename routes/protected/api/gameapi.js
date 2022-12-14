@@ -33,22 +33,11 @@ router.post('/updateData/:id', (req, res, next) => {
   GameLogic.getData(gameId)
     .then((data) => {
       console.log("Game data updated");
-      console.log(data.playerInfo);
       req.app.io.emit(`update-gameData:${gameId}`, {data});
       res.json({success: true});
     })
     .catch(err => console.log(err));
 })
-
-router.get('/getData/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
-  GameLogic.getData(gameId)
-    .then((data) => {
-      res.json(data);
-    })
-    .catch(err => console.log(err));
-})
-
 
 router.post('/phaseBlindBet/:id', (req, res, next) => {
   
@@ -65,7 +54,8 @@ router.post('/phaseBlindBet/:id', (req, res, next) => {
     }
   })
   .then((seatNumber) => {
-    return GameLogic.nextTurn(gameId, seatNumber);
+    seatNumber++;
+    return Games.setPlayerTurn(seatNumber, gameId);
   })
   .then((result) => {
     console.log("blind bet phase");
@@ -74,32 +64,6 @@ router.post('/phaseBlindBet/:id', (req, res, next) => {
   })
   .catch(err => console.log(err));
 })
-
-//phaseAssignCards/${gameId}
-router.post('/phaseAssignCards/:id', (req, res, next) => {
-  
-  const {id: gameId} = req.params;
-  Games.setGamePhase(gameId, 'ASSIGNCARDS')
-  .then(() => {
-    return GameLogic.assignCards(gameId);
-  })
-  .then(() => {
-    return GameLogic.getData(gameId);
-  })
-  .then((result) => {
-    console.log("Assign card phase");
-    req.app.io.emit(`phase-assignCards:${gameId}`, {});
-    res.json({success: true});
-  })
-  .catch(err => console.log(err));
-})
-
-router.post('/phaseFlop/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
-  console.log("phase Flop");
-  res.json({success: true});
-})
-
 router.get('/getData/:id', (req, res, next) => {
   const {id: gameId} = req.params;
   GameLogic.getData(gameId)
@@ -112,16 +76,10 @@ router.get('/getData/:id', (req, res, next) => {
 router.post('/playerBet/:id', (req, res, next) => {
   const {id: gameId} = req.params;
   const {userId, betAmount} = req.body;
-  const username = req.session.username;
   
   GameLogic.bet(userId, gameId, betAmount)
     .then(() => {
       console.log(userId + " has bet " + betAmount);
-      req.app.io.emit(`console:${gameId}`, {
-        sender: username,
-        message: `${username} has bet ${betAmount}$`,
-        timestamp: Date.now()
-      })
       res.json({success: true});
     })
     .catch(err => console.log(err));
