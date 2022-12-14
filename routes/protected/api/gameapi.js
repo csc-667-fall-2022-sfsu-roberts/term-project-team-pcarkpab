@@ -33,6 +33,7 @@ router.post('/updateData/:id', (req, res, next) => {
   GameLogic.getData(gameId)
     .then((data) => {
       console.log("Game data updated");
+      console.log(data.playerInfo);
       req.app.io.emit(`update-gameData:${gameId}`, {data});
       res.json({success: true});
     })

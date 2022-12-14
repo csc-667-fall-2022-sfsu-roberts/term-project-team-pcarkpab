@@ -30,9 +30,6 @@ module.exports = {
         await queryInterface.bulkInsert('cards', [{ rank, suit }]);
       }
     }
-
-    //default card face down
-    await queryInterface.bulkInsert('cards', [{ rank: 0, suit: 'SPADES' }]);
   },
 
   async down(queryInterface, Sequelize) {

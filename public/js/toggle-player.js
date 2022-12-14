@@ -42,6 +42,23 @@ function toggler(dis) {
     }
   }
 
+function toggleOn(dis) {
+  var d = document.getElementById(dis);
+  if(d.style.display === "flex"){
+
+  }else{
+    d.style.display = "flex";
+  }
+}
+
+function toggleOff(dis) {
+  var d = document.getElementById(dis);
+  if(d.style.display === "none"){
+
+  }else{
+    d.style.display = "none";
+  }
+}
 
 
 function sleep(ms) {

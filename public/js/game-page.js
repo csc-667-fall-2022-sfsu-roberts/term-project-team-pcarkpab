@@ -1,4 +1,4 @@
-const START_DELAY = 10;
+const START_DELAY = 3;
 
 let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
@@ -7,19 +7,19 @@ const gameId = pathnameSegments.pop();
 
 let gameData = {
   pot: 0,
-  playerCount: 4,
+  playerCount: 0,
   playerInfo: [
-    { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, playerStatus: 'idle', blindStatus: 'DEALER', seatNumber: 0 },
-    { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, playerStatus: 'idle', blindStatus: 'SMALLBLIND', seatNumber: 1 },
-    { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, playerStatus: 'idle', blindStatus: 'big-blind', seatNumber: 2 },
-    { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, playerStatus: 'idle', blindStatus: 'none', seatNumber: 3 },
+    // { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, playerStatus: 'idle', blindStatus: 'DEALER', seatNumber: 0 },
+    // { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, playerStatus: 'idle', blindStatus: 'SMALLBLIND', seatNumber: 1 },
+    // { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, playerStatus: 'idle', blindStatus: 'big-blind', seatNumber: 2 },
+    // { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, playerStatus: 'idle', blindStatus: 'none', seatNumber: 3 },
   ],
-  dealerCards: [3, 50, 42],
-  isTurn: 1,
+  dealerCards: [],
+  isTurn: 0,
   currentBet: 0,
-  minimumBet: 50,
+  minimumBet: 0,
 
-  gamePhase: 'BLINDBET',
+  gamePhase: 'PREGAME',
 }
 
 
@@ -79,17 +79,13 @@ function setTable() {
 }
 
 function setPlayerCards() {
-  let dp = 0;
-  for (i = 0; i < 6; i++) {
-    if (typeof gameData.playerInfo[i] == 'undefined') {
-      //document.write("undefined for "+ i);
-      continue;
-    } else {
-      dp = i + 1;
-      displayCard(gameData.playerInfo[i].cards[0], "p" + dp + "_l", smallCard);
-      displayCard(gameData.playerInfo[i].cards[1], "p" + dp + "_r", smallCard);
-    }
-  }
+  gameData.playerInfo.forEach((player) => {
+      console.log(player);
+      console.log(player.cards[0]);
+      displayCard(player.cards[0], "p" + (player.seatNumber + 1) + "_l", smallCard);
+      displayCard(player.cards[1], "p" + (player.seatNumber + 1) + "_r", smallCard);
+   
+  })
 }
 
 function setTurn() {
@@ -97,7 +93,7 @@ function setTurn() {
 }
 
 function renderPlayers() {
-  setCardsEmpty()
+  setCardsEmpty();
   const smallCard = 1;
   var sblind = 0;
   var bblind = 0;
@@ -106,17 +102,20 @@ function renderPlayers() {
   //document.write(gameData.playerInfo[1].playerStatus)
   for (i = 0; i < 6; i++) {
     if (typeof gameData.playerInfo[i] == 'undefined') {
-      dp = i + 1;
       //document.write("player " + dp + " not in game")
+      dp = i + 1;
       let p = "player";
       let ps = dp.toString(10);
       let pss = p.concat(ps);
-      toggler(pss);
+      toggleOff(pss);
 
     } else {
       //document.write("Seats " + gameData.playerInfo[i].seatNumber + " are occupied.")
       dp = i + 1;
-
+      let p = "player";
+      let ps = dp.toString(10);
+      let pss = p.concat(ps);
+      toggleOn(pss);
       if (gameData.playerInfo[i].blindStatus == "SMALLBLIND") {
         sblind = dp;
       } else if (gameData.playerInfo[i].blindStatus == "BIGBLIND") {
@@ -127,6 +126,7 @@ function renderPlayers() {
     }
   }
   hideBlind(sblind, bblind, dealer)
+  setTable();
 }
 
 
@@ -154,7 +154,7 @@ function renderPlayers() {
 //Phase: assign cards
 
 socket.on(`phase-blindBet:${gameId}`, async () => {
-
+  renderPlayers();
   await updateGameData();
   for (let player of gameData.playerInfo) {
     if (player.userId == currentUserId) {
@@ -204,13 +204,24 @@ socket.on(`phase-assignCards:${gameId}`, async () => {
   if(currentUserId == gameData.playerInfo[0].userId){
     await updateGameData();
   }
-  
+  setTimeout(() => {
+    setPlayerCards();
+    setTurn();
+    setFlop();
+    setValues();
+  }, 1000)
+
+  setTimeout(() => {
+    setTurnc();
+  }, 2000)
+  setTimeout(() => {
+    setRiver();
+  }, 3000)
   //adding the assign card animation (appears clockwise)
   //Timeout gamecard assign 0.5 seconds per card
 
-
   if(currentUserId == gameData.playerInfo[0].userId){
-    fetch(`phase-flop:${gameId}`, {method: 'post'});
+    await fetch(`/api/game/phaseFlop/${gameId}`, {method: 'post'});
   }
 })
 
