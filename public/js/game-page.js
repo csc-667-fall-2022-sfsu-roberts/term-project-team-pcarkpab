@@ -61,15 +61,15 @@ function setValues(){
 function setTable(){
   let ii = 0;
   for( i = 0; i < 6; i++){
-    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+    if (typeof gameData.playerInfo[i] == 'undefined'){
       //document.write("undefined for "+ i);
       continue;
     } else{
       ii = i+1
       var a = document.querySelector("#player"+ii+ " #player-name");
       var b = document.querySelector("#player"+ii+ " #money-amount");
-      a.innerHTML = gameData.PlayerInfo[i].username;
-      b.innerHTML = gameData.PlayerInfo[i].money;
+      a.innerHTML = gameData.playerInfo[i].username;
+      b.innerHTML = gameData.playerInfo[i].money;
    }
   }
 }
@@ -77,32 +77,20 @@ function setTable(){
 function setPlayerCards(){
   let dp = 0;
   for( i = 0; i < 6; i++){
-    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+    if (typeof gameData.playerInfo[i] == 'undefined'){
       //document.write("undefined for "+ i);
       continue;
     } else{
       dp = i+1;
-      displayCard(gameData.PlayerInfo[i].cards[0], "p"+dp+"_l", smallCard);
-      displayCard(gameData.PlayerInfo[i].cards[1], "p"+dp+"_r", smallCard);
+      displayCard(gameData.playerInfo[i].cards[0], "p"+dp+"_l", smallCard);
+      displayCard(gameData.playerInfo[i].cards[1], "p"+dp+"_r", smallCard);
    }
   }
 }
 
 function setTurn(){
   document.write(" In setturn");
-  for( i = 0; i < 6; i++){
-    if (typeof gameData.PlayerInfo[i] == 'undefined'){
-      document.write("undefine for "+ i);
-      continue;
-    }
-    if (gameData.PlayerInfo[i].isTurn == true){
-      document.write(" In setturn true");
-      document.write(" Is turn set for player " +i);
-      hideturn(i+1);
-    } else {
-      document.write(" Player " + i + " exists but not true ...");
-    }
-  }
+  hideturn(gameData.isTurn);
 }
 
 function renderPlayers(){
@@ -112,9 +100,9 @@ function renderPlayers(){
   var bblind = 0;
   var dealer = 0;
   let dp = 0;
-  //document.write(gameData.PlayerInfo[1].playerStatus)
+  //document.write(gameData.playerInfo[1].playerStatus)
   for( i = 0; i < 6; i++){
-    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+    if (typeof gameData.playerInfo[i] == 'undefined'){
       dp = i +1;
       //document.write("player " + dp + " not in game")
       let p = "player";
@@ -123,14 +111,14 @@ function renderPlayers(){
       toggler(pss);
       
     } else{
-      //document.write("Seats " + gameData.PlayerInfo[i].seatNumber + " are occupied.")
+      //document.write("Seats " + gameData.playerInfo[i].seatNumber + " are occupied.")
       dp = i+1;
 
-      if(gameData.PlayerInfo[i].blindStatus == "SMALLBLIND"){
+      if(gameData.playerInfo[i].blindStatus == "SMALLBLIND"){
         sblind = dp;
-      } else if (gameData.PlayerInfo[i].blindStatus == "BIGBLIND"){
+      } else if (gameData.playerInfo[i].blindStatus == "BIGBLIND"){
         bblind = dp;
-      } else if (gameData.PlayerInfo[i].blindStatus == "DEALER"){
+      } else if (gameData.playerInfo[i].blindStatus == "DEALER"){
         dealer = dp;
       }
     }
@@ -237,7 +225,7 @@ socket.on(`game-phase:betting-round`, () => {
 
 // let raiseButton = document.getElementById(`raise-button-${gameId}`)
 // raiseButton.onclick(() => {
-//   for (let playerInfo in gameData.PlayerInfo) {
+//   for (let playerInfo in gameData.playerInfo) {
 //     if (currentUserId == gameData.userId && playerInfo.isTurn) {
 //       //fetch('api/game/bet or check or fold')
 //     }
