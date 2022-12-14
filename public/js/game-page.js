@@ -25,6 +25,16 @@ let gameData = {
   gamePhase: 'PREGAME',
 }
 
+var slider = document.getElementById(`slider-${gameId}`);
+var sliderOutput = document.getElementById("demo");
+sliderOutput.innerHTML = slider.value; // Display the default slider value
+// Update the current slider value (each time you drag the slider handle)
+slider.min = gameData.minimumBet;
+sliderOutput.innerHTML = gameData.currentBet;
+slider.oninput = function () {
+  sliderOutput.innerHTML = this.value;
+}
+
 
 let updateGameData = async () => {
   try {
@@ -52,20 +62,28 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
     let checkButton = document.getElementById(`check-button-${gameId}`);
     let foldButton = document.getElementById(`fold-button-${gameId}`);
 
+    
+
     if (gameData.gamePhase != 'PREGAME' && gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
       let flag = false;
+      let currentPlayer;
       gameData.playerInfo.forEach((player) => {
         if (player.userId == currentUserId && player.seatNumber == gameData.isTurn) {
           flag = true;
+          currentPlayer = player;
         }
       })
       if (flag) {
+        
+        slider.min = gameData.currentBet - currentPlayer.betAmount;
+        sliderOutput.innerHTML = gameData.currentBet - currentPlayer.betAmount;
+        //CALL BUTTON
         callButton.onclick = async() => {
           console.log(currentUserId + " with seatNumber " +  gameData.isTurn);
           await fetch(`/api/game/playerBet/${gameId}`, {
             method: "post",
             headers: { 'Content-Type': "application/json" },
-            body: JSON.stringify({ userId: currentUserId, betAmount: gameData.currentBet }),
+            body: JSON.stringify({ userId: currentUserId, betAmount: gameData.currentBet - currentPlayer.betAmount }),
           });
           await new Promise(resolve => setTimeout(async () => {
             try {
@@ -82,11 +100,56 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
           }, 1000));
           await updateGameData();
         }
-        raiseButton.onclick = () => {
-          console.log("RAISE");
+        //RAISE BUTTON
+        raiseButton.onclick = async() => {
+          console.log(currentUserId + " with seatNumber " +  gameData.isTurn);
+          await fetch(`/api/game/playerBet/${gameId}`, {
+            method: "post",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify({ userId: currentUserId, betAmount: slider.value }),
+          });
+          await new Promise(resolve => setTimeout(async () => {
+            try {
+              await fetch(`/api/game/nextTurn/${gameId}`, {
+                method: "post",
+                headers: { 'Content-Type': "application/json" },
+                body: JSON.stringify({ isTurn: gameData.isTurn }),
+              })
+              await updateGameData();
+              resolve();
+            } catch (err) {
+              console.log(err);
+            }
+          }, 1000));
+          await updateGameData();
         }
-        checkButton.onclick = () => {
-          console.log("CHECK");
+        checkButton.onclick = async() => {
+          
+          if(gameData.status == 'CHECK'){
+            console.log("CHECK");
+            await fetch(`/api/game/playerCheck/${gameId}`, {
+              method: "post",
+              headers: { 'Content-Type': "application/json" },
+              body: JSON.stringify({ userId: currentUserId }),
+            });
+            await new Promise(resolve => setTimeout(async () => {
+              try {
+                await fetch(`/api/game/nextTurn/${gameId}`, {
+                  method: "post",
+                  headers: { 'Content-Type': "application/json" },
+                  body: JSON.stringify({ isTurn: gameData.isTurn }),
+                })
+                await updateGameData();
+                resolve();
+              } catch (err) {
+                console.log(err);
+              }
+            }, 1000));
+            await updateGameData();
+
+          }else{
+            console.log('CANNOT CHECK HERE');
+          }
         }
         foldButton.onclick = () => {
           console.log("FOLD");
@@ -116,13 +179,6 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
 updateGameData();
 
 
-var slider = document.getElementById(`slider-${gameId}`);
-var output = document.getElementById("demo");
-output.innerHTML = slider.value; // Display the default slider value
-// Update the current slider value (each time you drag the slider handle)
-slider.oninput = function () {
-  output.innerHTML = this.value;
-}
 
 
 function setFlop() {
