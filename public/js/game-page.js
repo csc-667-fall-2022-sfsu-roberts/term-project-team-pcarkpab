@@ -8,7 +8,7 @@ const gameId = pathnameSegments.pop();
 let gameData = {
   pot: 0,
   playerCount: 4,
-  playerInfo: [
+  playerinfo: [
     { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, playerStatus: 'idle', blindStatus: 'DEALER', seatNumber: 0 },
     { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, playerStatus: 'idle', blindStatus: 'SMALLBLIND', seatNumber: 1 },
     { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, playerStatus: 'idle', blindStatus: 'big-blind', seatNumber: 2 },
@@ -61,15 +61,15 @@ function setValues(){
 function setTable(){
   let ii = 0;
   for( i = 0; i < 6; i++){
-    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+    if (typeof gameData.playerinfo[i] == 'undefined'){
       //document.write("undefined for "+ i);
       continue;
     } else{
       ii = i+1
       var a = document.querySelector("#player"+ii+ " #player-name");
       var b = document.querySelector("#player"+ii+ " #money-amount");
-      a.innerHTML = gameData.PlayerInfo[i].username;
-      b.innerHTML = gameData.PlayerInfo[i].money;
+      a.innerHTML = gameData.playerinfo[i].username;
+      b.innerHTML = gameData.playerinfo[i].money;
    }
   }
 }
@@ -77,13 +77,13 @@ function setTable(){
 function setPlayerCards(){
   let dp = 0;
   for( i = 0; i < 6; i++){
-    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+    if (typeof gameData.playerinfo[i] == 'undefined'){
       //document.write("undefined for "+ i);
       continue;
     } else{
       dp = i+1;
-      displayCard(gameData.PlayerInfo[i].cards[0], "p"+dp+"_l", smallCard);
-      displayCard(gameData.PlayerInfo[i].cards[1], "p"+dp+"_r", smallCard);
+      displayCard(gameData.playerinfo[i].cards[0], "p"+dp+"_l", smallCard);
+      displayCard(gameData.playerinfo[i].cards[1], "p"+dp+"_r", smallCard);
    }
   }
 }
@@ -91,11 +91,11 @@ function setPlayerCards(){
 function setTurn(){
   document.write(" In setturn");
   for( i = 0; i < 6; i++){
-    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+    if (typeof gameData.playerinfo[i] == 'undefined'){
       document.write("undefine for "+ i);
       continue;
     }
-    if (gameData.PlayerInfo[i].isTurn == true){
+    if (gameData.playerinfo[i].isTurn == true){
       document.write(" In setturn true");
       document.write(" Is turn set for player " +i);
       hideturn(i+1);
@@ -112,9 +112,9 @@ function renderPlayers(){
   var bblind = 0;
   var dealer = 0;
   let dp = 0;
-  //document.write(gameData.PlayerInfo[1].playerStatus)
+  //document.write(gameData.playerinfo[1].playerStatus)
   for( i = 0; i < 6; i++){
-    if (typeof gameData.PlayerInfo[i] == 'undefined'){
+    if (typeof gameData.playerinfo[i] == 'undefined'){
       dp = i +1;
       //document.write("player " + dp + " not in game")
       let p = "player";
@@ -123,14 +123,14 @@ function renderPlayers(){
       toggler(pss);
       
     } else{
-      //document.write("Seats " + gameData.PlayerInfo[i].seatNumber + " are occupied.")
+      //document.write("Seats " + gameData.playerinfo[i].seatNumber + " are occupied.")
       dp = i+1;
 
-      if(gameData.PlayerInfo[i].blindStatus == "SMALLBLIND"){
+      if(gameData.playerinfo[i].blindStatus == "SMALLBLIND"){
         sblind = dp;
-      } else if (gameData.PlayerInfo[i].blindStatus == "BIGBLIND"){
+      } else if (gameData.playerinfo[i].blindStatus == "BIGBLIND"){
         bblind = dp;
-      } else if (gameData.PlayerInfo[i].blindStatus == "DEALER"){
+      } else if (gameData.playerinfo[i].blindStatus == "DEALER"){
         dealer = dp;
       }
     }
@@ -165,7 +165,7 @@ function renderPlayers(){
 socket.on(`phase-blindBet:${gameId}`, async () => {
   let flag = false;
   await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
-  for (let player of gameData.playerInfo) {
+  for (let player of gameData.playerinfo) {
     if (player.userId == currentUserId && player.seatNumber == gameData.isTurn) {
       if (player.blindStatus == "SMALLBLIND") {
         await fetch(`/api/game/playerBet/${gameId}`, {
@@ -246,8 +246,8 @@ socket.on(`game-phase:betting-round`, () => {
 
 // let raiseButton = document.getElementById(`raise-button-${gameId}`)
 // raiseButton.onclick(() => {
-//   for (let playerInfo in gameData.PlayerInfo) {
-//     if (currentUserId == gameData.userId && playerInfo.isTurn) {
+//   for (let playerinfo in gameData.playerinfo) {
+//     if (currentUserId == gameData.userId && playerinfo.isTurn) {
 //       //fetch('api/game/bet or check or fold')
 //     }
 //   }
