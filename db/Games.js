@@ -136,7 +136,7 @@ const deducePlayerMoney = (userId, gameId, money) => {
 
 const checkActivePlayer = (gameId) => {
   let baseSQL =
-    "SELECT COUNT(*) AS count FROM game_user WHERE status!='SPECTATOR' AND \"gameId\"=${gameId}";
+    "SELECT COUNT(*) AS count FROM game_user WHERE status!='SPECTATOR' AND \"gameId\"=${gameId} AND \"userId\">0";
   return db.one(baseSQL, {gameId});
 }
 

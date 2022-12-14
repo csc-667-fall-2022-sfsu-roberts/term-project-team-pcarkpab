@@ -35,7 +35,7 @@ displayCard(null, "mid5", bigCard);
 function setCardsEmpty(){
   for( i = 1; i < 7; i++){
     displayCard(null, "p"+i+"_l", smallCard);
-displayCard(null, "p"+i+"_r", smallCard);
+    displayCard(null, "p"+i+"_r", smallCard);
   }
 }
 

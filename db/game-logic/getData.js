@@ -57,6 +57,7 @@ const getData = (gameId) => {
     })
 
     .then(() => {
+     
       return Game.getGame(gameId)
         .then((result) => {
           data.gamePhase = result.gamePhase;
@@ -70,10 +71,17 @@ const getData = (gameId) => {
       return Game.getPlayerData(0, gameId)
         .then((result) => {
           data.currentBet = result.chipsBet;
+          data.status = result.status;
+          return Promise.resolve();
+        })
+        .catch((err) => {
+          data.currentBet = 0;
+          data.status ='IDLE';
           return Promise.resolve();
         })
     })
     .then(() => {
+      
       return Game.getPlayerCards(0, gameId)
         .then((result) => {
           return Promise.all(result.map((card) => {
@@ -82,6 +90,7 @@ const getData = (gameId) => {
         })
     })
     .then((cards) => {
+     
       data.dealerCards = cards;
       return Promise.resolve();
     })

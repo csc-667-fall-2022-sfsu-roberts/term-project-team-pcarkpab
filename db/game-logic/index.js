@@ -3,6 +3,8 @@ const getData = require('./getData');
 const bet = require('./bet');
 const nextTurn = require('./nextTurn');
 const assignCards = require('./assignCards');
+const check = require('./check');
+const fold = require('./fold');
 
 module.exports = {
   initialize,
@@ -10,4 +12,6 @@ module.exports = {
   bet,
   nextTurn,
   assignCards,
+  check,
+  fold,
 }
