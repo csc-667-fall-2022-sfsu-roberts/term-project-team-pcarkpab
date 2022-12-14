@@ -42,17 +42,6 @@ function toggler(dis) {
     }
   }
 
-  function toggle7() {
-    var d = document.getElementById("playerMain");
-    var c = document.getElementById("mainCards");
-    if (d.style.display === "none" && c.style.display === "none") {
-      d.style.display = "flex";
-      c.style.display = "inline-flex";
-    } else {
-      d.style.display = "none";
-      c.style.display = "none";
-    }
-  }
 
 
 function sleep(ms) {
@@ -66,12 +55,12 @@ function sleep(ms) {
 
 // When user click right button
   // set box right position to right
-
+/*
   document.getElementById('move-c1').onclick = moveCard1;
   document.getElementById('move-c2').onclick = moveCard2;
   document.getElementById('move-c3').onclick = moveCard3;
   document.getElementById('move-c4').onclick = moveCard4;
-  document.getElementById('move-c5').onclick = moveCard5;
+  document.getElementById('move-c5').onclick = moveCard5;*/
 
   document.getElementById('return').onclick = returnCard;
   

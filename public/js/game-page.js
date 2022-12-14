@@ -15,7 +15,7 @@ let gameData = {
     { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, isTurn: false, playerStatus: 'idle', blindStatus: 'none', seatNumber: 3 },
   ],
   dealerCards: [3, 50, 42, 35, 17],
-  currentBet: 0,
+  currentBet: 5,
   gamePhase: 'BLIND-BET',
 }
 
@@ -24,6 +24,14 @@ renderPlayers()
 setTable()
 setTurn()
 setValues()
+
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value; // Display the default slider value
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
 
 
 function setFlop(){
