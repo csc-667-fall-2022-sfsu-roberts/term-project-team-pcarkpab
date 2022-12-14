@@ -54,7 +54,18 @@ router.post("/join/:id", (req, res, next) => {
   Lobby.checkAlreadyInLobby(userId, gameId)
     .then((exist) => {
       if (exist) {
-        return res.json({ gameId });
+        return Lobby.checkPlayerCount(gameId)
+          .then((result) => {
+            playerCount = result.count;
+            return Games.getGame(gameId)
+          })
+          .then((result) => {
+            req.app.io.emit(`player-join:${gameId}`, {
+              playerCount,
+              gameStatus: result.gameStatus,
+            })
+            res.json({ gameId });
+          })
       }
     })
     .catch((err) => {
