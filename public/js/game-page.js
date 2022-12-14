@@ -1,4 +1,4 @@
-const START_DELAY = 5;
+const START_DELAY = 15;
 
 let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
@@ -18,6 +18,9 @@ let gameData = {
   isTurn: -1,
   currentBet: 0,
   minimumBet: 0,
+  //Dealer status to determine what action a player can take
+  //'BET', 'CALL', 'CHECK', 'FOLD'
+  status: 'CHECK',
   //'PREGAME', 'BLINDBET', 'ASSIGNCARDS','PREFLOP', 'FLOP', 'TURN', 'RIVER', 'FINALREVEAL', 'GAMEEND'
   gamePhase: 'PREGAME',
 }
@@ -47,7 +50,7 @@ socket.on(`update-gameData:${gameId}`, ({ data }) => {
 updateGameData();
 
 
-var slider = document.getElementById("myRange");
+var slider = document.getElementById(`slider-${gameId}`);
 var output = document.getElementById("demo");
 output.innerHTML = slider.value; // Display the default slider value
 // Update the current slider value (each time you drag the slider handle)
@@ -206,7 +209,7 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
             body: JSON.stringify({ userId: player.userId, betAmount: Math.floor(gameData.minimumBet / 2) }),
           })
           //UPDATE TURN
-          setTimeout(async () => {
+          await new Promise(resolve => setTimeout(async () => {
             try {
               await fetch(`/api/game/nextTurn/${gameId}`, {
                 method: "post",
@@ -215,10 +218,11 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
               })
               await updateGameData();
               setValues();
+              resolve();
             } catch (err) {
               console.log(err);
             }
-          }, 1000);
+          }, 1000));
 
         } else if (player.blindStatus == "BIGBLIND") {
           //PLAYER BET
@@ -228,7 +232,7 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
             body: JSON.stringify({ userId: player.userId, betAmount: gameData.minimumBet }),
           })
           //UPDATE TURN
-          setTimeout(async () => {
+          await new Promise(resolve => setTimeout(async () => {
             try {
               await fetch(`/api/game/nextTurn/${gameId}`, {
                 method: "post",
@@ -237,11 +241,12 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
               })
               await updateGameData();
               setValues();
-              fetch(`/api/game/phaseAssignCards/${gameId}`, { method: "post" });
+              await fetch(`/api/game/phaseAssignCards/${gameId}`, { method: "post" });
+              resolve();
             } catch (err) {
               console.log(err);
             }
-          }, 2000);
+          }, 2000));
 
         }
       }
@@ -256,9 +261,8 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
 socket.on(`phase-assignCards:${gameId}`, async () => {
   try {
     //Making sure it only update once
-    if (currentUserId == gameData.playerInfo[0].userId) {
-      await updateGameData();
-    }
+    await updateGameData();
+
     await new Promise(resolve => setTimeout(async () => {
       try {
         await setPlayerCards();

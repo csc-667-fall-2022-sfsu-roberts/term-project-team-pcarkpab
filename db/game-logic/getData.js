@@ -71,10 +71,12 @@ const getData = (gameId) => {
       return Game.getPlayerData(0, gameId)
         .then((result) => {
           data.currentBet = result.chipsBet;
+          data.status = result.status;
           return Promise.resolve();
         })
         .catch((err) => {
           data.currentBet = 0;
+          data.status ='IDLE';
           return Promise.resolve();
         })
     })

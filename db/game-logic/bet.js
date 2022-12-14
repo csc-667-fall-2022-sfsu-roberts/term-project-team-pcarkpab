@@ -12,6 +12,11 @@ const bet = (userId, gameId, betAmount) => {
       return Games.setPlayerStatus(userId, gameId, 'BET');
     })
     .then(() => {
+      //Set dealer status as well
+      return Games.setPlayerStatus(0, gameId, 'BET');
+    })
+    .then(() => {
+      //Update dealer current bet
       return Games.setPlayerBet(0, gameId, betAmount);
     })
 }

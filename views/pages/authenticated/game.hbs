@@ -341,13 +341,13 @@
 
             <div id="game-buttons-{{gameId}}" class="game-buttons">
                 <div id="play-buttons">
-                    <button class="button button1">Raise</button></a>
-                    <button class="button button1">Fold</button></a>
-                    <button class="button button1">Call</button></a>
-                    <button class="button button1">Check</button></a>
+                    <button id="raise-button-{{gameId}}" class="button button1">Raise</button></a>
+                    <button id="fold-button-{{gameId}}" class="button button1">Fold</button></a>
+                    <button id="call-button-{{gameId}}" class="button button1">Call</button></a>
+                    <button id="check-button-{{gameId}}" class="button button1">Check</button></a>
                 </div>
                 <div class="slidecontainer">
-                    <input type="range" min="1" max="100" value="1" class="slider" id="myRange">
+                    <input type="range" min="1" max="100" value="1" class="slider" id="slider-{{gameId}}">
                     <p>Amount to raise: <span id="demo"></span></p>
                     Implementing bar later
                 </div>
