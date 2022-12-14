@@ -8,7 +8,7 @@ const gameId = pathnameSegments.pop();
 let gameData = {
   pot: 0,
   playerCount: 4,
-  playerinfo: [
+  playerInfo: [
     { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, playerStatus: 'idle', blindStatus: 'DEALER', seatNumber: 0 },
     { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, playerStatus: 'idle', blindStatus: 'SMALLBLIND', seatNumber: 1 },
     { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, playerStatus: 'idle', blindStatus: 'big-blind', seatNumber: 2 },
@@ -61,15 +61,15 @@ function setValues(){
 function setTable(){
   let ii = 0;
   for( i = 0; i < 6; i++){
-    if (typeof gameData.playerinfo[i] == 'undefined'){
+    if (typeof gameData.playerInfo[i] == 'undefined'){
       //document.write("undefined for "+ i);
       continue;
     } else{
       ii = i+1
       var a = document.querySelector("#player"+ii+ " #player-name");
       var b = document.querySelector("#player"+ii+ " #money-amount");
-      a.innerHTML = gameData.playerinfo[i].username;
-      b.innerHTML = gameData.playerinfo[i].money;
+      a.innerHTML = gameData.playerInfo[i].username;
+      b.innerHTML = gameData.playerInfo[i].money;
    }
   }
 }
@@ -77,13 +77,13 @@ function setTable(){
 function setPlayerCards(){
   let dp = 0;
   for( i = 0; i < 6; i++){
-    if (typeof gameData.playerinfo[i] == 'undefined'){
+    if (typeof gameData.playerInfo[i] == 'undefined'){
       //document.write("undefined for "+ i);
       continue;
     } else{
       dp = i+1;
-      displayCard(gameData.playerinfo[i].cards[0], "p"+dp+"_l", smallCard);
-      displayCard(gameData.playerinfo[i].cards[1], "p"+dp+"_r", smallCard);
+      displayCard(gameData.playerInfo[i].cards[0], "p"+dp+"_l", smallCard);
+      displayCard(gameData.playerInfo[i].cards[1], "p"+dp+"_r", smallCard);
    }
   }
 }
@@ -99,9 +99,9 @@ function renderPlayers(){
   var bblind = 0;
   var dealer = 0;
   let dp = 0;
-  //document.write(gameData.playerinfo[1].playerStatus)
+  //document.write(gameData.playerInfo[1].playerStatus)
   for( i = 0; i < 6; i++){
-    if (typeof gameData.playerinfo[i] == 'undefined'){
+    if (typeof gameData.playerInfo[i] == 'undefined'){
       dp = i +1;
       //document.write("player " + dp + " not in game")
       let p = "player";
@@ -110,14 +110,14 @@ function renderPlayers(){
       toggler(pss);
       
     } else{
-      //document.write("Seats " + gameData.playerinfo[i].seatNumber + " are occupied.")
+      //document.write("Seats " + gameData.playerInfo[i].seatNumber + " are occupied.")
       dp = i+1;
 
-      if(gameData.playerinfo[i].blindStatus == "SMALLBLIND"){
+      if(gameData.playerInfo[i].blindStatus == "SMALLBLIND"){
         sblind = dp;
-      } else if (gameData.playerinfo[i].blindStatus == "BIGBLIND"){
+      } else if (gameData.playerInfo[i].blindStatus == "BIGBLIND"){
         bblind = dp;
-      } else if (gameData.playerinfo[i].blindStatus == "DEALER"){
+      } else if (gameData.playerInfo[i].blindStatus == "DEALER"){
         dealer = dp;
       }
     }
@@ -152,7 +152,7 @@ function renderPlayers(){
 socket.on(`phase-blindBet:${gameId}`, async () => {
   let flag = false;
   await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
-  for (let player of gameData.playerinfo) {
+  for (let player of gameData.playerInfo) {
     if (player.userId == currentUserId && player.seatNumber == gameData.isTurn) {
       if (player.blindStatus == "SMALLBLIND") {
         await fetch(`/api/game/playerBet/${gameId}`, {
@@ -233,8 +233,8 @@ socket.on(`game-phase:betting-round`, () => {
 
 // let raiseButton = document.getElementById(`raise-button-${gameId}`)
 // raiseButton.onclick(() => {
-//   for (let playerinfo in gameData.playerinfo) {
-//     if (currentUserId == gameData.userId && playerinfo.isTurn) {
+//   for (let playerInfo in gameData.playerInfo) {
+//     if (currentUserId == gameData.userId && playerInfo.isTurn) {
 //       //fetch('api/game/bet or check or fold')
 //     }
 //   }
