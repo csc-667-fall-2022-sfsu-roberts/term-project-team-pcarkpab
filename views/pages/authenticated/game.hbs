@@ -2,8 +2,6 @@
 
     <div class="middle">
 
-
-
         <div class="game-chat">
 
             <div id="chatbox">
@@ -39,20 +37,26 @@
 
             <div id="poker-header">
                 <p>test</p>
-                <button onclick="toggle1()">Toggle p1</button>
+<!--<button onclick="toggle1()">Toggle p1</button>
                 <button onclick="toggle2()">Toggle p2</button>
                 <button onclick="toggle3()">Toggle p3</button>
                 <button onclick="toggle4()">Toggle p4</button>
                 <button onclick="toggle5()">Toggle p5</button>
-                <button onclick="toggle6()">Toggle p6</button>
+                <button onclick="toggle6()">Toggle p6</button>-->
 
 
-                <button id="move-c1">card 1</button>
+                <!--<button id="move-c1">card 1</button>
                 <button id="move-c2">card 2</button>
                 <button id="move-c3">card 3</button>
                 <button id="move-c4">card 4</button>
-                <button id="move-c5">card 5</button>
-                <button id="return">return</button>
+                <button id="move-c5">card 5</button>-->
+                
+                <button id="setPcards" onclick="setPlayerCards()">set player cards</button>
+                <button id="testFlop" onclick="setFlop()">testFlop</button>
+                <button id="testTurnc" onclick="setTurnc()">setTurn</button>
+                <button id="testRiver" onclick="setRiver()">setRiver</button>
+                <button id="return" onclick="returnCard()">returnCards</button>
+
 
                 <button id="leave-game">LEAVE</button>
 
@@ -343,10 +347,14 @@
                     <button class="button button1">Fold</button></a>
                     <button class="button button1">Call</button></a>
                 </div>
+                <div class="slidecontainer">
+                    <input type="range" min="1" max="100" value="1" class="slider" id="myRange">
+                    <p>Amount to raise: <span id="demo"></span></p>
+                    Implementing bar later
+                </div>
                 <div id="bet">
                     <label>Input Bet</label><br>
                     <input type="text" id="create-Bet"><br>
-
                 </div>
             </div>
         </div>
@@ -355,7 +363,8 @@
     <script>
         const currentUserId = {{ userId }};
     </script>
+    <script src="/public/js/toggle-player.js"></script>
     <script src="/public/js/game-card.js"></script>
     <script src="/public/js/game-page.js"></script>
-    <script src="/public/js/toggle-player.js"></script>
+    
 </div>
