@@ -62,7 +62,7 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
     let checkButton = document.getElementById(`check-button-${gameId}`);
     let foldButton = document.getElementById(`fold-button-${gameId}`);
 
-    
+
 
     if (gameData.gamePhase != 'PREGAME' && gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
       let flag = false;
@@ -74,87 +74,75 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
         }
       })
       if (flag) {
-        
+
         slider.min = gameData.currentBet - currentPlayer.betAmount;
         sliderOutput.innerHTML = gameData.currentBet - currentPlayer.betAmount;
-        //CALL BUTTON
-        callButton.onclick = async() => {
-          console.log(currentUserId + " with seatNumber " +  gameData.isTurn);
+        //CALL BUTTON LOGIC
+        callButton.onclick = async () => {
+          console.log(currentUserId + " with seatNumber " + gameData.isTurn);
           await fetch(`/api/game/playerBet/${gameId}`, {
             method: "post",
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ userId: currentUserId, betAmount: gameData.currentBet - currentPlayer.betAmount }),
           });
           await new Promise(resolve => setTimeout(async () => {
-            try {
-              await fetch(`/api/game/nextTurn/${gameId}`, {
-                method: "post",
-                headers: { 'Content-Type': "application/json" },
-                body: JSON.stringify({ isTurn: gameData.isTurn }),
-              })
-              await updateGameData();
-              resolve();
-            } catch (err) {
-              console.log(err);
-            }
+            await processAction();
+            resolve();
           }, 1000));
-          await updateGameData();
+
         }
-        //RAISE BUTTON
-        raiseButton.onclick = async() => {
-          console.log(currentUserId + " with seatNumber " +  gameData.isTurn);
+        //RAISE BUTTON LOGIC
+        raiseButton.onclick = async () => {
+          console.log(currentUserId + " with seatNumber " + gameData.isTurn);
           await fetch(`/api/game/playerBet/${gameId}`, {
             method: "post",
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ userId: currentUserId, betAmount: slider.value }),
           });
+
           await new Promise(resolve => setTimeout(async () => {
-            try {
-              await fetch(`/api/game/nextTurn/${gameId}`, {
-                method: "post",
-                headers: { 'Content-Type': "application/json" },
-                body: JSON.stringify({ isTurn: gameData.isTurn }),
-              })
-              await updateGameData();
-              resolve();
-            } catch (err) {
-              console.log(err);
-            }
+            await processAction();
+            resolve();
           }, 1000));
-          await updateGameData();
+
+
         }
-        checkButton.onclick = async() => {
-          
-          if(gameData.status == 'CHECK'){
+        //CHECK BUTTON LOGIC
+        checkButton.onclick = async () => {
+          if (gameData.status == 'CHECK') {
             console.log("CHECK");
             await fetch(`/api/game/playerCheck/${gameId}`, {
               method: "post",
               headers: { 'Content-Type': "application/json" },
               body: JSON.stringify({ userId: currentUserId }),
             });
-            await new Promise(resolve => setTimeout(async () => {
-              try {
-                await fetch(`/api/game/nextTurn/${gameId}`, {
-                  method: "post",
-                  headers: { 'Content-Type': "application/json" },
-                  body: JSON.stringify({ isTurn: gameData.isTurn }),
-                })
-                await updateGameData();
-                resolve();
-              } catch (err) {
-                console.log(err);
-              }
-            }, 1000));
-            await updateGameData();
 
-          }else{
+            await new Promise(resolve => setTimeout(async () => {
+              await processAction();
+              resolve();
+            }, 1000));
+            
+
+          } else {
             console.log('CANNOT CHECK HERE');
           }
         }
-        foldButton.onclick = () => {
+        //FOLD BUTTON LOGIC
+        foldButton.onclick = async() => {
           console.log("FOLD");
+          await fetch(`/api/game/playerFold/${gameId}`, {
+            method: "post",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify({ userId: currentUserId }),
+          });
+          
+          await new Promise(resolve => setTimeout(async () => {
+            await processAction();
+            resolve();
+          }, 1000));
         }
-      }else{
+        
+      } else {
         callButton.onclick = () => {
           console.log("not your turn");
         }
@@ -174,6 +162,20 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
   }
 
 })
+
+let processAction = async () => {
+  try {
+    await fetch(`/api/game/nextTurn/${gameId}`, {
+      method: "post",
+      headers: { 'Content-Type': "application/json" },
+      body: JSON.stringify({ isTurn: gameData.isTurn }),
+    })
+    await updateGameData();
+
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 
 updateGameData();

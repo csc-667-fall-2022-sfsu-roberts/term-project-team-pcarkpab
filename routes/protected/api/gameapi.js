@@ -156,6 +156,24 @@ router.post('/playerCheck/:id', (req, res, next) => {
     .catch(err => console.log(err));
 })
 
+router.post('/playerFold/:id', (req, res, next) => {
+  const {id: gameId} = req.params;
+  const {userId} = req.body;
+  const username = req.session.username;
+  
+  GameLogic.fold(userId, gameId)
+    .then(() => {
+      console.log(userId + " has folded");
+      req.app.io.emit(`console:${gameId}`, {
+        sender: username,
+        message: `${username} has folded$`,
+        timestamp: Date.now()
+      })
+      res.json({success: true});
+    })
+    .catch(err => console.log(err));
+})
+
 
 
 router.post('/nextTurn/:id', (req, res, next) => {

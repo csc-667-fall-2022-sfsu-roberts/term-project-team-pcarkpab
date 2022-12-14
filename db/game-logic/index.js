@@ -4,6 +4,7 @@ const bet = require('./bet');
 const nextTurn = require('./nextTurn');
 const assignCards = require('./assignCards');
 const check = require('./check');
+const fold = require('./fold');
 
 module.exports = {
   initialize,
@@ -12,4 +13,5 @@ module.exports = {
   nextTurn,
   assignCards,
   check,
+  fold,
 }
