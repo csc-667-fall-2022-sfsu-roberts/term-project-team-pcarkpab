@@ -18,10 +18,12 @@ let gameData = {
   isTurn: -1,
   currentBet: 0,
   minimumBet: 0,
-
+  //Dealer status to determine what action a player can take
+  //'BET', 'CALL', 'CHECK', 'FOLD'
+  status: 'CHECK',
+  //'PREGAME', 'BLINDBET', 'ASSIGNCARDS','PREFLOP', 'FLOP', 'TURN', 'RIVER', 'FINALREVEAL', 'GAMEEND'
   gamePhase: 'PREGAME',
 }
-
 
 let updateGameData = async () => {
   await fetch(`/api/game/updateData/${gameId}`, { method: "post" });

@@ -40,7 +40,9 @@
   font-weight: bold;
   font-size: .8em;
   }
-  #game-chat,
+  .game-chat{
+    height: 400px;
+  }
 
   .chat-box {
     text-align: left;
@@ -48,7 +50,7 @@
     margin-bottom: 25px;
     padding: 10px;
     background: rgb(71, 59, 51);
-    height: 350px;
+    height: 260px;
     max-width: 100%;
     border: 2px solid #b55e35;
     overflow-y:auto;
@@ -153,7 +155,7 @@
 
   /* width */
 ::-webkit-scrollbar {
-    width: 20px;
+    width: 12px;
   }
   
   /* Track */
@@ -164,7 +166,7 @@
    
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: rgb(194, 157, 115); 
+    background: rgb(100, 90, 80); 
     border-radius: 10px;
   }
   
@@ -203,4 +205,44 @@
    
   .msgln b.user-name-left {
     background: orangered;
+  }
+
+  .console-chat{
+    background-color: black;
+    height:275px;
+  }
+  .console-box {
+    text-align: left;
+    margin: 0 auto;
+    background: rgb(30, 27, 24);
+    height: 90%;
+    max-width: 100%;
+    border: 2px solid #3b2f2a;
+    overflow-y:auto;
+    border-radius: 4px;
+    border-bottom: 4px solid #41382b;
+  }
+
+  #console-name{
+    height: 15%;
+    z-index: 102;
+  border-radius: 3px;
+  background-color:  rgb(31, 25, 20);
+  border: 3px solid  rgb(64, 59, 57);
+
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 7px;
+  padding-bottom: 10px;
+
+  color: rgb(166, 166, 166);
+  font-size: .8em;
+  }
+
+  .console-message{
+    color: rgb(179, 167, 167);
+      font-weight: bold;
+      font-size: 0.7em;
+      word-wrap: break-word;
+      padding: 5px;
   }
