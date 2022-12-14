@@ -94,6 +94,17 @@ router.post('/phaseAssignCards/:id', (req, res, next) => {
   .catch(err => console.log(err));
 })
 
+
+
+router.post('/phasePreFlop/:id', (req, res, next) => {
+  const {id: gameId} = req.params;
+  Games.setGamePhase(gameId, 'PREFLOP')
+  .then(() => {
+    res.json({success: true});
+  })
+  .catch((err) => console.log(err)); 
+})
+
 router.post('/phaseFlop/:id', (req, res, next) => {
   const {id: gameId} = req.params;
   console.log("phase Flop");

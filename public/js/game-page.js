@@ -1,4 +1,4 @@
-const START_DELAY = 3;
+const START_DELAY = 5;
 
 let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
@@ -18,19 +18,34 @@ let gameData = {
   isTurn: -1,
   currentBet: 0,
   minimumBet: 0,
-
+  //'PREGAME', 'BLINDBET', 'ASSIGNCARDS','PREFLOP', 'FLOP', 'TURN', 'RIVER', 'FINALREVEAL', 'GAMEEND'
   gamePhase: 'PREGAME',
 }
 
 
 let updateGameData = async () => {
-  await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+  try {
+    await fetch(`/api/game/updateData/${gameId}`, { method: "post" })
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-renderPlayers()
-setTable()
-setTurn()
-setValues()
+socket.on(`update-gameData:${gameId}`, ({ data }) => {
+  gameData = data;
+  console.log("Update GameData");
+  console.log(gameData);
+  renderPlayers();
+  if (gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
+    displayPlayerCards();
+  }
+  setTurn();
+  setValues();
+})
+
+
+updateGameData();
+
 
 var slider = document.getElementById("myRange");
 var output = document.getElementById("demo");
@@ -79,15 +94,29 @@ function setTable() {
 }
 
 async function setPlayerCards() {
+  try {
+    for (const player of gameData.playerInfo) {
+      await new Promise(resolve => setTimeout(() => {
+        displayCard(player.cards[0], "p" + (player.seatNumber + 1) + "_l", smallCard);
+        resolve();
+      }, 300));
+      await new Promise(resolve => setTimeout(() => {
+        displayCard(player.cards[1], "p" + (player.seatNumber + 1) + "_r", smallCard);
+        resolve();
+      }, 300));
+    }
+    console.log("card animation completed");
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function displayPlayerCards() {
   for (const player of gameData.playerInfo) {
-    await new Promise(resolve => setTimeout(() => {
+    if (player.cards.length == 2) {
       displayCard(player.cards[0], "p" + (player.seatNumber + 1) + "_l", smallCard);
-      resolve();
-    }, 500));
-    await new Promise(resolve => setTimeout(() => {
       displayCard(player.cards[1], "p" + (player.seatNumber + 1) + "_r", smallCard);
-      resolve();
-    }, 500));
+    }
   }
 }
 
@@ -96,6 +125,7 @@ function setTurn() {
 }
 
 function renderPlayers() {
+  console.log("Im in render player");
   setCardsEmpty();
   const smallCard = 1;
   var sblind = 0;
@@ -164,75 +194,92 @@ await new Promise(resolve => setTimeout(() => {
 */
 
 socket.on(`phase-blindBet:${gameId}`, async () => {
-  renderPlayers();
-  await updateGameData();
-  for (let player of gameData.playerInfo) {
-    if (player.userId == currentUserId) {
-      if (player.blindStatus == "SMALLBLIND") {
-        //PLAYER BET
-        await fetch(`/api/game/playerBet/${gameId}`, {
-          method: "post",
-          headers: { 'Content-Type': "application/json" },
-          body: JSON.stringify({ userId: player.userId, betAmount: Math.floor(gameData.minimumBet / 2) }),
-        })
-        //UPDATE TURN
-        setTimeout(async () => {
-          await fetch(`/api/game/nextTurn/${gameId}`, {
+  try {
+    renderPlayers();
+    await updateGameData();
+    for (let player of gameData.playerInfo) {
+      if (player.userId == currentUserId) {
+        if (player.blindStatus == "SMALLBLIND") {
+          //PLAYER BET
+          await fetch(`/api/game/playerBet/${gameId}`, {
             method: "post",
             headers: { 'Content-Type': "application/json" },
-            body: JSON.stringify({ isTurn: gameData.isTurn }),
+            body: JSON.stringify({ userId: player.userId, betAmount: Math.floor(gameData.minimumBet / 2) }),
           })
-          await updateGameData();
-          setValues();
-        }, 1000);
+          //UPDATE TURN
+          setTimeout(async () => {
+            try {
+              await fetch(`/api/game/nextTurn/${gameId}`, {
+                method: "post",
+                headers: { 'Content-Type': "application/json" },
+                body: JSON.stringify({ isTurn: gameData.isTurn }),
+              })
+              await updateGameData();
+              setValues();
+            } catch (err) {
+              console.log(err);
+            }
+          }, 1000);
 
-      } else if (player.blindStatus == "BIGBLIND") {
-        //PLAYER BET
-        await fetch(`/api/game/playerBet/${gameId}`, {
-          method: "post",
-          headers: { 'Content-Type': "application/json" },
-          body: JSON.stringify({ userId: player.userId, betAmount: gameData.minimumBet }),
-        })
-        //UPDATE TURN
-        setTimeout(async () => {
-          await fetch(`/api/game/nextTurn/${gameId}`, {
+        } else if (player.blindStatus == "BIGBLIND") {
+          //PLAYER BET
+          await fetch(`/api/game/playerBet/${gameId}`, {
             method: "post",
             headers: { 'Content-Type': "application/json" },
-            body: JSON.stringify({ isTurn: gameData.isTurn }),
+            body: JSON.stringify({ userId: player.userId, betAmount: gameData.minimumBet }),
           })
-          await updateGameData();
-          setValues();
-          fetch(`/api/game/phaseAssignCards/${gameId}`, { method: "post" });
-        }, 2000);
+          //UPDATE TURN
+          setTimeout(async () => {
+            try {
+              await fetch(`/api/game/nextTurn/${gameId}`, {
+                method: "post",
+                headers: { 'Content-Type': "application/json" },
+                body: JSON.stringify({ isTurn: gameData.isTurn }),
+              })
+              await updateGameData();
+              setValues();
+              fetch(`/api/game/phaseAssignCards/${gameId}`, { method: "post" });
+            } catch (err) {
+              console.log(err);
+            }
+          }, 2000);
+
+        }
       }
     }
+  } catch (err) {
+    console.log(err);
   }
 })
 
 
 
 socket.on(`phase-assignCards:${gameId}`, async () => {
-  //Making sure it only update once
-  if (currentUserId == gameData.playerInfo[0].userId) {
-    await updateGameData();
-  }
-  await new Promise(resolve => setTimeout(() => {
-    setPlayerCards();
-    setTurn();
-   
-  }, 1000))
+  try {
+    //Making sure it only update once
+    if (currentUserId == gameData.playerInfo[0].userId) {
+      await updateGameData();
+    }
+    await new Promise(resolve => setTimeout(async () => {
+      try {
+        await setPlayerCards();
+        setTurn();
+        resolve();
+      } catch (err) {
+        console.log(err);
+      }
+    }, 1000))
 
-  setTimeout(() => {
-    setTurnc();
-  }, 2000)
-  setTimeout(() => {
-    setRiver();
-  }, 3000)
-  //adding the assign card animation (appears clockwise)
-  //Timeout gamecard assign 0.5 seconds per card
 
-  if (currentUserId == gameData.playerInfo[0].userId) {
-    await fetch(`/api/game/phaseFlop/${gameId}`, { method: 'post' });
+    //adding the assign card animation (appears clockwise)
+    //Timeout gamecard assign 0.5 seconds per card
+
+    if (currentUserId == gameData.playerInfo[0].userId) {
+      await fetch(`/api/game/phasePreFlop/${gameId}`, { method: 'post' });
+      await updateGameData();
+    }
+  } catch (err) {
+    console.log(err);
   }
 })
 
@@ -241,10 +288,7 @@ socket.on(`game-phase:flop`, () => {
 })
 
 
-socket.on(`update-gameData:${gameId}`, ({ data }) => {
-  gameData = data;
-  console.log(gameData);
-})
+
 
 socket.on(`game-phase:betting-round`, () => {
 
@@ -382,40 +426,43 @@ socket.on(`game-start:${gameId}`, () => {
 })
 
 async function startGame() {
-
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      fetch(`/api/console/${gameId}`, {
-        method: "post",
-        headers: { 'Content-Type': "application/json" },
-        body: JSON.stringify({ message: `Game will start in ${START_DELAY} seconds` }),
-      })
-        .then(() => {
-          // Resolve the promise once the fetch request is complete
-          resolve();
+  try {
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        fetch(`/api/console/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ message: `Game will start in ${START_DELAY} seconds` }),
         })
-        .catch((err) => console.log(err));
-    }, 3000);
-  });
+          .then(() => {
+            // Resolve the promise once the fetch request is complete
+            resolve();
+          })
+          .catch((err) => console.log(err));
+      }, 3000);
+    });
 
-  await new Promise((resolve) => {
-    setTimeout(async () => {
-      console.log("GAME STARTING");
-      // Wait for the initialize request to finish before calling updateData
-      await fetch(`/api/game/initialize/${gameId}`, { method: 'post' });
+    await new Promise((resolve) => {
+      setTimeout(async () => {
+        console.log("GAME STARTING");
+        // Wait for the initialize request to finish before calling updateData
+        await fetch(`/api/game/initialize/${gameId}`, { method: 'post' });
 
-      fetch(`/api/console/${gameId}`, {
-        method: "post",
-        headers: { 'Content-Type': "application/json" },
-        body: JSON.stringify({ message: `Game is starting now! Good luck!` }),
-      })
-        .catch((err) => console.log(err));
+        fetch(`/api/console/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ message: `Game is starting now! Good luck!` }),
+        })
+          .catch((err) => console.log(err));
 
-      // Resolve the promise once the fetch request is complete
-      resolve();
-    }, START_DELAY * 1000); // 15000 milliseconds = 15 seconds
-  });
+        // Resolve the promise once the fetch request is complete
+        resolve();
+      }, START_DELAY * 1000); // 15000 milliseconds = 15 seconds
+    });
 
-  await updateGameData();
-  await fetch(`/api/game/phaseBlindBet/${gameId}`, { method: "post" });
+    await updateGameData();
+    await fetch(`/api/game/phaseBlindBet/${gameId}`, { method: "post" });
+  } catch (err) {
+    console.log(err);
+  }
 }
