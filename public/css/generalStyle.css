@@ -2,8 +2,7 @@
 miscellaneous page for the website.*/
 
 body {
-    min-height: 150vh;
-  
+    position: relative;
     color: white;
     text-decoration: none;
     background-color: rgb(33,36,33);

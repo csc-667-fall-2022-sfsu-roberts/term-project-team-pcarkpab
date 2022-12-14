@@ -1,18 +1,31 @@
 
-<div>
+<header>
   <h2>Login Page</h2>
-  <p>Clicking on the log in button below would lead you to an authenticated page regardless... for now</p>
-  <form id="login-form" method="POST" action="/api/users/login" enctype="application/x-www-form-urlencoded">
+</header>
+
+<div class="container_Border">
+<form id="login-form" method="POST" action="/api/users/login" enctype="application/x-www-form-urlencoded">
+    <p id="Register">Log Into Account</p>
+
+    <div id="UsernameDIV">
     <label>
       Username
     </label>
-    <input type="text" id="username" name="username" required><br>
+    <input type="text" id="username" name="username" placeholder="Enter Valid Username" required><br>
+    </div>
     <br>
+
+    <div id="PasswordDIV">
     <label>
-      Password
+       Password
     </label>
-    <input type="password" id="user-password" name="password" required><br>
-    <br><br>
-    <input type="submit" value="Log In"><br>
+    <input type="password" id="user-password" name="password" placeholder="Enter Valid Password" required><br>
+    </div>
+    <br>
+    
+    <input type="submit" class="button button3" alt="Submit" placeholder="Log in">
+    <img id="PokerLogoSubmit" src="../public/css/fonts/LoginSignupLogo2.png">
+    
   </form>
 </div>
+ <div id="reg-space"></div>
