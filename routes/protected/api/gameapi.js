@@ -105,10 +105,16 @@ router.get('/getData/:id', (req, res, next) => {
 router.post('/playerBet/:id', (req, res, next) => {
   const {id: gameId} = req.params;
   const {userId, betAmount} = req.body;
+  const username = req.session.username;
   
   GameLogic.bet(userId, gameId, betAmount)
     .then(() => {
       console.log(userId + " has bet " + betAmount);
+      req.app.io.emit(`console:${gameId}`, {
+        sender: username,
+        message: `${username} has bet ${betAmount}$`,
+        timestamp: Date.now()
+      })
       res.json({success: true});
     })
     .catch(err => console.log(err));
