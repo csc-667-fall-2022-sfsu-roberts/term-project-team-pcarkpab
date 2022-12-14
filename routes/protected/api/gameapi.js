@@ -87,10 +87,16 @@ router.post('/phaseAssignCards/:id', (req, res, next) => {
   })
   .then((result) => {
     console.log("Assign card phase");
-    //req.app.io.emit(`phase-blindBet:${gameId}`, {});
+    req.app.io.emit(`phase-assignCards:${gameId}`, {});
     res.json({success: true});
   })
   .catch(err => console.log(err));
+})
+
+router.post('/phaseFlop/:id', (req, res, next) => {
+  const {id: gameId} = req.params;
+  console.log("phase Flop");
+  res.json({success: true});
 })
 
 router.get('/getData/:id', (req, res, next) => {

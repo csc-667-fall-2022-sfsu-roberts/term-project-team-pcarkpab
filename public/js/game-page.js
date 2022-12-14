@@ -23,6 +23,10 @@ let gameData = {
 }
 
 
+let updateGameData = async () => {
+  await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+}
+
 renderPlayers()
 setTable()
 setTurn()
@@ -151,7 +155,7 @@ function renderPlayers() {
 
 socket.on(`phase-blindBet:${gameId}`, async () => {
 
-  await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+  await updateGameData();
   for (let player of gameData.playerInfo) {
     if (player.userId == currentUserId) {
       if (player.blindStatus == "SMALLBLIND") {
@@ -168,7 +172,7 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ isTurn: gameData.isTurn }),
           })
-          await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+          await updateGameData();
         }, 1000);
 
       } else if (player.blindStatus == "BIGBLIND") {
@@ -185,7 +189,7 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ isTurn: gameData.isTurn }),
           })
-          await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+          await updateGameData();
           await fetch(`/api/game/phaseAssignCards/${gameId}`, { method: "post" });
         }, 2000);
       }
@@ -194,11 +198,20 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
 })
 
 
-socket.on(`game-phase:assign-card`, () => {
-  //game data will be also be update
+
+socket.on(`phase-assignCards:${gameId}`, async () => {
+  //Making sure it only update once
+  if(currentUserId == gameData.playerInfo[0].userId){
+    await updateGameData();
+  }
+  
   //adding the assign card animation (appears clockwise)
   //Timeout gamecard assign 0.5 seconds per card
-  //fetch('start-next-gamephase')
+
+
+  if(currentUserId == gameData.playerInfo[0].userId){
+    fetch(`phase-flop:${gameId}`, {method: 'post'});
+  }
 })
 
 socket.on(`game-phase:flop`, () => {
@@ -381,6 +394,6 @@ async function startGame() {
     }, START_DELAY * 1000); // 15000 milliseconds = 15 seconds
   });
 
-  await fetch(`/api/game/updateData/${gameId}`, { method: "post" });
+  await updateGameData();
   await fetch(`/api/game/phaseBlindBet/${gameId}`, { method: "post" });
 }
