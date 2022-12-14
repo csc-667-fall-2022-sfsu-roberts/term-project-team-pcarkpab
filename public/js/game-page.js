@@ -89,20 +89,7 @@ function setPlayerCards(){
 }
 
 function setTurn(){
-  document.write(" In setturn");
-  for( i = 0; i < 6; i++){
-    if (typeof gameData.playerinfo[i] == 'undefined'){
-      document.write("undefine for "+ i);
-      continue;
-    }
-    if (gameData.playerinfo[i].isTurn == true){
-      document.write(" In setturn true");
-      document.write(" Is turn set for player " +i);
-      hideturn(i+1);
-    } else {
-      document.write(" Player " + i + " exists but not true ...");
-    }
-  }
+  hideturn(gameData.isTurn);
 }
 
 function renderPlayers(){
