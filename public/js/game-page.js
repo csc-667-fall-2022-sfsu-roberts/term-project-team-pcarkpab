@@ -174,7 +174,7 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
             await new Promise(resolve => setTimeout(async () => {
               await processAction();
               resolve();
-            }, 500));
+            }, 200));
           } {
             console.log('CANT CALL HERE');
           }
@@ -194,7 +194,7 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
             await new Promise(resolve => setTimeout(async () => {
               await processAction();
               resolve();
-            }, 500));
+            }, 200));
           } else {
             console.log("CAN'T RAISE WITH 0");
           }
@@ -217,7 +217,7 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
             await new Promise(resolve => setTimeout(async () => {
               await processAction();
               resolve();
-            }, 500));
+            }, 200));
 
 
           } else {
@@ -243,7 +243,7 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
                   
                   await processAction();
                   resolve();
-                }, 500));
+                }, 200));
               }
             })
 

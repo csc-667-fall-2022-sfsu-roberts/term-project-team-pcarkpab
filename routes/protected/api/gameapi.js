@@ -159,24 +159,32 @@ router.get('/getWinner/:id', (req, res, next) => {
 
 router.post('/checkWinner/:id', (req, res, next) => {
   const {id: gameId} = req.params;
-  let userId;
+
   //TODO
   GameLogic.getWinner(gameId)
   .then((result) => {
     console.log(result);
-    if(result != -1){
-      userId = result;
-      Games.setGamePhase(gameId, 'GAMEEND')
+    if(result.won){
+      //CHANGE TO GAMEEND
+      Games.setGamePhase(gameId, 'FINALREVEAL')
       .then(() => {
-        return Users.getUsername(result);
-      })
-      .then((result) => {
-        req.app.io.emit(`console:${gameId}`, {
-          sender: result.username,
-          message: `${result.username} has won!!!`,
-          timestamp: Date.now()
-        })
-        req.app.io.emit(`winner:${gameId}`, {username: result.username, userId});
+        for(let announcement of result.announcement){
+          req.app.io.emit(`console:${gameId}`, {
+            sender: announcement.username,
+            message: `${announcement.username} ${announcement.hand}`,
+            timestamp: Date.now()
+          })
+        }
+
+        for(let winner of result.winners){
+          req.app.io.emit(`console:${gameId}`, {
+            sender: winner.username,
+            message: `${winner.username} has won!!!`,
+            timestamp: Date.now()
+          })
+        }
+        
+        //req.app.io.emit(`winner:${gameId}`, {username: result.username, userId});
         res.json({success: true});
       })
     }else{

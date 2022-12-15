@@ -2,6 +2,7 @@ const Games = require('../Games');
 const getData = require('./getData');
 const Users = require('../Users');
 const calculatePokerHandScore = require('../../handler/hands');
+const winnerProcess = require('../../handler/winnerProcess');
 
 const getWinner = async (gameId) => {
   const gameData = await getData(gameId);
@@ -26,8 +27,13 @@ const getWinner = async (gameId) => {
 
   //Win by being the only one left
   if (remainingPlayer == 1) {
-    return winnerId;
+    let user = await Users.getUsername(winnerId);
+    return {
+      winners: [{userId: winnerId, username: user.username}],
+      announcement: [{username: user.username, hand: ' is the last player standing!'}],
+      won: true};
   }
+
   if (gameData.gamePhase == 'FINALREVEAL') {
     for (const cardAndUserId of cardsAndUserIds) {
       let cards = [];
@@ -35,21 +41,22 @@ const getWinner = async (gameId) => {
         let result = await Games.getRankAndSuit(id);
         cards.push({ rank: result.rank, suit: result.suit });
       }
-      console.log(cards);
-      console.log(calculatePokerHandScore(cards));
-      let username = await Users.getUsername(cardAndUserId.userId);
-      userIdsAndScores.push({ userId: cardAndUserId.userId, username, score: calculatePokerHandScore(cards) });
+     
+      let user = await Users.getUsername(cardAndUserId.userId);
+      userIdsAndScores.push({ userId: cardAndUserId.userId, username: user.username, score: calculatePokerHandScore(cards) });
     }
 
     userIdsAndScores.sort((a, b) => {
       return b.score - a.score;
     });
 
-    console.log(userIdsAndScores);
-    return userIdsAndScores[0].userId;
+    let results = winnerProcess(userIdsAndScores);
+    results.won = true;
+    console.log(results);
+    return results;
   }
 
-  return userIdsAndScores;
+  return {won: false};
 }
 
 module.exports = getWinner;
