@@ -29,59 +29,56 @@ let gameData = {
 
 
 
-function changeBubble(){
-  document.write("IN CHANGE BUBBLE<br>");
+function changeBubble() {
 
   for (let player of gameData.playerInfo) {
     let str = '';
     //document.write("IN FOR LOOP<br>");
     let p = player.seatNumber + 1;
-    if(p < 4){
-      str = '#player' + p + ' #c2 #bubble-status';
-    } else {
-      str = '#player' + p + ' #c #bubble-status';
-    }
-    
+    // if(p < 4){
+    //   str = '#player' + p + ' #c2 #bubble-status';
+    // } else {
+    //   str = '#player' + p + ' #c #bubble-status';
+    // }
 
     //document.write("str is " + str);
-    var bub = document.querySelector(str);
+    var bub = document.getElementById(`bubble-status-${p}`);
     //document.write("<br>p is " + p)
     //document.write("<br>bub is " + bub)
     //document.write("<br>bub inner is " + bub.innerHTML)
 
-    bub.className = 'bdefault';
+    bub.classList.remove(...bub.classList);
+    bub.classList.add('bubble-status');
 
-    if(p < 4){
+    if (p < 4) {
       bub.classList.add('bl');
     }
-
-    switch(player.playerStatus) {
-      case 'CALL':
-        bub.classList.add('bcall');
-        bub.innerHTML = "CALL"
-      break;
-      case 'RAISE':
-        bub.classList.add('braise');
-        bub.innerHTML = "RAISE"
-      break;
-      case 'CHECK':
-        bub.classList.add('bcheck');
-        bub.innerHTML = "CHECK"
-      break;
+    
+    console.log(player.playerStatus);
+    switch (player.playerStatus) {
       case 'FOLD':
         bub.classList.add('bfold');
         bub.innerHTML = "FOLD"
-      break;
+        break;
+      case 'BET':
+        bub.classList.add('braise');
+        bub.innerHTML = "BET"
+        break;
+      case 'CHECK':
+        bub.classList.add('bcheck');
+        bub.innerHTML = "CHECK"
+        break;
       case 'IDLE':
-        bub.innerHTML = "idle"
-      break;
-      case 'SPECTATOR':
-        bub.innerHTML = "spectator"
-      break;
+        bub.classList.add('bdefault');
+        break;
+      default:
+        bub.classList.add('bdefault');
+        break;
+      
+    }
+
   }
-  
-  }
-  
+
 }
 
 
@@ -114,8 +111,8 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
     if (gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
       displayPlayerCards();
     }
-    
-    //changeBubble();
+
+    changeBubble();
     setTurn();
     setValues();
 
