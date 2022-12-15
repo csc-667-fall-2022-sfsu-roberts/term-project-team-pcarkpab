@@ -170,12 +170,11 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
               headers: { 'Content-Type': "application/json" },
               body: JSON.stringify({ userId: currentUserId, betAmount: gameData.currentBet - currentPlayer.betAmount }),
             });
-
+            await updateGameData();
             await new Promise(resolve => setTimeout(async () => {
-              await updateGameData();
               await processAction();
               resolve();
-            }, 1000));
+            }, 500));
           } {
             console.log('CANT CALL HERE');
           }
@@ -191,12 +190,11 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
               headers: { 'Content-Type': "application/json" },
               body: JSON.stringify({ userId: currentUserId, betAmount: slider.value }),
             });
-
+            await updateGameData();
             await new Promise(resolve => setTimeout(async () => {
-              await updateGameData();
               await processAction();
               resolve();
-            }, 1000));
+            }, 500));
           } else {
             console.log("CAN'T RAISE WITH 0");
           }
@@ -215,12 +213,11 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
               headers: { 'Content-Type': "application/json" },
               body: JSON.stringify({ userId: currentUserId }),
             });
-
+            await updateGameData();
             await new Promise(resolve => setTimeout(async () => {
-              await updateGameData();
               await processAction();
               resolve();
-            }, 1000));
+            }, 500));
 
 
           } else {
@@ -238,15 +235,15 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ userId: currentUserId }),
           });
-
+          await updateGameData();
           await fetch(`/api/game/checkWinner/${gameId}`, { method: 'post' })
             .then((result) => {
               if (!result.json().success) {
                 return new Promise(resolve => setTimeout(async () => {
-                  await updateGameData();
+                  
                   await processAction();
                   resolve();
-                }, 1000));
+                }, 500));
               }
             })
 
