@@ -74,7 +74,6 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
         }
       })
       if (flag) {
-
         slider.min = gameData.currentBet - currentPlayer.betAmount;
         sliderOutput.innerHTML = gameData.currentBet - currentPlayer.betAmount;
         //CALL BUTTON LOGIC
@@ -141,7 +140,7 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
             resolve();
           }, 1000));
         }
-        
+
       } else {
         callButton.onclick = () => {
           console.log("not your turn");
@@ -163,8 +162,14 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
 
 })
 
+//All the logic checking and game phase processing
 let processAction = async () => {
   try {
+
+    if(gameData.gamePhase == 'PREFLOP'){
+      
+    }
+
     await fetch(`/api/game/nextTurn/${gameId}`, {
       method: "post",
       headers: { 'Content-Type': "application/json" },
