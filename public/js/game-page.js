@@ -298,12 +298,13 @@ let processAction = async () => {
       }
     }
     //[FOLD, BET, BET]
+    //[CHECK, IDLE]
     if (gameData.gamePhase == 'FLOP') {
       let everyoneChecks = true;
       let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if (player.playerStatus == 'BET' && player.betAmount != gameData.currentBet) {
+        if ((player.playerStatus == 'BET' && player.betAmount != gameData.currentBet) || player.playerStatus =='IDLE' || player.playerStatus == 'CHECK') {
           everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
@@ -333,7 +334,7 @@ let processAction = async () => {
       let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if (player.playerStatus == 'BET' && player.betAmount != gameData.currentBet) {
+        if ((player.playerStatus == 'BET' && player.betAmount != gameData.currentBet) || player.playerStatus =='IDLE' || player.playerStatus == 'CHECK') {
           everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
@@ -362,7 +363,7 @@ let processAction = async () => {
       let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if (player.playerStatus == 'BET' && player.betAmount != gameData.currentBet) {
+        if ((player.playerStatus == 'BET' && player.betAmount != gameData.currentBet) || player.playerStatus =='IDLE' || player.playerStatus == 'CHECK') {
           everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
