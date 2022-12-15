@@ -1,5 +1,6 @@
 const Games = require('../Games');
 const getData = require('./getData');
+const Users = require('../Users');
 const calculatePokerHandScore = require('../../handler/hands');
 
 const getWinner = async (gameId) => {
@@ -9,18 +10,19 @@ const getWinner = async (gameId) => {
   let cardsAndUserIds = [];
   let userIdsAndScores = [];
 
-
-  for (const player of gameData.playerInfo) {
-    if (player.playerStatus != 'FOLD') {
-      remainingPlayer++;
-      winnerId = player.userId;
-      if (gameData.gamePhase == 'FINALREVEAL') {
-        let cards = gameData.dealerCards.concat(player.cards);
-        cardsAndUserIds.push({ cards, userId: player.userId });
+  if (gameData.playerInfo.length > 0) {
+    for (const player of gameData.playerInfo) {
+      if (player.playerStatus != 'FOLD') {
+        remainingPlayer++;
+        winnerId = player.userId;
+        if (gameData.gamePhase == 'FINALREVEAL') {
+          let cards = gameData.dealerCards.concat(player.cards);
+          cardsAndUserIds.push({ cards, userId: player.userId });
+        }
       }
     }
   }
-  
+
 
   //Win by being the only one left
   if (remainingPlayer == 1) {
@@ -35,13 +37,14 @@ const getWinner = async (gameId) => {
       }
       console.log(cards);
       console.log(calculatePokerHandScore(cards));
-      userIdsAndScores.push({ userId: cardAndUserId.userId, score: calculatePokerHandScore(cards) });
+      let username = await Users.getUsername(cardAndUserId.userId);
+      userIdsAndScores.push({ userId: cardAndUserId.userId, username, score: calculatePokerHandScore(cards) });
     }
 
     userIdsAndScores.sort((a, b) => {
       return b.score - a.score;
     });
-    
+
     console.log(userIdsAndScores);
     return userIdsAndScores[0].userId;
   }

@@ -2,11 +2,11 @@
 let player1Cards = [
   { rank: 12, suit: 'DIAMONDS' },
   { rank: 11, suit: 'DIAMONDS' },
-  { rank: 11, suit: 'CLUBS' },
-  { rank: 9, suit: 'SPADES' },
-  { rank: 12, suit: 'HEARTS' },
-  { rank: 14, suit: 'DIAMONDS' },
-  { rank: 11, suit: 'SPADES' }
+  // { rank: 11, suit: 'CLUBS' },
+  // { rank: 9, suit: 'SPADES' },
+  // { rank: 12, suit: 'HEARTS' },
+  // { rank: 14, suit: 'DIAMONDS' },
+  // { rank: 11, suit: 'SPADES' }
 ]
 
 let player2Cards = [
@@ -56,11 +56,12 @@ function calculatePokerHandScore(cards) {
     score = isPair(cards);
   } else {
     // High card: 1,000,000
+    
     score = 1000000;
     let highRank = 0;
-    for (let rank in cards.rank) {
-      if (rank > highRank) {
-        highRank = rank;
+    for (let card of cards) {
+      if (card.rank > highRank) {
+        highRank = card.rank;
       }
     }
     score += highRank;
