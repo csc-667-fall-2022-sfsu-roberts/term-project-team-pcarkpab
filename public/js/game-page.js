@@ -530,13 +530,24 @@ socket.on(`console:${gameId}`, ({ sender, message, timestamp }) => {
   const div = document.createElement("div");
   div.classList.add("console-message");
   const content = document.createElement("p");
+
+  const div2 = document.createElement("div");
+  div2.classList.add("console-date");
+  const content2 = document.createElement("p");
+
   let newDate = new Date(timestamp).toLocaleTimeString();
-  let str = newDate + ": " + message;
-  content.innerText = str;
+  //let str = newDate + ": " + message;
+  content.innerText = message;
+  content2.innerText = newDate;
+
   div.appendChild(content);
+  div2.appendChild(content2);
 
   let chatBox = document.getElementById(`console-chat-${gameId}`);
   chatBox.appendChild(div);
+  chatBox.appendChild(div2);
+  
+  
 })
 
 socket.on(`player-join:${gameId}`, ({ playerCount, gameStatus }) => {
