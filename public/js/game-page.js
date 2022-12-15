@@ -782,6 +782,8 @@ socket.on(`chat:${gameId}`, ({ sender, message, timestamp }) => {
   chatBox.appendChild(div2);
   chatBox.appendChild(div3);
 
+  chatBox.scrollTop = chatBox.scrollHeight;
+
 })
 
 socket.on(`console:${gameId}`, ({ sender, message, timestamp }) => {
@@ -816,6 +818,8 @@ socket.on(`console:${gameId}`, ({ sender, message, timestamp }) => {
   let chatBox = document.getElementById(`console-chat-${gameId}`);
   chatBox.appendChild(div);
   chatBox.appendChild(div2);
+
+  chatBox.scrollTop = chatBox.scrollHeight;
 
   let ann = document.getElementById(`get-announce-${gameId}`);
   ann.innerHTML = message;
