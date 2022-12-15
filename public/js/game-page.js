@@ -110,8 +110,6 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
     renderPlayers();
     if (gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
       displayPlayerCards();
-    } else if(gameData.gamePhase == 'FINALREVEAL' && gameData.gamePhase == 'GAMEEND'){
-      displayAllPlayerCards();
     }
 
     changeBubble();
@@ -657,7 +655,8 @@ socket.on(`phase-final:${gameId}`, async () => {
 socket.on(`winner:${gameId}`, async () => {
 
   console.log('CHICKEN DINNER');
-  await updateGameData();
+  setCardsEmpty();
+  await displayAllPlayerCards();
   await new Promise(resolve => setTimeout(async () => {
     if (currentUserId == gameData.playerInfo[0].userId) {
       await fetch(`/api/console/${gameId}`, {

@@ -79,8 +79,6 @@ function sleep(ms) {
   document.getElementById('move-c4').onclick = moveCard4;
   document.getElementById('move-c5').onclick = moveCard5;*/
 
-  document.getElementById('return').onclick = returnCard;
-  
 
   async function moveCard1(c) {
     var b = document.getElementById("m-card1");
