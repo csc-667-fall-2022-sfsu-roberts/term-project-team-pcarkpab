@@ -104,6 +104,14 @@ router.post("/join/:id", (req, res, next) => {
     });
 })
 
+router.get('/admin/delete/:id', (req, res, next) => {
+  const { id: gameId } = req.params;
+  Lobby.deleteLobby(gameId)
+  .then(() => {
+    res.json({message: 'Lobby deleted'});
+  })
+})
+
 router.post("/leave/:id", (req, res, next) => {
   const { userId } = req.session;
   const { id: gameId } = req.params;
