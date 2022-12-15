@@ -3,6 +3,11 @@
   padding: 0;
   box-sizing: border-box;
 }
+p[id="amount"] {
+  text-align: center;
+  font-family: 'CentaurLabelFont';
+  text-shadow: 0px 0px 1px black;
+}
 
 #container {
   background-color: rgb(33, 36, 33);
@@ -34,6 +39,7 @@
 .middle>div {
   color: white;
   font-size: 24px;
+  max-height: 100%;
 }
 
 .game-chat {
@@ -92,8 +98,11 @@
 }
 
 .loading > p {
-  font-size: 60px;
+  font-size: 50px;
   margin: auto;
+  text-align: center;
+  font-family: 'AlegreyaHeaderFont';
+  text-shadow: 1px 1px 2px black;
 }
 
 #footer {
@@ -484,7 +493,9 @@
 
 .game-buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  flex-direction: column;
+  align-items: center;
 }
 
 #play-buttons {

@@ -23,23 +23,25 @@
     text-decoration: underline;
   }
    
-  #chat-name{
+  #chat-name {
     height: 60%;
     z-index: 102;
-  border-radius: 3px;
-  background-color:  rgb(31, 25, 20);
-  border: 3px solid  rgb(64, 59, 57);
+    border-radius: 3px;
+    background-color: rgb(31, 25, 20);
+    border: 3px solid  rgb(64, 59, 57);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color: rgb(166, 166, 166);
+    font-family: 'AlegreyaHeaderFont';
+    font-weight: bold;
+    font-size: 1.0em;
+    text-shadow: 0px 0px 1px black;
+    text-align: center;
+    /* grid-area: auto; */
+}
 
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-
-  color: rgb(166, 166, 166);
-  font-family: Calbri, sans-serif;
-  font-weight: bold;
-  font-size: .8em;
-  }
   .game-chat{
     height: 400px;
   }
@@ -67,19 +69,18 @@
     word-wrap: break-word;
 }
 
-.c-bubble{
-    margin-bottom: 1px;
-    position: relative;
-  font-family: sans-serif;
+.c-bubble {
+  margin-bottom: 1px;
+  position: relative;
+  font-family: 'CentaurLabelFont';
   margin-left: 0px;
-  font-size: 11px;
+  font-size: 15px;
   line-height: 15px;
   max-width: 90%;
   background: #fff;
   border-radius: 20px;
   padding: 7px;
   text-align: left;
-
 }
 
 .left-bubble:before {
@@ -109,22 +110,23 @@
    
   .sender-chat {
     margin-top: -10px;
-    position:relative;
-    color: rgb(249, 184, 143);
-    font-family: Verdana, sans-serif;
-    font-size: 0.38em;
-    font-weight:bold;
+    position: relative;
+    color: rgb(255, 0, 50);
+    font-family: 'CentaurLabelFont';
+    font-size: 0.55em;
+    font-weight: bold;
     padding: 2px 8px;
   }
+
   .date-chat {
     max-width: 100px;
     left: 45%;
-    position:relative;
+    position: relative;
     color: rgb(160, 156, 156);
-    font-family: Verdana, sans-serif;
+    font-family: 'CentaurLabelFont';
     font-size: 0.30em;
     padding: 2px 8px;
-  }
+}
    
   /*.send-button,
   /*#enter{
@@ -135,16 +137,17 @@
     font-weight: bold;
     border-radius: 4px;
   }*/
-  .send-button{
-    font-family: sans-serif;
-    background-color: #cc6714; 
-    color: rgb(52, 32, 28); 
-    border: 2px solid #bf530b; 
+  .send-button {
+    font-family: 'CentaurLabelFont';
+    text-shadow: 0px 0px 1px black;
+    background-color: #cc6714;
+    color: rgb(52, 32, 28);
+    border: 2px solid #bf530b;
     padding: 6px 10px;
     font-weight: bold;
     border-radius: 4px;
     transition: 0.5s;
-  }
+}
   
   .send-button:hover {
     background-color: #f4994e; 
@@ -211,47 +214,54 @@
     background-color: black;
     height:275px;
   }
+
   .console-box {
     text-align: left;
     margin: 0 auto;
     background: rgb(30, 27, 24);
     height: 90%;
     max-width: 100%;
+    max-height: 80%;
     border: 2px solid #3b2f2a;
-    overflow-y:auto;
+    overflow-y: auto;
     border-radius: 4px;
     border-bottom: 4px solid #41382b;
-  }
+}
 
-  #console-name{
+  #console-name {
     height: 15%;
     z-index: 102;
-  border-radius: 3px;
-  background-color:  rgb(31, 25, 20);
-  border: 3px solid  rgb(64, 59, 57);
+    border-radius: 3px;
+    background-color: rgb(31, 25, 20);
+    border: 3px solid  rgb(64, 59, 57);
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 7px;
+    padding-bottom: 10px;
+    color: rgb(166, 166, 166);
+    font-family: 'AlegreyaHeaderFont';
+    font-size: .8em;
+    text-align: center;
+    block-size: fit-content;
+}
 
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-top: 7px;
-  padding-bottom: 10px;
+.console-message {
+  color: rgb(179, 167, 167);
+  font-family: 'CentaurLabelFont';
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.7em;
+  word-wrap: break-word;
+  padding: 5px;
+}
 
-  color: rgb(166, 166, 166);
-  font-size: .8em;
-  }
-
-  .console-message{
-    color: rgb(179, 167, 167);
-      font-weight: bold;
-      font-size: 0.7em;
-      word-wrap: break-word;
-      padding: 5px;
-  }
   .console-date{
     color: rgb(107, 99, 99);
-      font-weight: bold;
-      font-size: 0.5em;
-      position: relative;
-      padding-left: 3px;
-      position: relative;
-      top:-1%;
+    font-family: 'CentaurLabelFont';
+    font-weight: bold;
+    font-size: 0.5em;
+    position: relative;
+    padding-left: 3px;
+    position: relative;
+    top:-1%;
   }

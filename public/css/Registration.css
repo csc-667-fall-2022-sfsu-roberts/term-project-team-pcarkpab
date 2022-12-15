@@ -24,7 +24,6 @@ and lobby creation pages.*/
 form[id="login-form"], form[id="signup-form"], form[id="lobby-form"] {
 margin: 15px 0px 20px 0px;
 }
-
 p[id="Register"], h3[id="Lobbytext2"] {
   font-family: "CentaurLabelFont";
   text-align: center;
@@ -38,8 +37,9 @@ p[id="Register"], h3[id="Lobbytext2"] {
   border-bottom-width: 2px;
   border-left-width: 2px;
   border-right-width: 2px;
+  margin: auto;
+  max-width: 250px;
 }
-
 
 
 /* General CSS Styling */
@@ -67,8 +67,8 @@ label {
 
 /*Div will be stylized so that they stand out.*/
 
-div[id="UsernameDIV"], div[id="EmailDIV"],
-div[id="PasswordDIV"], div[id="ConfirmPasswordDIV"],
+div[id="UsernameDIV"], div[id="EmailDIV"], 
+div[id="PasswordDIV"], div[id="ConfirmPasswordDIV"], 
 div[id="BetDIV"], div[id="GamePassDIV"] {
   display: grid;
   border-style: inset;
@@ -79,6 +79,10 @@ div[id="BetDIV"], div[id="GamePassDIV"] {
   border-right-width: 4px;
   border-color: white;
   padding: 5px 0px 0px 0px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: inherit;
+  max-width: 250px;
 }
 
 div[id="CheckDIV"] {
@@ -90,6 +94,8 @@ div[id="CheckDIV"] {
   border-bottom-width: 4px;
   border-left-width: 4px;
   border-right-width: 4px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* The input boxes besides the description will be aligned with a simple drop shadow.*/
@@ -152,17 +158,32 @@ has a width of 500px along with a centered margin
 (margin-left/margin-right: auto). It also has a 
 drop shadow similar to a flex container I made from
 my first website.*/
-.container_Border, .Lobby_Border {
+.container_Border {
   position: static;
   display: flex;
   width: 500px;
   height: auto;
-  margin: 10px auto;
+  margin: 10px auto 100px;
   border: 1px solid black;
   border-radius: 50px;
   background: #000000;
   filter: drop-shadow(0 0 0.2rem rgb(0, 0, 0));
   align-items: flex-start;
   align-content: center;
+  justify-content: center;
+}
+
+.Lobby_Border {
+  position: static;
+  display: flex;
+  min-width: 250px;
+  height: auto;
+  margin: 10px auto 100px;
+  border: 1px solid black;
+  border-radius: 50px;
+  background: #000000;
+  filter: drop-shadow(0 0 0.2rem rgb(0, 0, 0));
+  align-items: flex-start;
+  /* align-content: center; */
   justify-content: center;
 }

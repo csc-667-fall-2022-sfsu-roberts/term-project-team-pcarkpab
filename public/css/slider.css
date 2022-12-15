@@ -1,19 +1,20 @@
 .slidecontainer {
-    width: 80%; 
-    margin:auto;
+    width: 50%; 
+    margin: auto;
   }
   
   .slider {
-    -webkit-appearance: none; 
+    -webkit-appearance: none;
     appearance: none;
-    width: 100%; 
+    width: 100%;
+    max-width: 400px;
     height: 25px;
-    background: #7a7575; 
+    background: #7a7575;
     outline: none;
-    opacity: 0.7; 
-    -webkit-transition: .2s; 
+    opacity: 0.7;
+    -webkit-transition: .2s;
     transition: opacity .2s;
-  }
+}
   
 
   .slider:hover {

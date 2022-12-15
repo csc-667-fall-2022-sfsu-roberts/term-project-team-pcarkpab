@@ -1,12 +1,13 @@
 /*This CSS page defines the general styling of every 
 miscellaneous page for the website.*/
 
-body {
+#lobby-body {
     position: relative;
     color: white;
     text-decoration: none;
     background-color: rgb(33,36,33);
-  }
+    min-height: 1000px;
+}
   
   a {
     color: rgb(156, 201, 241);
@@ -24,22 +25,33 @@ body {
       color: rgb(245, 212, 212);
   }
 
-  .lobby-place{
-    position:relative;
-    top: -15%;
-  }
+  .lobby-place {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    grid-area: initial;
+    max-width: 250px;
+    height: 300px;
+    filter: drop-shadow(0 0 0.2rem rgb(0, 0, 0));
+}
 
-  .lobbies-list{
-    position:relative;
-    left: 6%;
-  }
+.lobbies-list {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
   
   /*ARI'S ADDITION*/
   #lobby-grid {
     display: grid;
-    grid-template-columns: 20% 50% 30%;
+    margin-bottom: 100px;
+    grid-template-columns: 20% 50% 20%;
     grid-gap: 8px;
-  }
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+}
 
   
   a[id="waiting-room"] {
@@ -160,12 +172,22 @@ body {
     cursor: pointer;
   }
 
-  .lobby-play-button{
+  .lobby-play-button {
     background: rgb(139, 27, 27);
     border: rgb(139, 27, 27);
-    color: rgb(255, 255, 255);  
+    color: rgb(255, 255, 255);
     font-size: large;
-  }
+    font-family: 'CentaurLabelFont';
+    text-shadow: 0px 0px 0.5px black;
+    border-style: outset;
+    border-color: rgb(139, 27, 27);
+    cursor: pointer;
+    border-left-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-top-width: 3px;
+    padding: 5px 5px 5px 5px;
+}
   
   .lobby-play-button:hover {
     background-color: rgba(red, green, blue, 0);
