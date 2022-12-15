@@ -21,7 +21,7 @@ h1 {
   text-shadow: 1px 1px 2px black;
 }
 
-p[id="Description"] {
+p[id="Description"], p[id="Description2"] {
 font-family: "CentaurLabelFont";
 text-align: center;
 font-size: 30px;
@@ -39,31 +39,30 @@ p[id="Subtitle"] {
 
 
 p[id="Message"] {
-    display: none;
-    font-family: "CentaurLabelFont";
-    font-size: xx-large;
-    margin: auto;
-    overflow: auto;
-    text-align: center;
-    text-shadow: 1px 1px 3px white;
+  display: none;
+  font-family: "CentaurLabelFont";
+  font-size: xx-large;
+  margin: auto;
+  overflow: auto;
+  text-align: center;
+  text-shadow: 1px 1px 3px white;
+  clear: both;
+  max-height: 1080px;
 }
-
 
 div[class="MessageDIV"] {
   display: grid;
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  max-width: 325px;
-  max-height: 250px;
+  max-width: 368px;
+  height: auto;
 }
 
 
 button[id="PokerLogoSubmit"] {
   background-image: url(../css/fonts/LoginSignupLogo2.png);
   filter: drop-shadow(0 0 0.2rem rgb(0, 0, 0));
-  margin-left: auto;
-  margin-right: auto;
   background-size: 368px 207px;
   background-position: 0px 0px;
   background-repeat: no-repeat;
