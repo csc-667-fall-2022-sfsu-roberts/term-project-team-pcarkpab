@@ -1,11 +1,11 @@
 
 let player1Cards = [
-  { rank: 12, suit: 'HEARTS' },
-  { rank: 8, suit: 'DIAMONDS' },
-  { rank: 9, suit: 'DIAMONDS' },
+  { rank: 12, suit: 'DIAMONDS' },
+  { rank: 11, suit: 'DIAMONDS' },
+  { rank: 11, suit: 'CLUBS' },
   { rank: 9, suit: 'SPADES' },
   { rank: 12, suit: 'HEARTS' },
-  { rank: 9, suit: 'DIAMONDS' },
+  { rank: 14, suit: 'DIAMONDS' },
   { rank: 11, suit: 'SPADES' }
 ]
 
@@ -27,103 +27,93 @@ function calculatePokerHandScore(cards) {
 
   // Calculate the score based on the type of hand
   let score = 0;
-  if (isRoyalFlush(cards)) {
+  if (isRoyalFlush(cards) != 0) {
     // Royal flush: 10,000,000
-    score = 10000000;
-  } else if (isStraightFlush(cards)) {
+    score = isRoyalFlush(cards);
+  } else if (isStraightFlush(cards) != 0) {
     // Straight flush: 9,000,000
-    score = 9000000;
-  } else if (isFourOfAKind(cards)) {
+    score = isStraightFlush(cards);
+  } else if (isFourOfAKind(cards) != 0) {
     // Four of a kind: 8,000,000
-    score = 8000000;
-  } else if (isFullHouse(cards)) {
+    score = isFourOfAKind(cards);
+  } else if (isFullHouse(cards) != 0) {
     // Full house: 7,000,000
-    score = 7000000;
-  } else if (isFlush(cards)) {
+    score = isFullHouse(cards);
+  } else if (isFlush(cards) != 0) {
     // Flush: 6,000,000
-    score = 6000000;
-  } else if (isStraight(cards)) {
+    score = isFlush(cards);
+  } else if (isStraight(cards) != 0) {
     // Straight: 5,000,000
-    score = 5000000;
-  } else if (isThreeOfAKind(cards)) {
+    score = isStraight(cards);
+  } else if (isThreeOfAKind(cards) != 0) {
     // Three of a kind: 4,000,000
-    score = 4000000;
-  } else if (isTwoPair(cards)) {
+    score = isThreeOfAKind;
+  } else if (isTwoPair(cards) != 0) {
     // Two pair: 3,000,000
-    score = 3000000;
-  } else if (isPair(cards)) {
+    score = isTwoPair(cards);
+  } else if (isPair(cards) != 0) {
     // Pair: 2,000,000
-    score = 2000000;
+    score = isPair(cards);
   } else {
     // High card: 1,000,000
     score = 1000000;
-  }
-
-  // Add the score for the rank of the cards
-  for (const card of cards) {
-    score += card.rank*10;
-    if(card.suit == 'SPADEs'){
-      score += 4;
-    }else if(card.suit == 'HEARTs'){
-      score += 3;
-    }else if(card.suit == 'DIAMONDs'){
-      score += 2;
-    }else if(card.suit == 'CLUBs'){
-      score += 1;
+    let highRank = 0;
+    for (let rank in cards.rank) {
+      if (rank > highRank) {
+        highRank = rank;
+      }
     }
+    score += highRank;
   }
 
   return score;
 }
 
 function isRoyalFlush(cards) {
-  // Check if the hand is a royal flush
-  // A royal flush is a straight flush with a high card of an Ace
-
-  // First, check if the hand is a flush
-  if (!isFlush(cards)) {
-    return false;
+  let score = isStraightFlush(cards);
+  //Check if the last 2 digits represent the rank of an ace
+  if(score % 100 == 14){
+    return 10000000;
   }
-
-  // Check if the high card is an Ace
-  const aceIndex = cards.findIndex(card => card.rank === 14);
-  if (aceIndex === -1) {
-    return false;
-  }
-
-  // Check if the other cards form a straight
-  return isStraight(cards);
+  return 0;
 }
 
 function isStraightFlush(cards) {
   // Check if the cards form a straight flush
   // A straight flush is a hand that is both a straight and a flush
-
-  return isStraight(cards) && isFlush(cards);
+  if((isFlush(cards) != 0) && (isStraight(cards) != 0)){
+    return (isStraight(cards) + 4000000);
+  }
+  return 0;
 }
 
 function isFourOfAKind(cards) {
-  // Check if the cards form four of a kind
-  // Four of a kind is a hand with 4 cards of the same rank
-
-  // Count the number of cards of each rank
-  const rankCounts = {};
+  // Create a map of the counts of each rank in the cards
+  const counts = new Map();
   for (const card of cards) {
-    if (!rankCounts[card.rank]) {
-      rankCounts[card.rank] = 1;
-    } else {
-      rankCounts[card.rank] += 1;
+    if (!counts.has(card.rank)) {
+      counts.set(card.rank, 0);
     }
+    counts.set(card.rank, counts.get(card.rank) + 1);
   }
 
-  // Check if any rank has 4 cards
-  for (const rank in rankCounts) {
-    if (rankCounts[rank] === 4) {
-      return true;
+  // Determine if the counts in the map satisfy the conditions for a four of a kind
+  // (i.e., if there is exactly one count that is equal to 4)
+  let foundFourOfAKind = false;
+  let rankFourOfAKind = 0;
+  for (const [rank, count] of counts.entries()) {
+    if (count === 4) {
+      foundFourOfAKind = true;
+      rankFourOfAKind = rank;
     }
   }
-
-  return false;
+  if (foundFourOfAKind) {
+    let score = 8000000;
+    score += rankFourOfAKind;
+    return score;
+  } else {
+    return 0;
+  }
 }
 
 function isStraight(cards) {
@@ -136,20 +126,29 @@ function isStraight(cards) {
   }
 
   let straightLength = 0;
+  let cardRankScore = 0;
   for (let i = 1; i <= 14; i++) {
     if (rankSet.has(i)) {
       straightLength += 1;
+
     } else {
       straightLength = 0;
     }
 
     if (straightLength >= 5) {
       // Found a straight of at least 5 cards
-      break;
+      cardRankScore = i;
     }
   }
+  let score = 0;
+  if (straightLength >= 5) {
+    score = 5000000;
+    score += cardRankScore;
+    return score;
+  } else {
+    return 0;
+  }
 
-  return straightLength >= 5;
 }
 
 
@@ -169,14 +168,38 @@ function isFlush(cards) {
   }
 
   // Check if any suit has 5 or more cards
+  let suitFlush = 0;
   for (const suit in suitCounts) {
     if (suitCounts[suit] >= 5) {
-      return true;
+      suitFlush = suit;
     }
   }
 
-  return false;
+
+  if (suitFlush != 0) {
+
+    let score = 6000000;
+    switch (suitFlush) {
+      case "CLUBS":
+        score += 1;
+        break;
+      case "DIAMONDS":
+        score += 2;
+        break;
+      case "HEARTS":
+        score += 3;
+        break;
+      case "SPADES":
+        score += 4;
+        break;
+    }
+    return score;
+  } else {
+    return 0;
+  }
 }
+
+
 function isFullHouse(cards) {
   // Create a map of the counts of each rank in the cards
   const counts = new Map();
@@ -191,15 +214,32 @@ function isFullHouse(cards) {
   // (i.e., if there are two counts that are equal to 2 and 3)
   let foundTwo = false;
   let foundThree = false;
-  for (const count of counts.values()) {
+  let rankThreeOfAKind = 0;
+  for (const [rank, count] of counts.entries()) {
     if (count === 2) {
       foundTwo = true;
     } else if (count === 3) {
-      foundThree = true;
+      if (foundThree) {
+        foundTwo = true;
+        if (rank > rankThreeOfAKind) {
+          rankThreeOfAKind = rank;
+        }
+      } else {
+        foundThree = true;
+        rankThreeOfAKind = rank;
+      }
     }
   }
-  return foundTwo && foundThree;
+
+  if (foundTwo && foundThree) {
+    let score = 7000000;
+    score += rankThreeOfAKind;
+    return score;
+  } else {
+    return 0;
+  }
 }
+
 
 
 function isThreeOfAKind(cards) {
@@ -215,12 +255,20 @@ function isThreeOfAKind(cards) {
   // Determine if the counts in the map satisfy the conditions for a three of a kind
   // (i.e., if there is exactly one count that is equal to 3)
   let foundThreeOfAKind = false;
-  for (const count of counts.values()) {
+  let rankThreeOfAKind = 0;
+  for (const [rank, count] of counts.entries()) {
     if (count === 3) {
       foundThreeOfAKind = true;
+      rankThreeOfAKind = rank;
     }
   }
-  return foundThreeOfAKind;
+  if (foundThreeOfAKind) {
+    let score = 4000000;
+    score += rankThreeOfAKind;
+    return score;
+  } else {
+    return 0;
+  }
 }
 
 function isTwoPair(cards) {
@@ -236,13 +284,24 @@ function isTwoPair(cards) {
   // Determine if the counts in the map satisfy the conditions for a two pair
   // (i.e., if there are exactly two counts that are equal to 2)
   let foundPairs = 0;
-  for (const count of counts.values()) {
+  let highestRankPair = 0;
+  for (const [rank, count] of counts.entries()) {
     if (count === 2) {
       foundPairs++;
+      if (rank > highestRankPair) {
+        highestRankPair = rank;
+      }
     }
   }
-  return foundPairs === 2;
+  if (foundPairs === 2) {
+    let score = 3000000;
+    score += highestRankPair;
+    return score;
+  } else {
+    return 0;
+  }
 }
+
 
 function isPair(cards) {
   // Create a map of the counts of each rank in the cards
@@ -257,14 +316,23 @@ function isPair(cards) {
   // Determine if the counts in the map satisfy the conditions for a pair
   // (i.e., if there is exactly one count that is equal to 2)
   let foundPairs = 0;
-  for (const count of counts.values()) {
+  let rankPairs = 0;
+  for (const [rank, count] of counts.entries()) {
     if (count === 2) {
       foundPairs++;
+      rankPairs = rank;
     }
   }
-  return foundPairs === 1;
+  let score = 0;
+  if (foundPairs === 1) {
+    score = 2000000;
+    score += rankPairs;
+    return score;
+  } else {
+    return 0;
+  }
 }
 
-//console.log(isThreeOfAKind(player1Cards));
+console.log(calculatePokerHandScore(player1Cards));
 
-module.exports = calculatePokerHandScore;
+//module.exports = calculatePokerHandScore;
