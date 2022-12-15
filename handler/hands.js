@@ -1,7 +1,12 @@
 
 let player1Cards = [
-  { rank: 2, suit: "S" }, { rank: 9, suit: "D" }, { rank: 7, suit: "C" }, { rank: 11, suit: "S" }, { rank: 7, suit: "S" },
-  { rank: 13, suit: "S" }, { rank: 1, suit: "D" }
+  { rank: 12, suit: 'HEARTS' },
+  { rank: 8, suit: 'DIAMONDS' },
+  { rank: 9, suit: 'DIAMONDS' },
+  { rank: 9, suit: 'SPADES' },
+  { rank: 11, suit: 'HEARTS' },
+  { rank: 6, suit: 'DIAMONDS' },
+  { rank: 11, suit: 'SPADES' }
 ]
 
 let player2Cards = [
@@ -117,25 +122,20 @@ function isFourOfAKind(cards) {
 function isStraight(cards) {
   // Check if the cards form a straight
 
-  // Sort the cards in descending order by rank
-  cards.sort((a, b) => b.rank - a.rank);
+  // Create a set of ranks to quickly check if a rank is in the hand
+  const rankSet = new Set();
+  for (const card of cards) {
+    rankSet.add(card.rank);
+  }
 
-  let straightStart = -1;
   let straightLength = 0;
-  for (let i = 0; i < cards.length; i++) {
-    const card = cards[i];
-    if (straightStart === -1) {
-      // Start a new straight
-      straightStart = i;
-      straightLength = 1;
-    } else if (cards[i - 1].rank - card.rank === 1) {
-      // Continue the current straight
+  for (let i = 1; i <= 14; i++) {
+    if (rankSet.has(i)) {
       straightLength += 1;
     } else {
-      // Start a new straight
-      straightStart = i;
-      straightLength = 1;
+      straightLength = 0;
     }
+
     if (straightLength >= 5) {
       // Found a straight of at least 5 cards
       break;
@@ -144,6 +144,8 @@ function isStraight(cards) {
 
   return straightLength >= 5;
 }
+
+
 
 function isFlush(cards) {
   // Check if the cards form a flush
@@ -287,8 +289,6 @@ function isPair(cards) {
   return pairCount === 1 && singleCount === 5;
 }
 
+console.log(isFullHouse(player1Cards));
 
-
-
-console.log(calculatePokerHandScore(player1Cards));
-console.log(calculatePokerHandScore(player2Cards));
+//module.exports = calculatePokerHandScore;

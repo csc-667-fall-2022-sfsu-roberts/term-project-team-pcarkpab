@@ -180,12 +180,19 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ userId: currentUserId }),
           });
+
+          await fetch(`/api/game/checkWinner/${gameId}`, {method: 'post'})
+          .then((result) => {
+            if(!result.json().success){
+              return new Promise(resolve => setTimeout(async () => {
+                await updateGameData();
+                await processAction();
+                resolve();
+              }, 1000));
+            }
+          })
           
-          await new Promise(resolve => setTimeout(async () => {
-            await updateGameData();
-            await processAction();
-            resolve();
-          }, 1000));
+          
         }
 
       } else {
@@ -307,6 +314,7 @@ let processAction = async () => {
         //fetch next game phase
         console.log("NEXT PHASE FINAL REVEAL");
         await fetch(`/api/game/phaseFinal/${gameId}`, {method: "post"});
+        await fetch(`/api/game/checkWinner/${gameId}`, {method: "post"});
       }else{
         await fetch(`/api/game/nextTurn/${gameId}`, {
           method: "post",
@@ -556,6 +564,10 @@ socket.on(`phase-river:${gameId}`, async() => {
 socket.on(`phase-final:${gameId}`, async() => {
   await updateGameData();
   console.log('IN TURN FINAL REVEAL');
+})
+
+socket.on(`winner:${gameId}`, async({username, userId}) => {
+  console.log('WE HAVE A WINNER ');
 })
 
 
