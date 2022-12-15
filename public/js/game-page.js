@@ -10,17 +10,17 @@ let gameData = {
   pot: 0,
   playerCount: 0,
   playerInfo: [
-    // { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, playerStatus: 'idle', blindStatus: 'DEALER', seatNumber: 0 },
-    // { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, playerStatus: 'idle', blindStatus: 'SMALLBLIND', seatNumber: 1 },
-    // { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, playerStatus: 'idle', blindStatus: 'big-blind', seatNumber: 2 },
-    // { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, playerStatus: 'idle', blindStatus: 'none', seatNumber: 3 },
+    // { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, playerStatus: 'IDLE', blindStatus: 'DEALER', seatNumber: 0 },
+    // { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, playerStatus: 'IDLE', blindStatus: 'SMALLBLIND', seatNumber: 1 },
+    // { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, playerStatus: 'IDLE', blindStatus: 'big-blind', seatNumber: 2 },
+    // { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, playerStatus: 'IDLE', blindStatus: 'none', seatNumber: 3 },
   ],
   dealerCards: [],
   isTurn: -1,
   currentBet: 0,
   minimumBet: 0,
   //Dealer status to determine what action a player can take
-  //'BET', 'CALL', 'CHECK', 'FOLD'
+  //'BET', 'CHECK', 'FOLD', 'IDLE'
   status: 'CHECK',
   //'PREGAME', 'BLINDBET', 'ASSIGNCARDS','PREFLOP', 'FLOP', 'TURN', 'RIVER', 'FINALREVEAL', 'GAMEEND'
   gamePhase: 'PREGAME',
@@ -45,6 +45,7 @@ let updateGameData = async () => {
   }
 }
 
+//WHEN UPDATEGAMEDATA is called
 socket.on(`update-gameData:${gameId}`, async ({ data }) => {
   try {
     gameData = data;
@@ -54,13 +55,26 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
     if (gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
       displayPlayerCards();
     }
+    
+    setTurn();
+    setValues();
 
     if(gameData.gamePhase == 'FLOP'){
       //TODO Show the 3 cards permanently
+      await setFlop();
     }
 
-    setTurn();
-    setValues();
+    if(gameData.gamePhase == 'TURN'){
+      await setFlop();
+      await setTurnc();
+    }
+
+    if(gameData.gamePhase == 'RIVER'){
+      await setFlop();
+      await setTurnc();
+      await setRiver();
+    }
+
 
     //UPDATE BUTTON
     let callButton = document.getElementById(`call-button-${gameId}`);
