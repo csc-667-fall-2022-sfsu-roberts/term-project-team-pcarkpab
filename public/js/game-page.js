@@ -297,13 +297,13 @@ let processAction = async () => {
         await updateGameData();
       }
     }
-
+    //[FOLD, BET, BET]
     if (gameData.gamePhase == 'FLOP') {
       let everyoneChecks = true;
       let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if ((player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
+        if (player.playerStatus == 'BET' && player.betAmount != gameData.currentBet) {
           everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
@@ -333,7 +333,7 @@ let processAction = async () => {
       let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if ((player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
+        if (player.playerStatus == 'BET' && player.betAmount != gameData.currentBet) {
           everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
@@ -362,7 +362,7 @@ let processAction = async () => {
       let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if ((player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
+        if (player.playerStatus == 'BET' && player.betAmount != gameData.currentBet) {
           everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
@@ -417,7 +417,7 @@ function setValues() {
   var a = document.getElementById("pot-text");
   a.innerHTML = "Pot: $" + gameData.pot + ".00";
   var b = document.getElementById("last-bet");
-  b.innerHTML = "Bet value: " + gameData.currentBet + ".00";
+  b.innerHTML = "Bet value: $" + gameData.currentBet + ".00";
 }
 
 function setTable() {

@@ -165,7 +165,7 @@ router.post('/checkWinner/:id', (req, res, next) => {
     .then((result) => {
       console.log(result);
       if (result.won) {
-        //CHANGE TO GAMEEND
+      
         Games.setGamePhase(gameId, 'GAMEEND')
           .then(() => {
             for (let announcement of result.announcement) {
