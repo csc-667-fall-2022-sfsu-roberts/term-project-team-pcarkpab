@@ -138,12 +138,17 @@ router.post('/phaseRiver/:id', (req, res, next) => {
 
 router.post('/phaseFinal/:id', (req, res, next) => {
   const {id: gameId} = req.params;
-  // GameLogic.phaseRiver(gameId)
-  // .then(() => {
+  
     console.log("phase Final");
     req.app.io.emit(`phase-final:${gameId}`, {});
     res.json({success: true});
-  // })
+  
+})
+
+router.get('/getWinner/:id', (req, res, next) => {
+  const {id: gameId} = req.params;
+  //TODO
+  res.json({success: true});
 })
 
 router.get('/getData/:id', (req, res, next) => {

@@ -1,3 +1,4 @@
+
 const START_DELAY = 5;
 
 let pathname = window.location.pathname;
@@ -82,47 +83,69 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
         slider.min = gameData.currentBet - currentPlayer.betAmount;
         sliderOutput.innerHTML = gameData.currentBet - currentPlayer.betAmount;
         //CALL BUTTON LOGIC
-        callButton.onclick = async () => {
-          console.log(currentUserId + " with seatNumber " + gameData.isTurn);
-          await fetch(`/api/game/playerBet/${gameId}`, {
-            method: "post",
-            headers: { 'Content-Type': "application/json" },
-            body: JSON.stringify({ userId: currentUserId, betAmount: gameData.currentBet - currentPlayer.betAmount }),
-          });
-          await updateGameData();
-          await new Promise(resolve => setTimeout(async () => {
-            await processAction();
-            resolve();
-          }, 1000));
+        callButton.disabled = false;
+        raiseButton.disabled = false;
+        foldButton.disabled = false;
+        checkButton.disabled = false;
 
+        callButton.onclick = async () => {
+          if(callButton.disabled) return;
+
+          if(gameData.currentBet - currentPlayer.betAmount > 0){
+            callButton.disabled = true;
+            await fetch(`/api/game/playerBet/${gameId}`, {
+              method: "post",
+              headers: { 'Content-Type': "application/json" },
+              body: JSON.stringify({ userId: currentUserId, betAmount: gameData.currentBet - currentPlayer.betAmount }),
+            });
+            
+            await new Promise(resolve => setTimeout(async () => {
+              await updateGameData();
+              await processAction();
+              resolve();
+            }, 1000));
+          }{
+            console.log('CANT CALL HERE');
+          }
         }
         //RAISE BUTTON LOGIC
         raiseButton.onclick = async () => {
-          console.log(currentUserId + " with seatNumber " + gameData.isTurn);
+          if(raiseButton.disabled) return;
+
+          if(slider.value > 0){
+            raiseButton.disabled = true;
           await fetch(`/api/game/playerBet/${gameId}`, {
             method: "post",
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ userId: currentUserId, betAmount: slider.value }),
           });
-          await updateGameData();
+          
           await new Promise(resolve => setTimeout(async () => {
+            await updateGameData();
             await processAction();
             resolve();
           }, 1000));
-
+        }else{
+          console.log("CAN'T RAISE WITH 0");
+        }
 
         }
         //CHECK BUTTON LOGIC
         checkButton.onclick = async () => {
+          
+          if(checkButton.disabled) return;
+
           if (gameData.status == 'CHECK') {
+            checkButton.disabled = true;
             console.log("CHECK");
             await fetch(`/api/game/playerCheck/${gameId}`, {
               method: "post",
               headers: { 'Content-Type': "application/json" },
               body: JSON.stringify({ userId: currentUserId }),
             });
-            await updateGameData();
+            
             await new Promise(resolve => setTimeout(async () => {
+              await updateGameData();
               await processAction();
               resolve();
             }, 1000));
@@ -134,14 +157,18 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
         }
         //FOLD BUTTON LOGIC
         foldButton.onclick = async() => {
+          if(foldButton.disabled) return;
+
+          foldButton.disabled = true;
           console.log("FOLD");
           await fetch(`/api/game/playerFold/${gameId}`, {
             method: "post",
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ userId: currentUserId }),
           });
-          await updateGameData();
+          
           await new Promise(resolve => setTimeout(async () => {
+            await updateGameData();
             await processAction();
             resolve();
           }, 1000));
@@ -395,29 +422,6 @@ function renderPlayers() {
 }
 
 
-/* function moveCard1() {
-    var b = document.getElementById("m-card1");
-    document.getElementById('m-card1').className = "c1-place"
-    sleep(650).then(() => {
-        displayCard(1, "mid1", bigCard);
-        b.style.display = "none";
-    });*/
-
-
-
-//Remove isdiscard
-//Add the dealer game_user
-//time out CHECK or FOLD
-
-//Assign seat number
-//init deck, shuffle deck, set blind status
-
-//Start game
-//Phase: Blind bet
-//small blind and big blind bet, 
-
-//Phase: assign cards
-
 /*
 await new Promise(resolve => setTimeout(() => {
     
@@ -484,8 +488,6 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
   }
 })
 
-
-
 socket.on(`phase-assignCards:${gameId}`, async () => {
   try {
     //Making sure it only update once
@@ -524,9 +526,6 @@ socket.on(`phase-flop:${gameId}`, async () => {
   await updateGameData();
   console.log("IN FLOP PHASE");
 })
-
-
-
 
 socket.on(`phase-turn:${gameId}`, async() => {
   await setTurnc();
