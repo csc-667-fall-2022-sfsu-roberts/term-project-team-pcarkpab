@@ -1,8 +1,4 @@
 
-<header>
-  <h2>Login Page</h2>
-</header>
-
 <div class="container_Border">
 <form id="login-form" method="POST" action="/api/users/login" enctype="application/x-www-form-urlencoded">
     <p id="Register">Log Into Account</p>
@@ -23,8 +19,9 @@
     </div>
     <br>
     
-    <input type="submit" class="button button3" alt="Submit" placeholder="Log in">
-    <img id="PokerLogoSubmit" src="../public/css/fonts/LoginSignupLogo2.png">
+      <p id="Submit">Log In</p>
+  <input type="image" id="PokerLogoSubmit" src="../public/css/fonts/LoginSignupLogo2.png" alt="Submit">
+   <!-- <img id="PokerLogoSubmit" src="../public/css/fonts/LoginSignupLogo2.png"> -->
     
   </form>
 </div>
@@ -34,7 +31,6 @@
 <script>
 var password = document.getElementById("user-password");
 var cpassword = document.getElementById("confirm-password");
-
 document.querySelector("form").addEventListener("submit", 
 function(event){
   if (password.value !== cpassword.value){

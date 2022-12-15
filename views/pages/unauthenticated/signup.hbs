@@ -1,4 +1,4 @@
-    <h2>Registration</h2>
+ <h2>Registration</h2>
     <!-- <p>Clicking on the sign up button below would lead you back to the log in page</p> -->
 </header>
 
@@ -50,10 +50,12 @@
       </label>
       </div>
       <br>
-    <input type="submit" class="button button3" alt="Submit">
-    <img id="PokerLogoSubmit" src="../public/css/fonts/LoginSignupLogo2.png">
-    </form>
-   
+    <!--<input type="submit" class="button button3" alt="Submit"> -->
+    <p id="Submit">Sign Up</p>
+    <input type="image" id="PokerLogoSubmit" src="../public/css/fonts/LoginSignupLogo2.png" alt="Submit">    
+    
+  </form>
+  
   </div>
  <div id="reg-space"></div>
 
@@ -70,7 +72,6 @@
 <script>
 var password = document.getElementById("user-password");
 var cpassword = document.getElementById("confirm-password");
-
 document.querySelector("form").addEventListener("submit", 
 function(event){
   if (password.value !== cpassword.value){
@@ -80,5 +81,4 @@ function(event){
     alert("Sign-Up Successful");
   } 
 });
-
 </script>

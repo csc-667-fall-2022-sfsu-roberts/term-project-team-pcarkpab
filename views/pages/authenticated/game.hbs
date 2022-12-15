@@ -35,9 +35,8 @@
                 <p>Waiting for Players</p>
             </div>
 
-            <div id="poker-header">
-                <p>test</p>
-<!--<button onclick="toggle1()">Toggle p1</button>
+            <!--<div id="poker-header">
+<button onclick="toggle1()">Toggle p1</button>
                 <button onclick="toggle2()">Toggle p2</button>
                 <button onclick="toggle3()">Toggle p3</button>
                 <button onclick="toggle4()">Toggle p4</button>
@@ -50,21 +49,23 @@
                 <button id="move-c3">card 3</button>
                 <button id="move-c4">card 4</button>
                 <button id="move-c5">card 5</button>-->
-                
+                <!--
                 <button id="setPcards" onclick="setPlayerCards()">set player cards</button>
                 <button id="testFlop" onclick="setFlop()">testFlop</button>
                 <button id="testTurnc" onclick="setTurnc()">setTurn</button>
                 <button id="testRiver" onclick="setRiver()">setRiver</button>
                 <button id="return" onclick="returnCard()">returnCards</button>
+                 </div>-->
 
 
-                <button id="leave-game">LEAVE</button>
+                
 
-            </div>
+           
 
 
 
             <div id="game-table-{{gameId}}" class="game-table">
+                <button id="leave-game" class= "button button3">LEAVE</button>
                 {{!-- <img class="table" src="/public/images/table.png"> --}}
 
                 <div id="cardstack">
@@ -335,20 +336,27 @@
                     </div>
                 </div>
 
+                <div id="announce-container">
+                    <div id="get-announce-{{gameId}}" class = "announce-message">
+                            <p>Welcome to Poker!</p>
+                    </div>
+                </div>
+                
+
             </div>
 
 
 
             <div id="game-buttons-{{gameId}}" class="game-buttons">
                  <div id="play-buttons">
-                    <button id="raise-button-{{gameId}}" class="button button1">Raise</button></a>
-                    <button id="fold-button-{{gameId}}" class="button button1">Fold</button></a>
-                    <button id="call-button-{{gameId}}" class="button button1">Call</button></a>
-                    <button id="check-button-{{gameId}}" class="button button1">Check</button></a>
+                    <button id="raise-button-{{gameId}}" class="button braise w">Raise</button></a>
+                    <button id="fold-button-{{gameId}}" class="button bfold w">Fold</button></a>
+                    <button id="call-button-{{gameId}}" class="button bcall w">Call</button></a>
+                    <button id="check-button-{{gameId}}" class="button bcheck w">Check</button></a>
                 </div>
                 <div class="slidecontainer">
                     <input type="range" min="1" max="100" value="1" class="slider" id="slider-{{gameId}}">
-                    <p>Amount to raise: <span id="demo"></span></p>
+                    <p id="Description2">Amount to raise: <span id="demo"></p>
                 </div>
                 <!--<div id="bet">
                     <label>Input Bet</label><br>
@@ -366,5 +374,5 @@
     <script src="/public/js/game-page.js"></script>
     <script src="/public/js/test.js"></script>
 </div>
+
  <div id="reg-space"></div>
- </div>
