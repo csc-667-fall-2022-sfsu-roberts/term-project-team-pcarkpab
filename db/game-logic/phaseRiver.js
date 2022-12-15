@@ -1,8 +1,8 @@
 const Games = require('../Games');
 const nextTurn = require('./nextTurn');
 
-const phaseFlop = async (gameId) => {
-  await Games.setGamePhase(gameId, 'FLOP');
+const phaseRiver = async (gameId) => {
+  await Games.setGamePhase(gameId, 'RIVER');
 
   const players = await Games.getActivePlayersData(gameId);
   let dealerButton = -1;
@@ -21,4 +21,4 @@ const phaseFlop = async (gameId) => {
   await nextTurn(gameId, dealerButton);
 }
 
-module.exports = phaseFlop;
+module.exports = phaseRiver;

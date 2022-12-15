@@ -247,6 +247,33 @@ let processAction = async () => {
         })
         await updateGameData();
       }
+    }
+
+    if(gameData.gamePhase == 'RIVER'){
+      let everyoneChecks = true;
+      let everyoenCalls = true;
+
+      for(let player of gameData.playerInfo){
+        if((player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD') || player.playerStatus == 'CHECK'){
+          everyoenCalls = false;
+        }
+        if(player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD'){
+          everyoneChecks = false;
+        }
+      }
+
+      if(everyoenCalls || everyoneChecks){
+        //fetch next game phase
+        console.log("NEXT PHASE FINAL REVEAL");
+        await fetch(`/api/game/phaseFinal/${gameId}`, {method: "post"});
+      }else{
+        await fetch(`/api/game/nextTurn/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ isTurn: gameData.isTurn }),
+        })
+        await updateGameData();
+      }
 
     }
 
@@ -511,6 +538,11 @@ socket.on(`phase-river:${gameId}`, async() => {
   await setRiver();
   await updateGameData();
   console.log('IN TURN RIVER');
+})
+
+socket.on(`phase-final:${gameId}`, async() => {
+  await updateGameData();
+  console.log('IN TURN FINAL REVEAL');
 })
 
 

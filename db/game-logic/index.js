@@ -7,6 +7,7 @@ const check = require('./check');
 const fold = require('./fold');
 const phaseFlop = require('./phaseFlop');
 const phaseTurn = require('./phaseTurn');
+const phaseRiver = require('./phaseRiver');
 
 module.exports = {
   initialize,
@@ -18,4 +19,5 @@ module.exports = {
   fold,
   phaseFlop,
   phaseTurn,
+  phaseRiver,
 }

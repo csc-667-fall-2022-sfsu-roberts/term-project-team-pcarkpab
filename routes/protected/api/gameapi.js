@@ -128,10 +128,20 @@ router.post('/phaseTurn/:id', (req, res, next) => {
 
 router.post('/phaseRiver/:id', (req, res, next) => {
   const {id: gameId} = req.params;
-  // GameLogic.phaseTurn(gameId)
-  // .then(() => {
+  GameLogic.phaseRiver(gameId)
+  .then(() => {
     console.log("phase River");
     req.app.io.emit(`phase-river:${gameId}`, {});
+    res.json({success: true});
+  })
+})
+
+router.post('/phaseFinal/:id', (req, res, next) => {
+  const {id: gameId} = req.params;
+  // GameLogic.phaseRiver(gameId)
+  // .then(() => {
+    console.log("phase Final");
+    req.app.io.emit(`phase-final:${gameId}`, {});
     res.json({success: true});
   // })
 })

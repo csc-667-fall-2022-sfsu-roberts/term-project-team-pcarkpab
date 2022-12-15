@@ -10,9 +10,9 @@ const phaseTurn = async (gameId) => {
     if(player.blindStatus == 'DEALER'){
       dealerButton = player.seatNumber;
     }
-    //Reset their status to bet 
-    if(player.status == 'CHECK'){
-      await Games.setPlayerStatus(player.userId, gameId, 'BET');
+    //Reset their status to bet or check status
+    if(player.status == 'CHECK' || player.status == 'BET'){
+      await Games.setPlayerStatus(player.userId, gameId, 'IDLE');
     }
   }
   //Set the dealer (bot) status to check to allow check
