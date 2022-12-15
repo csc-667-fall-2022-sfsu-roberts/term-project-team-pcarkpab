@@ -114,7 +114,26 @@ router.post('/phaseFlop/:id', (req, res, next) => {
     req.app.io.emit(`phase-flop:${gameId}`, {});
     res.json({success: true});
   })
-  
+})
+
+router.post('/phaseTurn/:id', (req, res, next) => {
+  const {id: gameId} = req.params;
+  GameLogic.phaseTurn(gameId)
+  .then(() => {
+    console.log("phase Turn");
+    req.app.io.emit(`phase-turn:${gameId}`, {});
+    res.json({success: true});
+  })
+})
+
+router.post('/phaseRiver/:id', (req, res, next) => {
+  const {id: gameId} = req.params;
+  // GameLogic.phaseTurn(gameId)
+  // .then(() => {
+    console.log("phase River");
+    req.app.io.emit(`phase-river:${gameId}`, {});
+    res.json({success: true});
+  // })
 })
 
 router.get('/getData/:id', (req, res, next) => {

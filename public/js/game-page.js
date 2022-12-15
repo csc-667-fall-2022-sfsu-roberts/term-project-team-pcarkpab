@@ -53,6 +53,11 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
     if (gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
       displayPlayerCards();
     }
+
+    if(gameData.gamePhase == 'FLOP'){
+      //TODO Show the 3 cards permanently
+    }
+
     setTurn();
     setValues();
 
@@ -177,7 +182,7 @@ let processAction = async () => {
       }
       if(ready){
         //fetch next game phase
-        console.log("NEXT PHASE");
+        console.log("NEXT PHASE FLOP");
         await fetch(`/api/game/phaseFlop/${gameId}`, {method: "post"});
       }else{
         await fetch(`/api/game/nextTurn/${gameId}`, {
@@ -187,6 +192,62 @@ let processAction = async () => {
         })
         await updateGameData();
       }
+    }
+
+    if(gameData.gamePhase == 'FLOP'){
+      let everyoneChecks = true;
+      let everyoenCalls = true;
+
+      for(let player of gameData.playerInfo){
+        if((player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD') || player.playerStatus == 'CHECK'){
+          everyoenCalls = false;
+        }
+        if(player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD'){
+          everyoneChecks = false;
+        }
+      }
+
+      if(everyoenCalls || everyoneChecks){
+        //fetch next game phase
+        console.log("NEXT PHASE TURN");
+        await fetch(`/api/game/phaseTurn/${gameId}`, {method: "post"});
+      }else{
+        await fetch(`/api/game/nextTurn/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ isTurn: gameData.isTurn }),
+        })
+        await updateGameData();
+      }
+
+    }
+
+    if(gameData.gamePhase == 'TURN'){
+      let everyoneChecks = true;
+      let everyoenCalls = true;
+
+      for(let player of gameData.playerInfo){
+        if((player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD') || player.playerStatus == 'CHECK'){
+          everyoenCalls = false;
+        }
+        if(player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD'){
+          everyoneChecks = false;
+        }
+      }
+
+      if(everyoenCalls || everyoneChecks){
+        //fetch next game phase
+        console.log("NEXT PHASE RIVER");
+        await fetch(`/api/game/phaseRiver/${gameId}`, {method: "post"});
+      }else{
+        await fetch(`/api/game/nextTurn/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ isTurn: gameData.isTurn }),
+        })
+        await updateGameData();
+      }
+
     }
 
 
@@ -207,12 +268,12 @@ async function setFlop() {
   await moveCard3(gameData.dealerCards[2]);
 }
 
-function setTurnc() {
-  moveCard4(gameData.dealerCards[3])
+async function setTurnc() {
+  await moveCard4(gameData.dealerCards[3]);
 }
 
-function setRiver() {
-  moveCard5(gameData.dealerCards[4])
+async function setRiver() {
+  await moveCard5(gameData.dealerCards[4]);
 }
 
 function setValues() {
@@ -432,16 +493,24 @@ socket.on(`phase-assignCards:${gameId}`, async () => {
 
 socket.on(`phase-flop:${gameId}`, async () => {
   //game status will be updated
-  await updateGameData();
   await setFlop();
+  await updateGameData();
   console.log("IN FLOP PHASE");
 })
 
 
 
 
-socket.on(`game-phase:betting-round`, () => {
+socket.on(`phase-turn:${gameId}`, async() => {
+  await setTurnc();
+  await updateGameData();
+  console.log('IN TURN PHASE');
+})
 
+socket.on(`phase-river:${gameId}`, async() => {
+  await setRiver();
+  await updateGameData();
+  console.log('IN TURN RIVER');
 })
 
 
