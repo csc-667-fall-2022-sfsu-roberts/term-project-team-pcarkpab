@@ -601,7 +601,7 @@ socket.on(`phase-assignCards:${gameId}`, async () => {
       } catch (err) {
         console.log(err);
       }
-    }, 1000))
+    }, 600))
 
 
     //adding the assign card animation (appears clockwise)

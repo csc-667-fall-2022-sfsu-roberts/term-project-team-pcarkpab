@@ -294,7 +294,7 @@ function isTwoPair(cards) {
       }
     }
   }
-  if (foundPairs === 2) {
+  if (foundPairs >= 2) {
     let score = 3000000;
     score += highestRankPair;
     return score;
