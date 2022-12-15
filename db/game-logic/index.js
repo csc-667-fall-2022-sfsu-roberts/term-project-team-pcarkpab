@@ -5,6 +5,7 @@ const nextTurn = require('./nextTurn');
 const assignCards = require('./assignCards');
 const check = require('./check');
 const fold = require('./fold');
+const phaseFlop = require('./phaseFlop');
 
 module.exports = {
   initialize,
@@ -14,4 +15,5 @@ module.exports = {
   assignCards,
   check,
   fold,
+  phaseFlop,
 }

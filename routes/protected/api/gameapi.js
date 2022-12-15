@@ -107,8 +107,14 @@ router.post('/phasePreFlop/:id', (req, res, next) => {
 
 router.post('/phaseFlop/:id', (req, res, next) => {
   const {id: gameId} = req.params;
-  console.log("phase Flop");
-  res.json({success: true});
+  
+  GameLogic.phaseFlop(gameId)
+  .then(() => {
+    console.log("phase Flop");
+    req.app.io.emit(`phase-flop:${gameId}`, {});
+    res.json({success: true});
+  })
+  
 })
 
 router.get('/getData/:id', (req, res, next) => {

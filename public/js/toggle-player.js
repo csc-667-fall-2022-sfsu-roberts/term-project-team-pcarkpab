@@ -82,29 +82,32 @@ function sleep(ms) {
   document.getElementById('return').onclick = returnCard;
   
 
-  function moveCard1(c) {
+  async function moveCard1(c) {
     var b = document.getElementById("m-card1");
-    document.getElementById('m-card1').className = "c1-place"
-    sleep(650).then(() => {
+    document.getElementById('m-card1').className = "c1-place";
+    await sleep(650).then(() => {
         displayCard(c, "mid1", bigCard);
         b.style.display = "none";
+        return Promise.resolve();
     });
     
     }
-  function moveCard2(c) {
+  async function moveCard2(c) {
     var b = document.getElementById("m-card2");
     document.getElementById('m-card2').className = "c2-place"
-    sleep(650).then(() => {
+    await sleep(650).then(() => {
         displayCard(c, "mid2", bigCard);
         b.style.display = "none";
+        return Promise.resolve();
     });
     }
-  function moveCard3(c) {
+  async function moveCard3(c) {
     var b = document.getElementById("m-card3");
     document.getElementById('m-card3').className = "c3-place"
-    sleep(650).then(() => {
+    await sleep(650).then(() => {
         displayCard(c, "mid3", bigCard);
         b.style.display = "none";
+        return Promise.resolve();
     });
     }
   function moveCard4(c) {

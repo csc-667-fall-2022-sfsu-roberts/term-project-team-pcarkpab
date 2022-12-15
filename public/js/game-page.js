@@ -84,6 +84,7 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ userId: currentUserId, betAmount: gameData.currentBet - currentPlayer.betAmount }),
           });
+          await updateGameData();
           await new Promise(resolve => setTimeout(async () => {
             await processAction();
             resolve();
@@ -98,7 +99,7 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ userId: currentUserId, betAmount: slider.value }),
           });
-
+          await updateGameData();
           await new Promise(resolve => setTimeout(async () => {
             await processAction();
             resolve();
@@ -115,7 +116,7 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
               headers: { 'Content-Type': "application/json" },
               body: JSON.stringify({ userId: currentUserId }),
             });
-
+            await updateGameData();
             await new Promise(resolve => setTimeout(async () => {
               await processAction();
               resolve();
@@ -134,7 +135,7 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ userId: currentUserId }),
           });
-          
+          await updateGameData();
           await new Promise(resolve => setTimeout(async () => {
             await processAction();
             resolve();
@@ -167,15 +168,27 @@ let processAction = async () => {
   try {
 
     if(gameData.gamePhase == 'PREFLOP'){
-      
+      let ready = true;
+  
+      for(let player of gameData.playerInfo){
+        if(player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD'){
+          ready = false;
+        }
+      }
+      if(ready){
+        //fetch next game phase
+        console.log("NEXT PHASE");
+        await fetch(`/api/game/phaseFlop/${gameId}`, {method: "post"});
+      }else{
+        await fetch(`/api/game/nextTurn/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ isTurn: gameData.isTurn }),
+        })
+        await updateGameData();
+      }
     }
 
-    await fetch(`/api/game/nextTurn/${gameId}`, {
-      method: "post",
-      headers: { 'Content-Type': "application/json" },
-      body: JSON.stringify({ isTurn: gameData.isTurn }),
-    })
-    await updateGameData();
 
   } catch (err) {
     console.log(err);
@@ -188,10 +201,10 @@ updateGameData();
 
 
 
-function setFlop() {
-  moveCard1(gameData.dealerCards[0])
-  moveCard2(gameData.dealerCards[1])
-  moveCard3(gameData.dealerCards[2])
+async function setFlop() {
+  await moveCard1(gameData.dealerCards[0]);
+  await moveCard2(gameData.dealerCards[1]);
+  await moveCard3(gameData.dealerCards[2]);
 }
 
 function setTurnc() {
@@ -257,7 +270,6 @@ function setTurn() {
 }
 
 function renderPlayers() {
-  console.log("Im in render player");
   setCardsEmpty();
   const smallCard = 1;
   var sblind = 0;
@@ -418,8 +430,11 @@ socket.on(`phase-assignCards:${gameId}`, async () => {
   }
 })
 
-socket.on(`game-phase:flop`, () => {
+socket.on(`phase-flop:${gameId}`, async () => {
   //game status will be updated
+  await updateGameData();
+  await setFlop();
+  console.log("IN FLOP PHASE");
 })
 
 
