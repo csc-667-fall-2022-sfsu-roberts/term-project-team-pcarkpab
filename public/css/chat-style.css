@@ -246,3 +246,12 @@
       word-wrap: break-word;
       padding: 5px;
   }
+  .console-date{
+    color: rgb(107, 99, 99);
+      font-weight: bold;
+      font-size: 0.5em;
+      position: relative;
+      padding-left: 3px;
+      position: relative;
+      top:-1%;
+  }
