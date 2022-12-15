@@ -192,3 +192,4 @@ function hideturn(isTurn) {
 /*
 var element = document.getElementById("message");
 element.className += "c-bubble left-bubble" + newClassName;*/
+
