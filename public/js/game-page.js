@@ -27,6 +27,64 @@ let gameData = {
   gamePhase: 'PREGAME',
 }
 
+
+
+function changeBubble(){
+  document.write("IN CHANGE BUBBLE<br>");
+
+  for (let player of gameData.playerInfo) {
+    let str = '';
+    //document.write("IN FOR LOOP<br>");
+    let p = player.seatNumber + 1;
+    if(p < 4){
+      str = '#player' + p + ' #c2 #bubble-status';
+    } else {
+      str = '#player' + p + ' #c #bubble-status';
+    }
+    
+
+    //document.write("str is " + str);
+    var bub = document.querySelector(str);
+    //document.write("<br>p is " + p)
+    //document.write("<br>bub is " + bub)
+    //document.write("<br>bub inner is " + bub.innerHTML)
+
+    bub.className = 'bdefault';
+
+    if(p < 4){
+      bub.classList.add('bl');
+    }
+
+    switch(player.playerStatus) {
+      case 'CALL':
+        bub.classList.add('bcall');
+        bub.innerHTML = "CALL"
+      break;
+      case 'RAISE':
+        bub.classList.add('braise');
+        bub.innerHTML = "RAISE"
+      break;
+      case 'CHECK':
+        bub.classList.add('bcheck');
+        bub.innerHTML = "CHECK"
+      break;
+      case 'FOLD':
+        bub.classList.add('bfold');
+        bub.innerHTML = "FOLD"
+      break;
+      case 'IDLE':
+        bub.innerHTML = "idle"
+      break;
+      case 'SPECTATOR':
+        bub.innerHTML = "spectator"
+      break;
+  }
+  
+  }
+  
+}
+
+
 var slider = document.getElementById(`slider-${gameId}`);
 var sliderOutput = document.getElementById("demo");
 sliderOutput.innerHTML = slider.value; // Display the default slider value
@@ -56,7 +114,8 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
     if (gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
       displayPlayerCards();
     }
-
+    
+    //changeBubble();
     setTurn();
     setValues();
 
