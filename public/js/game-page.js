@@ -657,7 +657,10 @@ socket.on(`winner:${gameId}`, async () => {
 
   console.log('CHICKEN DINNER');
   setCardsEmpty();
-  await displayAllPlayerCards();
+  setTimeout(() => {
+    displayAllPlayerCards();
+  }, 200);
+  
   await new Promise(resolve => setTimeout(async () => {
     if (currentUserId == gameData.playerInfo[0].userId) {
       await fetch(`/api/console/${gameId}`, {
