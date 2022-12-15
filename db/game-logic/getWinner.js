@@ -46,7 +46,7 @@ const getWinner = async (gameId) => {
     return userIdsAndScores[0].userId;
   }
 
-  return -1;
+  return userIdsAndScores;
 }
 
 module.exports = getWinner;

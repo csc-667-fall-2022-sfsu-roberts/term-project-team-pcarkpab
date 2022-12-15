@@ -333,6 +333,6 @@ function isPair(cards) {
   }
 }
 
-console.log(calculatePokerHandScore(player1Cards));
+//console.log(calculatePokerHandScore(player1Cards));
 
-//module.exports = calculatePokerHandScore;
+module.exports = calculatePokerHandScore;
