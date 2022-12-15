@@ -1,5 +1,5 @@
 
-const START_DELAY = 15;
+const START_DELAY = 5;
 const BLANKCARD_ID = 53;
 
 let pathname = window.location.pathname;
@@ -54,7 +54,6 @@ function changeBubble() {
       bub.classList.add('bl');
     }
     
-    console.log(player.playerStatus);
     switch (player.playerStatus) {
       case 'FOLD':
         bub.classList.add('bfold');
@@ -70,9 +69,11 @@ function changeBubble() {
         break;
       case 'IDLE':
         bub.classList.add('bdefault');
+        bub.innerHTML = "";
         break;
       default:
         bub.classList.add('bdefault');
+        bub.innerHTML = "";
         break;
       
     }
@@ -301,18 +302,20 @@ let processAction = async () => {
 
     if (gameData.gamePhase == 'FLOP') {
       let everyoneChecks = true;
-      let everyoenCalls = true;
+      let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if ((player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD') || player.playerStatus == 'CHECK') {
-          everyoenCalls = false;
+        if (( player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
+          everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
           everyoneChecks = false;
         }
+        console.log(player.playerStatus);
       }
-
-      if (everyoenCalls || everyoneChecks) {
+      
+      console.log(everyoneCalls + ',' + everyoneChecks);
+      if (everyoneCalls || everyoneChecks) {
         //fetch next game phase
         console.log("NEXT PHASE TURN");
         await fetch(`/api/game/phaseTurn/${gameId}`, { method: "post" });
@@ -329,18 +332,20 @@ let processAction = async () => {
 
     if (gameData.gamePhase == 'TURN') {
       let everyoneChecks = true;
-      let everyoenCalls = true;
+      let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if ((player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD') || player.playerStatus == 'CHECK') {
-          everyoenCalls = false;
+        if (( player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
+          everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
           everyoneChecks = false;
         }
+        console.log(player.playerStatus);
       }
+      console.log(everyoneCalls + ',' + everyoneChecks);
 
-      if (everyoenCalls || everyoneChecks) {
+      if (everyoneCalls || everyoneChecks) {
         //fetch next game phase
         console.log("NEXT PHASE RIVER");
         await fetch(`/api/game/phaseRiver/${gameId}`, { method: "post" });
@@ -356,18 +361,19 @@ let processAction = async () => {
 
     if (gameData.gamePhase == 'RIVER') {
       let everyoneChecks = true;
-      let everyoenCalls = true;
+      let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if ((player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD') || player.playerStatus == 'CHECK') {
-          everyoenCalls = false;
+        if (( player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
+          everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
           everyoneChecks = false;
         }
+        console.log(player.playerStatus);
       }
-
-      if (everyoenCalls || everyoneChecks) {
+      console.log(everyoneCalls + ',' + everyoneChecks);
+      if (everyoneCalls || everyoneChecks) {
         //fetch next game phase
         console.log("NEXT PHASE FINAL REVEAL");
         await fetch(`/api/game/phaseFinal/${gameId}`, { method: "post" });
