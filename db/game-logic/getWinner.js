@@ -20,8 +20,7 @@ const getWinner = async (gameId) => {
       }
     }
   }
-  console.log("card Id array");
-  console.log(cardsAndUserIds);
+  
 
   //Win by being the only one left
   if (remainingPlayer == 1) {
@@ -39,7 +38,10 @@ const getWinner = async (gameId) => {
       userIdsAndScores.push({ userId: cardAndUserId.userId, score: calculatePokerHandScore(cards) });
     }
 
-    userIdsAndScores.sort((a, b) => {a.score - b.score});
+    userIdsAndScores.sort((a, b) => {
+      return a.score - b.score;
+    });
+    
     console.log(userIdsAndScores);
     return userIdsAndScores[0].userId;
   }
