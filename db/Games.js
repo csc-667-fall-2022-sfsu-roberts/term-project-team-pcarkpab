@@ -152,6 +152,21 @@ const addGamePot = (gameId, amount) => {
   return db.query(baseSQL, { gameId, amount });
 }
 
+const getGamePot = (gameId) => {
+  let baseSQL =
+  "SELECT pot FROM game WHERE \"gameId\"=${gameId}";
+  return db.one(baseSQL, { gameId });
+}
+
+const setGamePot = (gameId, amount) => {
+  let baseSQL =
+  "UPDATE game SET pot=${amount} WHERE \"gameId\"=${gameId}";
+  return db.none(baseSQL, { gameId, amount });
+}
+
+
+
+
 const checkPlayerStatusWithSeatNum = (gameId, seatNumber) => {
   let baseSQL =
     "SELECT status FROM game_user WHERE \"gameId\"=${gameId} AND \"seatNumber\"=${seatNumber}";
@@ -170,11 +185,18 @@ const getRankAndSuit = (cardId) => {
   return db.one(baseSQL, {cardId});
 }
 
+const removeDeck = (gameId) => {
+  let baseSQL =
+  "DELETE FROM game_cards WHERE \"gameId\"=${gameId}";
+  return db.none(baseSQL, {gameId});
+}
+
 module.exports = {
   setGameStatus,
   setGamePhase,
   initializeGameDeck,
   shuffleDeck,
+  removeDeck,
   getDeck,
   assignPlayerCard,
   getPlayerData,
@@ -193,6 +215,8 @@ module.exports = {
   checkActivePlayer,
   getActivePlayersData,
   addGamePot,
+  getGamePot,
+  setGamePot,
   checkPlayerStatusWithSeatNum,
   getRankAndSuit,
 };

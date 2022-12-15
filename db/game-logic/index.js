@@ -9,7 +9,7 @@ const phaseFlop = require('./phaseFlop');
 const phaseTurn = require('./phaseTurn');
 const phaseRiver = require('./phaseRiver');
 const getWinner = require('./getWinner');
-
+const newRound = require('./newRound');
 module.exports = {
   initialize,
   getData,
@@ -22,4 +22,5 @@ module.exports = {
   phaseTurn,
   phaseRiver,
   getWinner,
+  newRound,
 }

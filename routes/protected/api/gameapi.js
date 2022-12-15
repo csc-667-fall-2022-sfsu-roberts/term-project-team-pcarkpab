@@ -6,42 +6,42 @@ const router = express.Router();
 
 router.post('/', (req, res, next) => {
   console.log("YO");
-  res.json({success: true});
+  res.json({ success: true });
 })
 
-router.post('/initialize/:id', (req, res, next) =>{
-  const {id: gameId} = req.params;
+router.post('/initialize/:id', (req, res, next) => {
+  const { id: gameId } = req.params;
 
   GameLogic.initialize(gameId)
     .then(() => {
       console.log("GAME INITIALIZED");
-      res.json({success: true});
+      res.json({ success: true });
     })
     .catch(err => console.log(err));
-    
+
 })
 
-router.post('/start/:id', (req, res, next) =>{
-  const {id: gameId} = req.params;
+router.post('/start/:id', (req, res, next) => {
+  const { id: gameId } = req.params;
   console.log("GAME START");
   Games.setGameStatus(gameId, 'INGAME');
   req.app.io.emit(`game-start:${gameId}`, {});
-  res.json({success: true});
+  res.json({ success: true });
 })
 
 router.post('/updateData/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
+  const { id: gameId } = req.params;
   GameLogic.getData(gameId)
     .then((data) => {
       console.log("Game data updated");
-      req.app.io.emit(`update-gameData:${gameId}`, {data});
-      res.json({success: true});
+      req.app.io.emit(`update-gameData:${gameId}`, { data });
+      res.json({ success: true });
     })
     .catch(err => console.log(err));
 })
 
 router.get('/getData/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
+  const { id: gameId } = req.params;
   GameLogic.getData(gameId)
     .then((data) => {
       res.json(data);
@@ -51,152 +51,157 @@ router.get('/getData/:id', (req, res, next) => {
 
 
 router.post('/phaseBlindBet/:id', (req, res, next) => {
-  
-  const {id: gameId} = req.params;
+
+  const { id: gameId } = req.params;
   Games.setGamePhase(gameId, 'BLINDBET')
-  .then(() => {
-    return GameLogic.getData(gameId);
-  })
-  .then((results) => {
-    for (let player of results.playerInfo) {
-      if (player.blindStatus === 'DEALER') {
-        return Promise.resolve(player.seatNumber);
+    .then(() => {
+      return GameLogic.getData(gameId);
+    })
+    .then((results) => {
+      for (let player of results.playerInfo) {
+        if (player.blindStatus === 'DEALER') {
+          return Promise.resolve(player.seatNumber);
+        }
       }
-    }
-  })
-  .then((seatNumber) => {
-    return GameLogic.nextTurn(gameId, seatNumber);
-  })
-  .then((result) => {
-    console.log("blind bet phase");
-    req.app.io.emit(`phase-blindBet:${gameId}`, {});
-    res.json({success: true});
-  })
-  .catch(err => console.log(err));
+    })
+    .then((seatNumber) => {
+      return GameLogic.nextTurn(gameId, seatNumber);
+    })
+    .then((result) => {
+      console.log("blind bet phase");
+      req.app.io.emit(`phase-blindBet:${gameId}`, {});
+      res.json({ success: true });
+    })
+    .catch(err => console.log(err));
 })
 
 //phaseAssignCards/${gameId}
 router.post('/phaseAssignCards/:id', (req, res, next) => {
-  
-  const {id: gameId} = req.params;
+
+  const { id: gameId } = req.params;
   Games.setGamePhase(gameId, 'ASSIGNCARDS')
-  .then(() => {
-    return GameLogic.assignCards(gameId);
-  })
-  .then(() => {
-    return GameLogic.getData(gameId);
-  })
-  .then((result) => {
-    console.log("Assign card phase");
-    req.app.io.emit(`phase-assignCards:${gameId}`, {});
-    res.json({success: true});
-  })
-  .catch(err => console.log(err));
+    .then(() => {
+      return GameLogic.assignCards(gameId);
+    })
+    .then(() => {
+      return GameLogic.getData(gameId);
+    })
+    .then((result) => {
+      console.log("Assign card phase");
+      req.app.io.emit(`phase-assignCards:${gameId}`, {});
+      res.json({ success: true });
+    })
+    .catch(err => console.log(err));
 })
 
 
 
 router.post('/phasePreFlop/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
+  const { id: gameId } = req.params;
   Games.setGamePhase(gameId, 'PREFLOP')
-  .then(() => {
-    res.json({success: true});
-  })
-  .catch((err) => console.log(err)); 
+    .then(() => {
+      res.json({ success: true });
+    })
+    .catch((err) => console.log(err));
 })
 
 router.post('/phaseFlop/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
-  
+  const { id: gameId } = req.params;
+
   GameLogic.phaseFlop(gameId)
-  .then(() => {
-    console.log("phase Flop");
-    req.app.io.emit(`phase-flop:${gameId}`, {});
-    res.json({success: true});
-  })
+    .then(() => {
+      console.log("phase Flop");
+      req.app.io.emit(`phase-flop:${gameId}`, {});
+      res.json({ success: true });
+    })
 })
 
 router.post('/phaseTurn/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
+  const { id: gameId } = req.params;
   GameLogic.phaseTurn(gameId)
-  .then(() => {
-    console.log("phase Turn");
-    req.app.io.emit(`phase-turn:${gameId}`, {});
-    res.json({success: true});
-  })
+    .then(() => {
+      console.log("phase Turn");
+      req.app.io.emit(`phase-turn:${gameId}`, {});
+      res.json({ success: true });
+    })
 })
 
 router.post('/phaseRiver/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
+  const { id: gameId } = req.params;
   GameLogic.phaseRiver(gameId)
-  .then(() => {
-    console.log("phase River");
-    req.app.io.emit(`phase-river:${gameId}`, {});
-    res.json({success: true});
-  })
+    .then(() => {
+      console.log("phase River");
+      req.app.io.emit(`phase-river:${gameId}`, {});
+      res.json({ success: true });
+    })
 })
 
 router.post('/phaseFinal/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
+  const { id: gameId } = req.params;
   Games.setGamePhase(gameId, 'FINALREVEAL')
-  .then(() => {
-    console.log("phase Final");
-    req.app.io.emit(`phase-final:${gameId}`, {});
-    res.json({success: true});
-  })
+    .then(() => {
+      console.log("phase Final");
+      req.app.io.emit(`phase-final:${gameId}`, {});
+      res.json({ success: true });
+    })
 
 })
 
 router.get('/getWinner/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
+  const { id: gameId } = req.params;
   let userId;
   //TODO
   GameLogic.getWinner(gameId)
-  .then((result) => {
-    res.json(result);
-  })
+    .then((result) => {
+      res.json(result);
+    })
 })
 
 router.post('/checkWinner/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
+  const { id: gameId } = req.params;
 
   //TODO
   GameLogic.getWinner(gameId)
-  .then((result) => {
-    console.log(result);
-    if(result.won){
-      //CHANGE TO GAMEEND
-      Games.setGamePhase(gameId, 'FINALREVEAL')
-      .then(() => {
-        for(let announcement of result.announcement){
-          req.app.io.emit(`console:${gameId}`, {
-            sender: announcement.username,
-            message: `${announcement.username} ${announcement.hand}`,
-            timestamp: Date.now()
+    .then((result) => {
+      console.log(result);
+      if (result.won) {
+        //CHANGE TO GAMEEND
+        Games.setGamePhase(gameId, 'GAMEEND')
+          .then(() => {
+            for (let announcement of result.announcement) {
+              req.app.io.emit(`console:${gameId}`, {
+                sender: announcement.username,
+                message: `${announcement.username} ${announcement.hand}`,
+                timestamp: Date.now()
+              })
+            }
+            return Games.getGamePot(gameId);
           })
-        }
+          .then((gamePot) => {
+            let winningAmount = Math.floor(gamePot.pot / result.winners.length);
+            for (let winner of result.winners) {
+              req.app.io.emit(`console:${gameId}`, {
+                sender: winner.username,
+                message: `${winner.username} has won ${winningAmount}$!`,
+                timestamp: Date.now()
+              })
+              Games.addPlayerMoney(winner.userId, gameId, winningAmount);
+            }
+          })
 
-        for(let winner of result.winners){
-          req.app.io.emit(`console:${gameId}`, {
-            sender: winner.username,
-            message: `${winner.username} has won!!!`,
-            timestamp: Date.now()
-          })
-        }
-        
-        //req.app.io.emit(`winner:${gameId}`, {username: result.username, userId});
-        res.json({success: true});
-      })
-    }else{
-      res.json({success: false});
-    }
-  })
-  .catch(err => console.log(err));
-  
+        req.app.io.emit(`winner:${gameId}`, {});
+        res.json({ success: true });
+
+      } else {
+        res.json({ success: false });
+      }
+    })
+    .catch(err => console.log(err));
+
 })
 
 router.get('/getData/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
+  const { id: gameId } = req.params;
   GameLogic.getData(gameId)
     .then((data) => {
       res.json(data);
@@ -205,10 +210,10 @@ router.get('/getData/:id', (req, res, next) => {
 })
 
 router.post('/playerBet/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
-  const {userId, betAmount} = req.body;
+  const { id: gameId } = req.params;
+  const { userId, betAmount } = req.body;
   const username = req.session.username;
-  
+
   GameLogic.bet(userId, gameId, betAmount)
     .then(() => {
       console.log(userId + " has bet " + betAmount);
@@ -217,16 +222,16 @@ router.post('/playerBet/:id', (req, res, next) => {
         message: `${username} has bet ${betAmount}$`,
         timestamp: Date.now()
       })
-      res.json({success: true});
+      res.json({ success: true });
     })
     .catch(err => console.log(err));
 })
 
 router.post('/playerCheck/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
-  const {userId} = req.body;
+  const { id: gameId } = req.params;
+  const { userId } = req.body;
   const username = req.session.username;
-  
+
   GameLogic.check(userId, gameId)
     .then(() => {
       console.log(userId + " has checked");
@@ -235,16 +240,16 @@ router.post('/playerCheck/:id', (req, res, next) => {
         message: `${username} has checked`,
         timestamp: Date.now()
       })
-      res.json({success: true});
+      res.json({ success: true });
     })
     .catch(err => console.log(err));
 })
 
 router.post('/playerFold/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
-  const {userId} = req.body;
+  const { id: gameId } = req.params;
+  const { userId } = req.body;
   const username = req.session.username;
-  
+
   GameLogic.fold(userId, gameId)
     .then(() => {
       console.log(userId + " has folded");
@@ -253,7 +258,7 @@ router.post('/playerFold/:id', (req, res, next) => {
         message: `${username} has folded`,
         timestamp: Date.now()
       })
-      res.json({success: true});
+      res.json({ success: true });
     })
     .catch(err => console.log(err));
 })
@@ -261,15 +266,25 @@ router.post('/playerFold/:id', (req, res, next) => {
 
 
 router.post('/nextTurn/:id', (req, res, next) => {
-  const {id: gameId} = req.params;
-  const {isTurn} = req.body;
+  const { id: gameId } = req.params;
+  const { isTurn } = req.body;
 
   GameLogic.nextTurn(gameId, isTurn)
-    .then(() => {   
-      res.json({success: true});
+    .then(() => {
+      res.json({ success: true });
     })
 
 })
 
+router.post('/newRound/:id', (req, res, next) => {
+  const { id: gameId } = req.params;
+  
+  GameLogic.newRound(gameId)
+    .then(() => {
+      console.log("NEW ROUND");
+      res.json({ success: true });
+    })
+    .catch(err => console.log(err));
+})
 module.exports = router;
 

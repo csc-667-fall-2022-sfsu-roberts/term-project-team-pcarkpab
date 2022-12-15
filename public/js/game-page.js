@@ -53,7 +53,7 @@ function changeBubble() {
     if (p < 4) {
       bub.classList.add('bl');
     }
-    
+
     switch (player.playerStatus) {
       case 'FOLD':
         bub.classList.add('bfold');
@@ -75,7 +75,7 @@ function changeBubble() {
         bub.classList.add('bdefault');
         bub.innerHTML = "";
         break;
-      
+
     }
 
   }
@@ -92,7 +92,6 @@ sliderOutput.innerHTML = gameData.currentBet;
 slider.oninput = function () {
   sliderOutput.innerHTML = this.value;
 }
-
 
 let updateGameData = async () => {
   try {
@@ -111,6 +110,8 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
     renderPlayers();
     if (gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
       displayPlayerCards();
+    } else if(gameData.gamePhase == 'FINALREVEAL' && gameData.gamePhase == 'GAMEEND'){
+      displayAllPlayerCards();
     }
 
     changeBubble();
@@ -238,15 +239,17 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
           await updateGameData();
           await fetch(`/api/game/checkWinner/${gameId}`, { method: 'post' })
             .then((result) => {
-              if (!result.json().success) {
+              return result.json();
+            })
+            .then((result_json) => {
+              if (!result_json.success) {
                 return new Promise(resolve => setTimeout(async () => {
-                  
+
                   await processAction();
                   resolve();
                 }, 200));
               }
             })
-
 
         }
 
@@ -302,7 +305,7 @@ let processAction = async () => {
       let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if (( player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
+        if ((player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
           everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
@@ -310,7 +313,7 @@ let processAction = async () => {
         }
         console.log(player.playerStatus);
       }
-      
+
       console.log(everyoneCalls + ',' + everyoneChecks);
       if (everyoneCalls || everyoneChecks) {
         //fetch next game phase
@@ -332,7 +335,7 @@ let processAction = async () => {
       let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if (( player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
+        if ((player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
           everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
@@ -361,7 +364,7 @@ let processAction = async () => {
       let everyoneCalls = true;
 
       for (let player of gameData.playerInfo) {
-        if (( player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
+        if ((player.playerStatus != 'FOLD' && player.playerStatus != 'BET') || player.betAmount != gameData.currentBet) {
           everyoneCalls = false;
         }
         if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
@@ -474,6 +477,15 @@ function displayPlayerCards() {
         displayCard(BLANKCARD_ID, "p" + (player.seatNumber + 1) + "_l", smallCard);
         displayCard(BLANKCARD_ID, "p" + (player.seatNumber + 1) + "_r", smallCard);
       }
+    }
+  }
+}
+
+function displayAllPlayerCards() {
+  for (const player of gameData.playerInfo) {
+    if (player.cards.length == 2) {
+        displayCard(player.cards[0], "p" + (player.seatNumber + 1) + "_l", smallCard);
+        displayCard(player.cards[1], "p" + (player.seatNumber + 1) + "_r", smallCard);    
     }
   }
 }
@@ -642,8 +654,39 @@ socket.on(`phase-final:${gameId}`, async () => {
   console.log('IN TURN FINAL REVEAL');
 })
 
-socket.on(`winner:${gameId}`, async ({ username, userId }) => {
-  console.log('WE HAVE A WINNER ');
+socket.on(`winner:${gameId}`, async () => {
+
+  console.log('CHICKEN DINNER');
+  await updateGameData();
+  await new Promise(resolve => setTimeout(async () => {
+    if (currentUserId == gameData.playerInfo[0].userId) {
+      await fetch(`/api/console/${gameId}`, {
+        method: "post",
+        headers: { 'Content-Type': "application/json" },
+        body: JSON.stringify({ message: `New Round will start in ${START_DELAY} seconds` }),
+      })
+    }
+    returnCard();
+    resolve();
+  }, 5000));
+
+  if (currentUserId == gameData.playerInfo[0].userId) {
+    await fetch(`/api/game/newRound/${gameId}`, { method: "post" });
+    await updateGameData();
+    await new Promise(resolve => setTimeout(async () => {
+
+      await fetch(`/api/console/${gameId}`, {
+        method: "post",
+        headers: { 'Content-Type': "application/json" },
+        body: JSON.stringify({ message: `New Round start now! Good luck!` }),
+      })
+
+      resolve();
+    }, START_DELAY * 1000));
+
+    await updateGameData();
+    await fetch(`/api/game/phaseBlindBet/${gameId}`, { method: "post" });
+  }
 })
 
 
