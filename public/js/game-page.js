@@ -1,5 +1,5 @@
 
-const START_DELAY = 5;
+const START_DELAY = 15;
 
 let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
