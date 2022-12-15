@@ -34,7 +34,7 @@
       <label>
         Confirm Password
       </label>
-      <input type="password" id="confirm-password" name="cPassword" placeholder="Confirm Password" required><br>
+      <input type="password" id="confirm-password" name="cPassword" placeholder="Confirm Password" onkeydown="checkConfirmPassword()" required><br>
       </div>
       <br>
 
@@ -56,4 +56,29 @@
    
   </div>
  <div id="reg-space"></div>
-  
+
+{{!--   
+<div id="pw-message">
+  <h3>Passwords do not match</h3>
+  <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+  <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+  <p id="number" class="invalid">A <b>number</b></p>
+  <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+</div> --}}
+
+<!-- Confirm password matching -->
+<script>
+var password = document.getElementById("user-password");
+var cpassword = document.getElementById("confirm-password");
+
+document.querySelector("form").addEventListener("submit", 
+function(event){
+  if (password.value !== cpassword.value){
+    event.preventDefault();
+    alert("The password and confirm password do not match!")
+  }else{
+    alert("Sign-Up Successful");
+  } 
+});
+
+</script>
