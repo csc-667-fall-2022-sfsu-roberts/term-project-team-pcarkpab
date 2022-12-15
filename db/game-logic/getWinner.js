@@ -39,7 +39,7 @@ const getWinner = async (gameId) => {
     }
 
     userIdsAndScores.sort((a, b) => {
-      return a.score - b.score;
+      return b.score - a.score;
     });
     
     console.log(userIdsAndScores);
