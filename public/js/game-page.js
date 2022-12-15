@@ -1,4 +1,6 @@
-const START_DELAY = 5;
+
+const START_DELAY = 15;
+const BLANKCARD_ID = 53;
 
 let pathname = window.location.pathname;
 const pathnameSegments = pathname.split('/');
@@ -9,21 +11,76 @@ let gameData = {
   pot: 0,
   playerCount: 0,
   playerInfo: [
-    // { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, playerStatus: 'idle', blindStatus: 'DEALER', seatNumber: 0 },
-    // { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, playerStatus: 'idle', blindStatus: 'SMALLBLIND', seatNumber: 1 },
-    // { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, playerStatus: 'idle', blindStatus: 'big-blind', seatNumber: 2 },
-    // { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, playerStatus: 'idle', blindStatus: 'none', seatNumber: 3 },
+    // { userId: 1, username: 'John', money: 500, cards: [12, 13], betAmount: 0, playerStatus: 'IDLE', blindStatus: 'DEALER', seatNumber: 0 },
+    // { userId: 2, username: 'Deja', money: 500, cards: [35, 27], betAmount: 0, playerStatus: 'IDLE', blindStatus: 'SMALLBLIND', seatNumber: 1 },
+    // { userId: 3, username: 'Mary', money: 500, cards: [45, 21], betAmount: 0, playerStatus: 'IDLE', blindStatus: 'big-blind', seatNumber: 2 },
+    // { userId: 4, username: 'Peter', money: 500, cards: [46, 6], betAmount: 0, playerStatus: 'IDLE', blindStatus: 'none', seatNumber: 3 },
   ],
   dealerCards: [],
   isTurn: -1,
   currentBet: 0,
   minimumBet: 0,
   //Dealer status to determine what action a player can take
-  //'BET', 'CALL', 'CHECK', 'FOLD'
+  //'BET', 'CHECK', 'FOLD', 'IDLE'
   status: 'CHECK',
   //'PREGAME', 'BLINDBET', 'ASSIGNCARDS','PREFLOP', 'FLOP', 'TURN', 'RIVER', 'FINALREVEAL', 'GAMEEND'
   gamePhase: 'PREGAME',
 }
+
+
+
+function changeBubble() {
+
+  for (let player of gameData.playerInfo) {
+    let str = '';
+    //document.write("IN FOR LOOP<br>");
+    let p = player.seatNumber + 1;
+    // if(p < 4){
+    //   str = '#player' + p + ' #c2 #bubble-status';
+    // } else {
+    //   str = '#player' + p + ' #c #bubble-status';
+    // }
+
+    //document.write("str is " + str);
+    var bub = document.getElementById(`bubble-status-${p}`);
+    //document.write("<br>p is " + p)
+    //document.write("<br>bub is " + bub)
+    //document.write("<br>bub inner is " + bub.innerHTML)
+
+    bub.classList.remove(...bub.classList);
+    bub.classList.add('bubble-status');
+
+    if (p < 4) {
+      bub.classList.add('bl');
+    }
+    
+    console.log(player.playerStatus);
+    switch (player.playerStatus) {
+      case 'FOLD':
+        bub.classList.add('bfold');
+        bub.innerHTML = "FOLD"
+        break;
+      case 'BET':
+        bub.classList.add('braise');
+        bub.innerHTML = "BET"
+        break;
+      case 'CHECK':
+        bub.classList.add('bcheck');
+        bub.innerHTML = "CHECK"
+        break;
+      case 'IDLE':
+        bub.classList.add('bdefault');
+        break;
+      default:
+        bub.classList.add('bdefault');
+        break;
+      
+    }
+
+  }
+
+}
+
 
 var slider = document.getElementById(`slider-${gameId}`);
 var sliderOutput = document.getElementById("demo");
@@ -44,6 +101,7 @@ let updateGameData = async () => {
   }
 }
 
+//WHEN UPDATEGAMEDATA is called
 socket.on(`update-gameData:${gameId}`, async ({ data }) => {
   try {
     gameData = data;
@@ -53,8 +111,27 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
     if (gameData.gamePhase != 'BLINDBET' && gameData.gamePhase != 'ASSIGNCARDS') {
       displayPlayerCards();
     }
+
+    changeBubble();
     setTurn();
     setValues();
+
+    if (gameData.gamePhase == 'FLOP') {
+      //TODO Show the 3 cards permanently
+      await setFlop();
+    }
+
+    if (gameData.gamePhase == 'TURN') {
+      await setFlop();
+      await setTurnc();
+    }
+
+    if (gameData.gamePhase == 'RIVER') {
+      await setFlop();
+      await setTurnc();
+      await setRiver();
+    }
+
 
     //UPDATE BUTTON
     let callButton = document.getElementById(`call-button-${gameId}`);
@@ -77,69 +154,102 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
         slider.min = gameData.currentBet - currentPlayer.betAmount;
         sliderOutput.innerHTML = gameData.currentBet - currentPlayer.betAmount;
         //CALL BUTTON LOGIC
-        callButton.onclick = async () => {
-          console.log(currentUserId + " with seatNumber " + gameData.isTurn);
-          await fetch(`/api/game/playerBet/${gameId}`, {
-            method: "post",
-            headers: { 'Content-Type': "application/json" },
-            body: JSON.stringify({ userId: currentUserId, betAmount: gameData.currentBet - currentPlayer.betAmount }),
-          });
-          await updateGameData();
-          await new Promise(resolve => setTimeout(async () => {
-            await processAction();
-            resolve();
-          }, 1000));
+        callButton.disabled = false;
+        raiseButton.disabled = false;
+        foldButton.disabled = false;
+        checkButton.disabled = false;
 
+        callButton.onclick = async () => {
+          if (callButton.disabled) return;
+
+          if (gameData.currentBet - currentPlayer.betAmount > 0) {
+            callButton.disabled = true;
+            await fetch(`/api/game/playerBet/${gameId}`, {
+              method: "post",
+              headers: { 'Content-Type': "application/json" },
+              body: JSON.stringify({ userId: currentUserId, betAmount: gameData.currentBet - currentPlayer.betAmount }),
+            });
+
+            await new Promise(resolve => setTimeout(async () => {
+              await updateGameData();
+              await processAction();
+              resolve();
+            }, 1000));
+          } {
+            console.log('CANT CALL HERE');
+          }
         }
         //RAISE BUTTON LOGIC
         raiseButton.onclick = async () => {
-          console.log(currentUserId + " with seatNumber " + gameData.isTurn);
-          await fetch(`/api/game/playerBet/${gameId}`, {
-            method: "post",
-            headers: { 'Content-Type': "application/json" },
-            body: JSON.stringify({ userId: currentUserId, betAmount: slider.value }),
-          });
-          await updateGameData();
-          await new Promise(resolve => setTimeout(async () => {
-            await processAction();
-            resolve();
-          }, 1000));
+          if (raiseButton.disabled) return;
 
+          if (slider.value > 0) {
+            raiseButton.disabled = true;
+            await fetch(`/api/game/playerBet/${gameId}`, {
+              method: "post",
+              headers: { 'Content-Type': "application/json" },
+              body: JSON.stringify({ userId: currentUserId, betAmount: slider.value }),
+            });
+
+            await new Promise(resolve => setTimeout(async () => {
+              await updateGameData();
+              await processAction();
+              resolve();
+            }, 1000));
+          } else {
+            console.log("CAN'T RAISE WITH 0");
+          }
 
         }
         //CHECK BUTTON LOGIC
         checkButton.onclick = async () => {
+
+          if (checkButton.disabled) return;
+
           if (gameData.status == 'CHECK') {
+            checkButton.disabled = true;
             console.log("CHECK");
             await fetch(`/api/game/playerCheck/${gameId}`, {
               method: "post",
               headers: { 'Content-Type': "application/json" },
               body: JSON.stringify({ userId: currentUserId }),
             });
-            await updateGameData();
+
             await new Promise(resolve => setTimeout(async () => {
+              await updateGameData();
               await processAction();
               resolve();
             }, 1000));
-            
+
 
           } else {
             console.log('CANNOT CHECK HERE');
           }
         }
         //FOLD BUTTON LOGIC
-        foldButton.onclick = async() => {
+        foldButton.onclick = async () => {
+          if (foldButton.disabled) return;
+
+          foldButton.disabled = true;
           console.log("FOLD");
           await fetch(`/api/game/playerFold/${gameId}`, {
             method: "post",
             headers: { 'Content-Type': "application/json" },
             body: JSON.stringify({ userId: currentUserId }),
           });
-          await updateGameData();
-          await new Promise(resolve => setTimeout(async () => {
-            await processAction();
-            resolve();
-          }, 1000));
+
+          await fetch(`/api/game/checkWinner/${gameId}`, { method: 'post' })
+            .then((result) => {
+              if (!result.json().success) {
+                return new Promise(resolve => setTimeout(async () => {
+                  await updateGameData();
+                  await processAction();
+                  resolve();
+                }, 1000));
+              }
+            })
+
+
         }
 
       } else {
@@ -167,19 +277,19 @@ socket.on(`update-gameData:${gameId}`, async ({ data }) => {
 let processAction = async () => {
   try {
 
-    if(gameData.gamePhase == 'PREFLOP'){
+    if (gameData.gamePhase == 'PREFLOP') {
       let ready = true;
-  
-      for(let player of gameData.playerInfo){
-        if(player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD'){
+
+      for (let player of gameData.playerInfo) {
+        if (player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD') {
           ready = false;
         }
       }
-      if(ready){
+      if (ready) {
         //fetch next game phase
-        console.log("NEXT PHASE");
-        await fetch(`/api/game/phaseFlop/${gameId}`, {method: "post"});
-      }else{
+        console.log("NEXT PHASE FLOP");
+        await fetch(`/api/game/phaseFlop/${gameId}`, { method: "post" });
+      } else {
         await fetch(`/api/game/nextTurn/${gameId}`, {
           method: "post",
           headers: { 'Content-Type': "application/json" },
@@ -187,6 +297,90 @@ let processAction = async () => {
         })
         await updateGameData();
       }
+    }
+
+    if (gameData.gamePhase == 'FLOP') {
+      let everyoneChecks = true;
+      let everyoenCalls = true;
+
+      for (let player of gameData.playerInfo) {
+        if ((player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD') || player.playerStatus == 'CHECK') {
+          everyoenCalls = false;
+        }
+        if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
+          everyoneChecks = false;
+        }
+      }
+
+      if (everyoenCalls || everyoneChecks) {
+        //fetch next game phase
+        console.log("NEXT PHASE TURN");
+        await fetch(`/api/game/phaseTurn/${gameId}`, { method: "post" });
+      } else {
+        await fetch(`/api/game/nextTurn/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ isTurn: gameData.isTurn }),
+        })
+        await updateGameData();
+      }
+
+    }
+
+    if (gameData.gamePhase == 'TURN') {
+      let everyoneChecks = true;
+      let everyoenCalls = true;
+
+      for (let player of gameData.playerInfo) {
+        if ((player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD') || player.playerStatus == 'CHECK') {
+          everyoenCalls = false;
+        }
+        if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
+          everyoneChecks = false;
+        }
+      }
+
+      if (everyoenCalls || everyoneChecks) {
+        //fetch next game phase
+        console.log("NEXT PHASE RIVER");
+        await fetch(`/api/game/phaseRiver/${gameId}`, { method: "post" });
+      } else {
+        await fetch(`/api/game/nextTurn/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ isTurn: gameData.isTurn }),
+        })
+        await updateGameData();
+      }
+    }
+
+    if (gameData.gamePhase == 'RIVER') {
+      let everyoneChecks = true;
+      let everyoenCalls = true;
+
+      for (let player of gameData.playerInfo) {
+        if ((player.betAmount != gameData.currentBet && player.playerStatus != 'FOLD') || player.playerStatus == 'CHECK') {
+          everyoenCalls = false;
+        }
+        if (player.playerStatus != 'CHECK' && player.playerStatus != 'FOLD') {
+          everyoneChecks = false;
+        }
+      }
+
+      if (everyoenCalls || everyoneChecks) {
+        //fetch next game phase
+        console.log("NEXT PHASE FINAL REVEAL");
+        await fetch(`/api/game/phaseFinal/${gameId}`, { method: "post" });
+        await fetch(`/api/game/checkWinner/${gameId}`, { method: "post" });
+      } else {
+        await fetch(`/api/game/nextTurn/${gameId}`, {
+          method: "post",
+          headers: { 'Content-Type': "application/json" },
+          body: JSON.stringify({ isTurn: gameData.isTurn }),
+        })
+        await updateGameData();
+      }
+
     }
 
 
@@ -207,12 +401,12 @@ async function setFlop() {
   await moveCard3(gameData.dealerCards[2]);
 }
 
-function setTurnc() {
-  moveCard4(gameData.dealerCards[3])
+async function setTurnc() {
+  await moveCard4(gameData.dealerCards[3]);
 }
 
-function setRiver() {
-  moveCard5(gameData.dealerCards[4])
+async function setRiver() {
+  await moveCard5(gameData.dealerCards[4]);
 }
 
 function setValues() {
@@ -241,14 +435,25 @@ function setTable() {
 async function setPlayerCards() {
   try {
     for (const player of gameData.playerInfo) {
-      await new Promise(resolve => setTimeout(() => {
-        displayCard(player.cards[0], "p" + (player.seatNumber + 1) + "_l", smallCard);
-        resolve();
-      }, 300));
-      await new Promise(resolve => setTimeout(() => {
-        displayCard(player.cards[1], "p" + (player.seatNumber + 1) + "_r", smallCard);
-        resolve();
-      }, 300));
+      if (player.userId == currentUserId) {
+        await new Promise(resolve => setTimeout(() => {
+          displayCard(player.cards[0], "p" + (player.seatNumber + 1) + "_l", smallCard);
+          resolve();
+        }, 300));
+        await new Promise(resolve => setTimeout(() => {
+          displayCard(player.cards[1], "p" + (player.seatNumber + 1) + "_r", smallCard);
+          resolve();
+        }, 300));
+      } else {
+        await new Promise(resolve => setTimeout(() => {
+          displayCard(BLANKCARD_ID, "p" + (player.seatNumber + 1) + "_l", smallCard);
+          resolve();
+        }, 300));
+        await new Promise(resolve => setTimeout(() => {
+          displayCard(BLANKCARD_ID, "p" + (player.seatNumber + 1) + "_r", smallCard);
+          resolve();
+        }, 300));
+      }
     }
     console.log("card animation completed");
   } catch (err) {
@@ -259,8 +464,13 @@ async function setPlayerCards() {
 function displayPlayerCards() {
   for (const player of gameData.playerInfo) {
     if (player.cards.length == 2) {
-      displayCard(player.cards[0], "p" + (player.seatNumber + 1) + "_l", smallCard);
-      displayCard(player.cards[1], "p" + (player.seatNumber + 1) + "_r", smallCard);
+      if (player.userId == currentUserId) {
+        displayCard(player.cards[0], "p" + (player.seatNumber + 1) + "_l", smallCard);
+        displayCard(player.cards[1], "p" + (player.seatNumber + 1) + "_r", smallCard);
+      } else {
+        displayCard(BLANKCARD_ID, "p" + (player.seatNumber + 1) + "_l", smallCard);
+        displayCard(BLANKCARD_ID, "p" + (player.seatNumber + 1) + "_r", smallCard);
+      }
     }
   }
 }
@@ -306,29 +516,6 @@ function renderPlayers() {
   setTable();
 }
 
-
-/* function moveCard1() {
-    var b = document.getElementById("m-card1");
-    document.getElementById('m-card1').className = "c1-place"
-    sleep(650).then(() => {
-        displayCard(1, "mid1", bigCard);
-        b.style.display = "none";
-    });*/
-
-
-
-//Remove isdiscard
-//Add the dealer game_user
-//time out CHECK or FOLD
-
-//Assign seat number
-//init deck, shuffle deck, set blind status
-
-//Start game
-//Phase: Blind bet
-//small blind and big blind bet, 
-
-//Phase: assign cards
 
 /*
 await new Promise(resolve => setTimeout(() => {
@@ -396,8 +583,6 @@ socket.on(`phase-blindBet:${gameId}`, async () => {
   }
 })
 
-
-
 socket.on(`phase-assignCards:${gameId}`, async () => {
   try {
     //Making sure it only update once
@@ -432,16 +617,30 @@ socket.on(`phase-assignCards:${gameId}`, async () => {
 
 socket.on(`phase-flop:${gameId}`, async () => {
   //game status will be updated
-  await updateGameData();
   await setFlop();
+  await updateGameData();
   console.log("IN FLOP PHASE");
 })
 
+socket.on(`phase-turn:${gameId}`, async () => {
+  await setTurnc();
+  await updateGameData();
+  console.log('IN TURN PHASE');
+})
 
+socket.on(`phase-river:${gameId}`, async () => {
+  await setRiver();
+  await updateGameData();
+  console.log('IN TURN RIVER');
+})
 
+socket.on(`phase-final:${gameId}`, async () => {
+  await updateGameData();
+  console.log('IN TURN FINAL REVEAL');
+})
 
-socket.on(`game-phase:betting-round`, () => {
-
+socket.on(`winner:${gameId}`, async ({ username, userId }) => {
+  console.log('WE HAVE A WINNER ');
 })
 
 
@@ -561,8 +760,8 @@ socket.on(`console:${gameId}`, ({ sender, message, timestamp }) => {
   let chatBox = document.getElementById(`console-chat-${gameId}`);
   chatBox.appendChild(div);
   chatBox.appendChild(div2);
-  
-  
+
+
 })
 
 socket.on(`player-join:${gameId}`, ({ playerCount, gameStatus }) => {

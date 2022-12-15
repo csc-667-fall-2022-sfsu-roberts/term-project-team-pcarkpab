@@ -110,20 +110,22 @@ function sleep(ms) {
         return Promise.resolve();
     });
     }
-  function moveCard4(c) {
+  async function moveCard4(c) {
     var b = document.getElementById("m-card4");
     document.getElementById('m-card4').className = "c4-place"
-    sleep(650).then(() => {
+    await sleep(650).then(() => {
         displayCard(c, "mid4", bigCard);
         b.style.display = "none";
+        return Promise.resolve();
     });
     }
-  function moveCard5(c) {
+  async function moveCard5(c) {
     var b = document.getElementById("m-card5");
     document.getElementById('m-card5').className = "c5-place"
-    sleep(650).then(() => {
+    await sleep(650).then(() => {
         displayCard(c, "mid5", bigCard);
         b.style.display = "none";
+        return Promise.resolve();
     });
     }
     
@@ -190,3 +192,4 @@ function hideturn(isTurn) {
 /*
 var element = document.getElementById("message");
 element.className += "c-bubble left-bubble" + newClassName;*/
+

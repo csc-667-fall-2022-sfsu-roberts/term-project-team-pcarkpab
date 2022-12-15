@@ -39,3 +39,19 @@
   </form>
 </div>
  <div id="reg-space"></div>
+
+ <!-- Confirm password matching -->
+<script>
+var password = document.getElementById("user-password");
+var cpassword = document.getElementById("confirm-password");
+
+document.querySelector("form").addEventListener("submit", 
+function(event){
+  if (password.value !== cpassword.value){
+    event.preventDefault();
+    alert("The password and confirm password do not match!")
+  }else{
+    alert("Sign-Up Successful");
+  } 
+});
+</script>
