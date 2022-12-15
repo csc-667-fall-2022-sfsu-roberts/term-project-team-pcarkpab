@@ -1,6 +1,7 @@
 const express = require('express');
 const GameLogic = require('../../../db/game-logic/index');
 const Games = require('../../../db/Games');
+const Users = require('../../../db/Users');
 const router = express.Router();
 
 router.post('/', (req, res, next) => {
@@ -33,7 +34,6 @@ router.post('/updateData/:id', (req, res, next) => {
   GameLogic.getData(gameId)
     .then((data) => {
       console.log("Game data updated");
-      console.log(data.playerInfo);
       req.app.io.emit(`update-gameData:${gameId}`, {data});
       res.json({success: true});
     })
@@ -138,17 +138,53 @@ router.post('/phaseRiver/:id', (req, res, next) => {
 
 router.post('/phaseFinal/:id', (req, res, next) => {
   const {id: gameId} = req.params;
-  
+  Games.setGamePhase(gameId, 'FINALREVEAL')
+  .then(() => {
     console.log("phase Final");
     req.app.io.emit(`phase-final:${gameId}`, {});
     res.json({success: true});
-  
+  })
+
 })
 
 router.get('/getWinner/:id', (req, res, next) => {
   const {id: gameId} = req.params;
+  let userId;
   //TODO
-  res.json({success: true});
+  GameLogic.getWinner(gameId)
+  .then((result) => {
+    res.json(result);
+  })
+})
+
+router.post('/checkWinner/:id', (req, res, next) => {
+  const {id: gameId} = req.params;
+  let userId;
+  //TODO
+  GameLogic.getWinner(gameId)
+  .then((result) => {
+    console.log(result);
+    if(result != -1){
+      userId = result;
+      Games.setGamePhase(gameId, 'GAMEEND')
+      .then(() => {
+        return Users.getUsername(result);
+      })
+      .then((result) => {
+        req.app.io.emit(`console:${gameId}`, {
+          sender: result.username,
+          message: `${result.username} has won!!!`,
+          timestamp: Date.now()
+        })
+        req.app.io.emit(`winner:${gameId}`, {username: result.username, userId});
+        res.json({success: true});
+      })
+    }else{
+      res.json({success: false});
+    }
+  })
+  .catch(err => console.log(err));
+  
 })
 
 router.get('/getData/:id', (req, res, next) => {
@@ -188,7 +224,7 @@ router.post('/playerCheck/:id', (req, res, next) => {
       console.log(userId + " has checked");
       req.app.io.emit(`console:${gameId}`, {
         sender: username,
-        message: `${username} has checked$`,
+        message: `${username} has checked`,
         timestamp: Date.now()
       })
       res.json({success: true});
@@ -206,7 +242,7 @@ router.post('/playerFold/:id', (req, res, next) => {
       console.log(userId + " has folded");
       req.app.io.emit(`console:${gameId}`, {
         sender: username,
-        message: `${username} has folded$`,
+        message: `${username} has folded`,
         timestamp: Date.now()
       })
       res.json({success: true});

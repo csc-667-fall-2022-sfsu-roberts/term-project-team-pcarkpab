@@ -1,13 +1,25 @@
 
 let player1Cards = [
-  { rank: 2, suit: "S" }, { rank: 9, suit: "D" }, { rank: 7, suit: "C" }, { rank: 11, suit: "S" }, { rank: 7, suit: "S" },
-  { rank: 13, suit: "S" }, { rank: 1, suit: "D" }
+  { rank: 12, suit: 'HEARTS' },
+  { rank: 8, suit: 'DIAMONDS' },
+  { rank: 9, suit: 'DIAMONDS' },
+  { rank: 9, suit: 'SPADES' },
+  { rank: 12, suit: 'HEARTS' },
+  { rank: 9, suit: 'DIAMONDS' },
+  { rank: 11, suit: 'SPADES' }
 ]
 
 let player2Cards = [
-  { rank: 2, suit: "H" }, { rank: 2, suit: "D" }, { rank: 2, suit: "C" }, { rank: 11, suit: "D" }, { rank: 7, suit: "H" },
-  { rank: 1, suit: "S" }, { rank: 13, suit: "D" }
+  { rank: 12, suit: 'HEARTS' },
+  { rank: 8, suit: 'DIAMONDS' },
+  { rank: 9, suit: 'DIAMONDS' },
+  { rank: 9, suit: 'SPADES' },
+  { rank: 11, suit: 'HEARTS' },
+  { rank: 8, suit: 'DIAMONDS' },
+  { rank: 8, suit: 'SPADES' }
 ]
+
+
 
 function calculatePokerHandScore(cards) {
   // Sort the cards by rank in descending order
@@ -117,25 +129,20 @@ function isFourOfAKind(cards) {
 function isStraight(cards) {
   // Check if the cards form a straight
 
-  // Sort the cards in descending order by rank
-  cards.sort((a, b) => b.rank - a.rank);
+  // Create a set of ranks to quickly check if a rank is in the hand
+  const rankSet = new Set();
+  for (const card of cards) {
+    rankSet.add(card.rank);
+  }
 
-  let straightStart = -1;
   let straightLength = 0;
-  for (let i = 0; i < cards.length; i++) {
-    const card = cards[i];
-    if (straightStart === -1) {
-      // Start a new straight
-      straightStart = i;
-      straightLength = 1;
-    } else if (cards[i - 1].rank - card.rank === 1) {
-      // Continue the current straight
+  for (let i = 1; i <= 14; i++) {
+    if (rankSet.has(i)) {
       straightLength += 1;
     } else {
-      // Start a new straight
-      straightStart = i;
-      straightLength = 1;
+      straightLength = 0;
     }
+
     if (straightLength >= 5) {
       // Found a straight of at least 5 cards
       break;
@@ -144,6 +151,8 @@ function isStraight(cards) {
 
   return straightLength >= 5;
 }
+
+
 
 function isFlush(cards) {
   // Check if the cards form a flush
@@ -168,127 +177,94 @@ function isFlush(cards) {
 
   return false;
 }
-
 function isFullHouse(cards) {
-  // Check if the cards form a full house
-  // A full house is a hand with 3 cards of one rank and 2 cards of another rank
-
-  // Count the number of cards of each rank
-  const rankCounts = {};
+  // Create a map of the counts of each rank in the cards
+  const counts = new Map();
   for (const card of cards) {
-    if (!rankCounts[card.rank]) {
-      rankCounts[card.rank] = 1;
-    } else {
-      rankCounts[card.rank] += 1;
+    if (!counts.has(card.rank)) {
+      counts.set(card.rank, 0);
     }
+    counts.set(card.rank, counts.get(card.rank) + 1);
   }
 
-  // Check if there are two ranks with 3 and 2 cards
-  let rank3 = -1;
-  let rank2 = -1;
-  for (const rank in rankCounts) {
-    if (rankCounts[rank] === 3) {
-      if (rank3 === -1) {
-        rank3 = rank;
-      } else {
-        // Found two ranks with 3 cards
-        return true;
-      }
-    } else if (rankCounts[rank] === 2) {
-      if (rank2 === -1) {
-        rank2 = rank;
-      } else {
-        // Found two ranks with 2 cards
-        return true;
-      }
+  // Determine if the counts in the map satisfy the conditions for a full house
+  // (i.e., if there are two counts that are equal to 2 and 3)
+  let foundTwo = false;
+  let foundThree = false;
+  for (const count of counts.values()) {
+    if (count === 2) {
+      foundTwo = true;
+    } else if (count === 3) {
+      foundThree = true;
     }
   }
-
-  return false;
+  return foundTwo && foundThree;
 }
 
+
 function isThreeOfAKind(cards) {
-  // Check if the cards form three of a kind
-  // Three of a kind is a hand with 3 cards of the same rank
-
-  // Count the number of cards of each rank
-  const rankCounts = {};
+  // Create a map of the counts of each rank in the cards
+  const counts = new Map();
   for (const card of cards) {
-    if (!rankCounts[card.rank]) {
-      rankCounts[card.rank] = 1;
-    } else {
-      rankCounts[card.rank] += 1;
+    if (!counts.has(card.rank)) {
+      counts.set(card.rank, 0);
     }
+    counts.set(card.rank, counts.get(card.rank) + 1);
   }
 
-  // Check if any rank has 3 cards
-  for (const rank in rankCounts) {
-    if (rankCounts[rank] === 3) {
-      return true;
+  // Determine if the counts in the map satisfy the conditions for a three of a kind
+  // (i.e., if there is exactly one count that is equal to 3)
+  let foundThreeOfAKind = false;
+  for (const count of counts.values()) {
+    if (count === 3) {
+      foundThreeOfAKind = true;
     }
   }
-
-  return false;
+  return foundThreeOfAKind;
 }
 
 function isTwoPair(cards) {
-  // Check if the cards form two pair
-  // Two pair is a hand with 2 cards of one rank, 2 cards of another rank, and 1 card of a third rank
-
-  // Count the number of cards of each rank
-  const rankCounts = {};
+  // Create a map of the counts of each rank in the cards
+  const counts = new Map();
   for (const card of cards) {
-    if (!rankCounts[card.rank]) {
-      rankCounts[card.rank] = 1;
-    } else {
-      rankCounts[card.rank] += 1;
+    if (!counts.has(card.rank)) {
+      counts.set(card.rank, 0);
     }
+    counts.set(card.rank, counts.get(card.rank) + 1);
   }
 
-  // Check if there are two ranks with 2 cards and one rank with 1 card
-  let pairCount = 0;
-  let singleCount = 0;
-  for (const rank in rankCounts) {
-    if (rankCounts[rank] === 2) {
-      pairCount += 1;
-    } else if (rankCounts[rank] === 1) {
-      singleCount += 1;
+  // Determine if the counts in the map satisfy the conditions for a two pair
+  // (i.e., if there are exactly two counts that are equal to 2)
+  let foundPairs = 0;
+  for (const count of counts.values()) {
+    if (count === 2) {
+      foundPairs++;
     }
   }
-
-  return pairCount === 2 && singleCount === 1;
+  return foundPairs === 2;
 }
 
 function isPair(cards) {
-  // Check if the cards form a pair
-  // A pair is a hand with 2 cards of one rank and 5 cards of other ranks
-
-  // Count the number of cards of each rank
-  const rankCounts = {};
+  // Create a map of the counts of each rank in the cards
+  const counts = new Map();
   for (const card of cards) {
-    if (!rankCounts[card.rank]) {
-      rankCounts[card.rank] = 1;
-    } else {
-      rankCounts[card.rank] += 1;
+    if (!counts.has(card.rank)) {
+      counts.set(card.rank, 0);
     }
+    counts.set(card.rank, counts.get(card.rank) + 1);
   }
 
-  // Check if there is one rank with 2 cards and the other ranks have 1 card each
-  let pairCount = 0;
-  let singleCount = 0;
-  for (const rank in rankCounts) {
-    if (rankCounts[rank] === 2) {
-      pairCount += 1;
-    } else if (rankCounts[rank] === 1) {
-      singleCount += 1;
+  // Determine if the counts in the map satisfy the conditions for a pair
+  // (i.e., if there is exactly one count that is equal to 2)
+  let foundPairs = 0;
+  for (const count of counts.values()) {
+    if (count === 2) {
+      foundPairs++;
     }
   }
-
-  return pairCount === 1 && singleCount === 5;
+  return foundPairs === 1;
 }
 
+//console.log(isThreeOfAKind(player1Cards));
 
-
-
-console.log(calculatePokerHandScore(player1Cards));
-console.log(calculatePokerHandScore(player2Cards));
+module.exports = calculatePokerHandScore;

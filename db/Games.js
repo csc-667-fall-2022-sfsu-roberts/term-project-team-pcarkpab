@@ -164,6 +164,12 @@ const assignPlayerCard = (userId, gameId, cardId) => {
   return db.query(baseSQL, {userId, gameId, cardId});
 }
 
+const getRankAndSuit = (cardId) => {
+  let baseSQL =
+  "SELECT rank, suit FROM cards WHERE \"cardId\"=${cardId}";
+  return db.one(baseSQL, {cardId});
+}
+
 module.exports = {
   setGameStatus,
   setGamePhase,
@@ -188,4 +194,5 @@ module.exports = {
   getActivePlayersData,
   addGamePot,
   checkPlayerStatusWithSeatNum,
+  getRankAndSuit,
 };
