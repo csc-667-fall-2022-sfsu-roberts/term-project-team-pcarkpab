@@ -37,7 +37,6 @@ const register = ({username, email, password}) => {
 }
 
 const checkUsername = (username) => {
-  console.log(username);
   let baseSQL =
   "SELECT username FROM users WHERE username=${username};";
   return db.one(baseSQL, {username})
@@ -52,4 +51,10 @@ const checkUsername = (username) => {
   .catch((err) => {Promise.resolve(false)});
 }
 
-module.exports = {login, register, checkUsername};
+const getUsername = (userId) => {
+  let baseSQL =
+  "SELECT username FROM users WHERE \"userId\"=${userId};";
+  return db.one(baseSQL, {userId});
+}
+
+module.exports = {login, register, checkUsername, getUsername};

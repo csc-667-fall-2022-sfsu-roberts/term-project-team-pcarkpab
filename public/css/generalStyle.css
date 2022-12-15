@@ -1,0 +1,173 @@
+/*This CSS page defines the general styling of every 
+miscellaneous page for the website.*/
+
+body {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    background-color: rgb(33,36,33);
+  }
+  
+  a {
+    color: rgb(156, 201, 241);
+  }
+
+  #lobby-header{
+    padding-bottom: 30px;
+    font-weight: bold;
+    font-family: "AlegreyaHeaderFont";
+      font-size: 45px;
+      text-align: center;
+      color: rgb(370, 0, 40);
+      text-shadow: -1px 0 rgb(61, 9, 9), 0 1px rgb(79, 11, 11), 1px 0 rgb(49, 8, 8), 0 -1px rgb(66, 16, 16);
+      text-shadow: 1px 1px 2px black;
+      color: rgb(245, 212, 212);
+  }
+
+  .lobby-place{
+    position:relative;
+    top: -15%;
+  }
+
+  .lobbies-list{
+    position:relative;
+    left: 6%;
+  }
+  
+  /*ARI'S ADDITION*/
+  #lobby-grid {
+    display: grid;
+    grid-template-columns: 20% 50% 30%;
+    grid-gap: 8px;
+  }
+
+  
+  a[id="waiting-room"] {
+    display: block;
+    text-align: center;
+    font-family: 'CentaurLabelFont';
+    text-decoration: auto;
+    border-style: outset;
+    text-shadow: 0px 1px 2px rgb(35 30 30);
+    padding: 5px 5px 5px 5px;
+    border-color: red;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-right-width: 2px;
+  }
+  
+  /*These are Primary colors I used so far that you can use for designing, 
+  I put in this list for easier access, if you use Visual Studio, 
+  you can see a preview of thar color */
+  
+  .colors{
+    /**hotbar color*/
+    color: black; 
+  
+    /*Most text colors*/
+    color: white;
+  
+    /*Background color*/
+    background-color: rgb(33,36,33);
+  
+    /*Orange Button*/
+    background-color: #d86b13; 
+  
+    /*Red Button*/
+    background-color: rgb(219, 42, 36);
+  
+    border: 2px solid #bf530b; 
+    background-color: #ee7d20; 
+  
+    /*Extra colors, mostly for hovering and little details*/
+    border: 2px solid rgb(161, 30, 26);
+    background-color: rgb(219, 42, 36);
+    background-color: #d86b13; 
+    border: 3px solid #bf530b;
+    background-color: #b3611e; 
+    background-color: rgb(247, 105, 100);
+    background-color: #efae7a; 
+    color: rgb(255, 215, 213);
+    
+  }
+  /*
+  .chat-box{
+    display: flex;
+    flex-direction: column;
+  }*/
+  
+  h3[id="Lobbytext1"] {
+    font-family: 'CentaurLabelFont';
+    font-size: 2em;
+    text-align: center;
+    font-weight: bold;
+    color: rgb(211, 28, 28);
+  }
+  
+  /* This rule describes the styling for the lobby table
+   and the game information; containing a red and black 
+   gradient, the table will animate smoothly over time.*/
+  #lobby-table, th, td {
+      color: white;
+      border-radius: 20px;
+      border: 3px solid rgb(124, 39, 39);
+      background-image: linear-gradient(rgb(218, 68, 14), black);
+      filter: drop-shadow(0 0 0.1rem rgb(0, 0, 0));
+      text-align: center;
+      padding: 5px 5px 5px 5px;
+      max-width: 200px;
+      animation: redandblack 4s ease infinite;
+      background-size: 200% 200%;
+  }
+  
+  @keyframes redandblack {
+    0% {
+      background-position: 0% 0%;
+    }
+    50% {
+      background-position: 50% 50%;
+    }
+    100% {
+      background-position: 0% 0%;
+    }
+  }
+  
+  
+  .lobby-list {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+  }
+  
+  
+  th {
+    border: 2px solid rgb(190, 50, 50);
+    border-radius: 20px;
+    padding: 20px;
+    font-family: 'CentaurLabelFont';
+    font-size: larger;
+    color: rgb(255, 255, 255);
+    text-shadow: 0px 0px 1px black;
+  }
+  
+  .JoinButton {
+    font-family: 'CentaurLabelFont';
+    text-shadow: 0px 0px 0.5px black;
+    color: rgb(207, 23, 23);
+    border-style: outset;
+    border-color: white;
+    cursor: pointer;
+  }
+
+  .lobby-play-button{
+    background: rgb(139, 27, 27);
+    border: rgb(139, 27, 27);
+    color: rgb(255, 255, 255);  
+    font-size: large;
+  }
+  
+  .lobby-play-button:hover {
+    background-color: rgba(red, green, blue, 0);
+    color: rgb(215, 169, 113);
+  }

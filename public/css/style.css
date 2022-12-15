@@ -1,0 +1,65 @@
+body {
+  min-height: 100vh;
+
+  color: white;
+  text-decoration: none;
+  background-color: rgb(33,36,33);
+}
+
+a{
+  color: rgb(156, 201, 241);
+}
+
+/*These are Primary colors I used so far that you can use for designing, 
+I put in this list for easier access, if you use Visual Studio, 
+you can see a preview of thar color */
+
+.colors{
+  /**hotbar color*/
+  color: black; 
+
+  /*Most text colors*/
+  color: white;
+
+  /*Background color*/
+  background-color: rgb(33,36,33);
+
+  /*Orange Button*/
+  background-color: #d86b13; 
+
+  /*Red Button*/
+  background-color: rgb(219, 42, 36);
+
+  border: 2px solid #bf530b; 
+  background-color: #ee7d20; 
+
+  /*Extra colors, mostly for hovering and little details*/
+  border: 2px solid rgb(161, 30, 26);
+  background-color: rgb(219, 42, 36);
+  background-color: #d86b13; 
+  border: 3px solid #bf530b;
+  background-color: #b3611e; 
+  background-color: rgb(247, 105, 100);
+  background-color: #efae7a; 
+  color: rgb(255, 215, 213);
+  
+}
+
+.chat-box{
+  display: flex;
+  flex-direction: column;
+}
+
+#lobby-table{
+  background-color: rgb(54, 23, 23);
+  color: white;
+
+  border-radius: 20px;
+  border: 3px solid white;
+}
+
+.lobby-list th, td{
+  border: 3px solid white;
+  padding: 20px;
+}
+

@@ -5,12 +5,21 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta  http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-  <link rel="stylesheet" type="text/css" href="/public/css/navbar.css">
-  <link rel="stylesheet" type="text/css" href="/public/css/GeneralStyle.css">
+  <link rel="stylesheet" type ="text/css" href="/public/css/navbar.css">
+  <link rel="stylesheet" type ="text/css" href="/public/css/style.css">
+  <link rel="stylesheet" type ="text/css" href="/public/css/gameStyle.css">
+  <link rel="stylesheet" type ="text/css" href="/public/css/animation.css">
+   <link rel="stylesheet" type ="text/css" href="/public/css/chat-style.css">
+  <link rel="stylesheet" type="text/css" href="/public/css/generalStyle.css">
   <link rel="stylesheet" type="text/css" href="/public/css/AboutUs.css">
   <link rel="stylesheet" type="text/css" href="/public/css/Registration.css">
   <link rel="stylesheet" type="text/css" href="/public/css/FAQ and Help.css">
+   <link rel="stylesheet" type="text/css" href="/public/css/slider.css">
+
+
   <script src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.3.0/handlebars.runtime.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/public/js/socket.js"></script>
   
   <title>{{title}}</title>
 </head>
@@ -22,6 +31,9 @@
   {{/if}}
 
   {{{body}}}
+
+  {{>footer}}
+  
 
 </body>
 </html>

@@ -1,7 +1,31 @@
 <div>
-  <h1>LOBBY PAGE, Authenticated</h1>
-  <h2> Welcome {{username}}, userId: {{userId}}</h2>
+  <!--<h1>LOBBY PAGE, Authenticated</h1> -->
+  <div id = "lobby-header">
+    Welcome {{username}}<!--, userId: {{userId}}-->
+  </div>
+<div id = "lobby-grid">
+
+  <div class="game-chat-lobby lobby-place">
+
+            <div id="chatbox">
+                
+                <div id="chat-name">Game Chat</div>
+
+                <div id="chat-0" class="chat-box">
+                    <div class="message c-bubble left-bubble">
+                        <p>Welcome to the Lobbychat!</p>
+                    </div>  <br>
+                </div>
+            </div>
+
+            <div id = "chat-holder">
+                <input id="send-message-text-0" type="text" class = "send-message" >
+                <input id="send-message-button-0" type="button" value="Send" class = "send-button">
+            </div>
+
+  </div>
   
+<div class = "lobbies-list">
   <h3 id="Lobbytext1">List of Lobbies</h3>
   <div class="lobby-list">
     <table id="lobby-table">
@@ -16,10 +40,9 @@
       
     </table>
   </div>
+  </div>
 
-<br>
-
-<div class="Lobby_Border">
+<div class="Lobby_Border lobby-place">
   <form id="lobby-form">
       <h3 id="Lobbytext2">New Lobby</h3>
 
@@ -29,31 +52,15 @@
         </label>
         <input type="text" id="create-minimumBet" placeholder="Enter Minimum Bet" required><br>
       </div>
-      <br>
-    
-
-      <div id="GamePassDIV">
-        <label>
-          Game Password
-        </label>
-        <input type="text" id="create-gamePassword" placeholder="Enter Game Password" required><br>
-      </div>
-      <br>
-
+      
     <p id="Submit">Create Lobby</p>
-
       <input type="image" id="create-lobby-button" src="../public/css/fonts/LoginSignupLogo2.png" alt="submit"> 
-      <br>
-
-
-      <a id="waiting-room" href="/auth/waitingRoom">Waiting Room</a>
-
-
     </form>
   </div>
 
-
-<script src="/socket.io/socket.io.js" ></script>
-<script src="/public/js/test-socket.js"></script>
-<script src="/public/js/lobby-page.js"></script>
 </div>
+
+<script src="/public/js/lobby-page.js"></script>
+<script src="/public/js/abdul.js"></script>
+</div>
+ <div id="reg-space"></div>

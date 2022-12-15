@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-    <title>Hail to the Proxy - Login</title>
-</head>
-<header>
     <h2>Registration</h2>
     <!-- <p>Clicking on the sign up button below would lead you back to the log in page</p> -->
 </header>
 
 <div class="container_Border">
-    <form id ="signup-form" method="POST" action="/users/register" enctype="application/x-www-form-urlencoded">
+    <form id ="signup-form" method="POST" action="/api/users/register" enctype="application/x-www-form-urlencoded">
         <p id="Register">Register a New Account</p>
 
       <div id="UsernameDIV">
@@ -51,7 +41,7 @@
       <div id="CheckDIV">
       <input type="checkbox" required>
       <label>
-        You are 13+ years of age.
+        You are 21+ years of age.
       </label>
 
       <input type="checkbox">
@@ -60,9 +50,10 @@
       </label>
       </div>
       <br>
-
-      <p id="Submit">Sign Up</p>
-    <input type="image" id="PokerLogoSubmit" src="../public/css/fonts/LoginSignupLogo2.png" alt="Submit">
-
+    <input type="submit" class="button button3" alt="Submit">
+    <img id="PokerLogoSubmit" src="../public/css/fonts/LoginSignupLogo2.png">
     </form>
+   
   </div>
+ <div id="reg-space"></div>
+  

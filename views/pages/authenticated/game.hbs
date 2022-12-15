@@ -1,6 +1,370 @@
+<div id = "g-contain">
+    <div class="middle">
 
-<div>
-  <h1>GAME PAGE, Authenticated</h1>
+        <div class="game-chat">
+
+            <div id="chatbox">
+
+                <div id="chat-name">Game Chat</div>
+
+                <div id="chat-{{gameId}}" class="chat-box">
+                    <div class="message c-bubble left-bubble">
+                        <p>Poker: Welcome to the chat!</p>
+                    </div> <br>
+                </div>
+            </div>
+
+            <div id="chat-holder">
+                <input id="send-message-text-{{gameId}}" type="text" class="send-message">
+                <input id="send-message-button-{{gameId}}" type="button" value="Send" class="send-button">
+            </div>
+
+        </div>
+
+        <div class="console-chat">
+            <div id="console-name">Game Console</div>
+            <div id="console-chat-{{gameId}}" class="console-box">
+                <div class="console-message">
+                    <p>Console Log</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="poker-area">
+            <div id="loading-{{gameId}}" class="loading">
+                <p>Waiting for Players</p>
+            </div>
+
+            <div id="poker-header">
+                <p>test</p>
+<!--<button onclick="toggle1()">Toggle p1</button>
+                <button onclick="toggle2()">Toggle p2</button>
+                <button onclick="toggle3()">Toggle p3</button>
+                <button onclick="toggle4()">Toggle p4</button>
+                <button onclick="toggle5()">Toggle p5</button>
+                <button onclick="toggle6()">Toggle p6</button>-->
+
+
+                <!--<button id="move-c1">card 1</button>
+                <button id="move-c2">card 2</button>
+                <button id="move-c3">card 3</button>
+                <button id="move-c4">card 4</button>
+                <button id="move-c5">card 5</button>-->
+                
+                <button id="setPcards" onclick="setPlayerCards()">set player cards</button>
+                <button id="testFlop" onclick="setFlop()">testFlop</button>
+                <button id="testTurnc" onclick="setTurnc()">setTurn</button>
+                <button id="testRiver" onclick="setRiver()">setRiver</button>
+                <button id="return" onclick="returnCard()">returnCards</button>
+
+
+                <button id="leave-game">LEAVE</button>
+
+            </div>
+
+
+
+            <div id="game-table-{{gameId}}" class="game-table">
+                {{!-- <img class="table" src="/public/images/table.png"> --}}
+
+                <div id="cardstack">
+                    <img src="/public/images/cardstack.png">
+                </div>
+                <div id="pot">
+                    <img src="/public/images/pot.png">
+                </div>
+                <div id="pot-text">
+                    Pot: $500
+                </div>
+
+                <div id="e6">
+                    <img class="empty-spot" src="/public/images/emptySpot.png">
+                </div>
+                <div id="g6">
+                    <img class="glow" src="/public/images/glow.png">
+                </div>
+                <div id="player6" class="players">
+                    <div id=playerInfo>
+                        <img class="icon" src="/public/images/icon.png">
+                        <div id="player-name">>player6{{username}}</div>
+                        <div id="money-amount">$99,999</div>
+                    </div>
+
+                    <!-- y:435 x:-->
+                    <div id="c">
+                        <div class="blindStatus blind-l">Big Blind </div>
+                        <div class="bubble bbet" contenteditable="true"> BET $200 </div>
+                        <div id="cards">
+                            <div class="cardContainer">
+                                <div id="p6_l">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                            <div class="cardContainer">
+                                <div id="p6_r">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e5">
+                    <img class="empty-spot" src="/public/images/emptySpot.png">
+                </div>
+                <div id="g5">
+                    <img class="glow" src="/public/images/glow.png">
+                </div>
+                <div id="player5" class="players">
+                    <div id=playerInfo>
+                        <img class="icon" src="/public/images/icon.png">
+                        <div id="player-name">>player5{{username}}</div>
+                        <div id="money-amount">$0.00</div>
+                    </div>
+                    <div id="c">
+                        <div class="blindStatus blind-l">Big Blind </div>
+                        <div class="bubble bfold" contenteditable="true"> FOLDED </div>
+                        <div id="cards">
+                            <div class="cardContainer">
+                                <div id="p5_l">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                            <div class="cardContainer">
+                                <div id="p5_r">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e4">
+                    <img class="empty-spot" src="/public/images/emptySpot.png">
+                </div>
+                <div id="g4">
+                    <img class="glow" src="/public/images/glow.png">
+                </div>
+                <div id="player4" class="players">
+                    <div id=playerInfo>
+                        <img class="icon" src="/public/images/icon.png">
+                        <div id="player-name">>player4{{username}}</div>
+                        <div id="money-amount">$1.00</div>
+                    </div>
+                    <div id="c">
+                        <div class="blindStatus blind-l">Big Blind </div>
+                        <div class="bubble bbet" contenteditable="true"> CALL </div>
+                        <div id="cards">
+                            <div class="cardContainer">
+                                <div id="p4_l">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                            <div class="cardContainer">
+                                <div id="p4_r">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="e1">
+                    <img class="empty-spot" src="/public/images/emptySpot.png">
+                </div>
+                <div id="g1">
+                    <img class="glow" src="/public/images/glow.png">
+                </div>
+                <div id="player1" class="players">
+                    <div id="c2">
+                        <div class="blindStatus blind-r">Small Blind </div>
+                        <div class=" bl bfold bubble" contenteditable="true"> FOLDED</div>
+                        <div id="cards">
+                            <div class="cardContainer">
+                                <div id="p1_l">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                            <div class="cardContainer">
+                                <div id="p1_r">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id=playerInfo>
+                        <img class="icon" src="/public/images/icon.png">
+                        <div id="player-name">>player1{{username}}</div>
+                        <div id="money-amount">$10.00</div>
+                    </div>
+                </div>
+
+                <div id="e2">
+                    <img class="empty-spot" src="/public/images/emptySpot.png">
+                </div>
+                <div id="g2">
+                    <img class="glow" src="/public/images/glow.png">
+                </div>
+                <div id="player2" class="players">
+                    <div id="c2">
+                        <div class="blindStatus blind-r">Big Blind </div>
+                        <div class="bubble bl bfold bfoldr" contenteditable="true"> FOLDED </div>
+                        <div id="cards">
+                            <div class="cardContainer">
+                                <div id="p2_l">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                            <div class="cardContainer">
+                                <div id="p2_r">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id=playerInfo>
+                        <img class="icon" src="/public/images/icon.png">
+                        <div id="player-name">>player2{{username}}</div>
+                        <div id="money-amount">$100.00</div>
+                    </div>
+                </div>
+
+                <div id="e3">
+                    <img class="empty-spot" src="/public/images/emptySpot.png">
+                </div>
+                <div id="g3">
+                    <img class="glow" src="/public/images/glow.png">
+                </div>
+                <div id="player3" class="players">
+                    <div id="c2">
+                        <div class="blindStatus blind-r">Big Blind </div>
+                        <div class="bubble bl bbet" contenteditable="true"> RAISE </div>
+                        <div id="cards">
+                            <div class="cardContainer">
+                                <div id="p3_l">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                            <div class="cardContainer">
+                                <div id="p3_r">
+                                    <img src="/public/images/miniCard.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id=playerInfo>
+                        <img class="icon" src="/public/images/icon.png">
+                        <div id="player-name">player3{{username}}</div>
+                        <div id="money-amount">$1000.00</div>
+                    </div>
+                </div>
+                <!--
+                <div id = "e7">
+                    <img class="empty-spot" src="/public/images/emptySpot.png">
+                </div>
+                <!<div id = "g7">
+                    <img class="glow" src="/public/images/glow.png">
+                </div>
+                <div id="playerMain">
+                    <div id=playerInfo>
+                        <img class="icon" src="/public/images/icon.png">
+                        <div id="player-name">You{{username}}</div>
+                        <div id="money-amount">$10,000.00</div>
+                    </div>
+                </div>
+                <div id="mainCards">
+                    <div class="cardContainer">
+                        <div id="m_l">
+                            <img src="/public/images/miniCard.png">
+                        </div>
+                    </div>
+                    <div class="cardContainer">
+                        <div id="m_r">
+                            <img src="/public/images/miniCard.png">
+                        </div>
+                    </div>
+                </div> -->
+
+                <div id="m-card1" class="">
+                    <img src="/public/images/backCard.png">
+                </div>
+                <div id="m-card2" class="">
+                    <img src="/public/images/backCard.png">
+                </div>
+                <div id="m-card3" class="">
+                    <img src="/public/images/backCard.png">
+                </div>
+                <div id="m-card4" class="">
+                    <img src="/public/images/backCard.png">
+                </div>
+                <div id="m-card5" class="">
+                    <img src="/public/images/backCard.png">
+                </div>
+
+                <div class="cards2">
+                    <div class="cardContainerBig">
+                        <div id="mid1">
+                            <img src="/public/images/bigCard.png">
+                        </div>
+                    </div>
+                    <div class="cardContainerBig">
+                        <div id="mid2">
+                            <img src="/public/images/bigCard.png">
+                        </div>
+                    </div>
+                    <div class="cardContainerBig">
+                        <div id="mid3">
+                            <img src="/public/images/bigCard.png">
+                        </div>
+                    </div>
+                    <div class="cardContainerBig">
+                        <div id="mid4">
+                            <img src="/public/images/bigCard.png">
+                        </div>
+                    </div>
+                    <div class="cardContainerBig">
+                        <div id="mid5">
+                            <img src="/public/images/bigCard.png">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="info-container">
+                    <div id="last-bet">
+                        Last bet value: $150.00
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div id="game-buttons-{{gameId}}" class="game-buttons">
+                 <div id="play-buttons">
+                    <button id="raise-button-{{gameId}}" class="button button1">Raise</button></a>
+                    <button id="fold-button-{{gameId}}" class="button button1">Fold</button></a>
+                    <button id="call-button-{{gameId}}" class="button button1">Call</button></a>
+                    <button id="check-button-{{gameId}}" class="button button1">Check</button></a>
+                </div>
+                <div class="slidecontainer">
+                    <input type="range" min="1" max="100" value="1" class="slider" id="slider-{{gameId}}">
+                    <p>Amount to raise: <span id="demo"></span></p>
+                </div>
+                <!--<div id="bet">
+                    <label>Input Bet</label><br>
+                    <input type="text" id="create-Bet"><br>
+                </div>-->
+            </div>
+        </div>
+
+    </div>
+    <script>
+        const currentUserId = {{ userId }};
+    </script>
+    <script src="/public/js/toggle-player.js"></script>
+    <script src="/public/js/game-card.js"></script>
+    <script src="/public/js/game-page.js"></script>
+    <script src="/public/js/test.js"></script>
 </div>
-
-<p>So,.. this is where the game page would go, but am Still designing stuff here, so adding it in later...</p>
+ <div id="reg-space"></div>
+ </div>

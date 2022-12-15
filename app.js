@@ -13,13 +13,17 @@ if(process.env.NODE_ENV === 'development') {
 
 //Public routes
 var indexRouter = require('./routes/public/index');
-var testsRouter = require('./routes/public/tests');
-var usersRouter = require('./routes/public/users');
+var testsRouter = require('./routes/public/api/tests');
+var usersRouter = require('./routes/public/api/users');
 
 //Protected routes
 var authIndexRouter = require('./routes/protected/authIndex');
-var lobbyRouter = require('./routes/protected/lobby');
-var chatRouter = require('./routes/protected/chat');
+var gameRouter = require('./routes/protected/game');
+var lobbyRouter = require('./routes/protected/api/lobby');
+var chatRouter = require('./routes/protected/api/chat');
+var consoleRouter = require('./routes/protected/api/console');
+var gameapiRouter = require('./routes/protected/api/gameapi');
+
 
 //Others
 const sessionInstance = require('./app-config/session');
@@ -55,12 +59,16 @@ app.use((req, res, next) =>{
 })
 
 app.use('/', indexRouter);
-app.use('/tests', testsRouter);
-app.use('/users', usersRouter);
+app.use('/api/tests', testsRouter);
+app.use('/api/users', usersRouter);
 
 app.use('/auth', protect, authIndexRouter);
-app.use('/lobby', protect, lobbyRouter);
-app.use('/chat', protect, chatRouter);
+app.use('/auth/game', protect, gameRouter);
+app.use('/api/lobby', protect, lobbyRouter);
+app.use('/api/chat', protect, chatRouter);
+app.use('/api/console', protect, consoleRouter);
+app.use('/api/game', protect, gameapiRouter);
+
 
 app.use((err, req, res, next) => {
   res.locals.message = err.message;
