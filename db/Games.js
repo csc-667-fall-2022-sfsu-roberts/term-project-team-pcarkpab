@@ -110,6 +110,12 @@ const setPlayerBet = (userId, gameId, betAmount) => {
   return db.query(baseSQL, {userId, gameId, betAmount});
 }
 
+const addPlayerBet = (userId, gameId, betAmount) => {
+  let baseSQL =
+  "UPDATE game_user SET \"chipsBet\" = \"chipsBet\" + ${betAmount} WHERE \"gameId\"=${gameId} AND \"userId\"=${userId}";
+  return db.query(baseSQL, {userId, gameId, betAmount});
+}
+
 const setPlayerTurn = (seatNumber, gameId) => {
   let baseSQL =
   "UPDATE game SET \"isTurn\" = ${seatNumber} WHERE \"gameId\"=${gameId}";
@@ -158,6 +164,12 @@ const assignPlayerCard = (userId, gameId, cardId) => {
   return db.query(baseSQL, {userId, gameId, cardId});
 }
 
+const getRankAndSuit = (cardId) => {
+  let baseSQL =
+  "SELECT rank, suit FROM cards WHERE \"cardId\"=${cardId}";
+  return db.one(baseSQL, {cardId});
+}
+
 module.exports = {
   setGameStatus,
   setGamePhase,
@@ -173,6 +185,7 @@ module.exports = {
   assignPlayerSeat,
   getGame,
   setPlayerBet,
+  addPlayerBet,
   setPlayerTurn,
   setPlayerStatus,
   addPlayerMoney,
@@ -181,4 +194,5 @@ module.exports = {
   getActivePlayersData,
   addGamePot,
   checkPlayerStatusWithSeatNum,
+  getRankAndSuit,
 };

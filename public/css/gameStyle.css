@@ -558,7 +558,7 @@
   left:22%;
 }
 
-.bubble {
+.bubble-status {
   z-index:103;
   top: -26%;
   position: relative;
@@ -573,75 +573,30 @@
   color: rgb(255, 255, 255);
 }
 
-.fbubble-bottom-right:before {
-  content: "";
-  z-index: 102;
-  width: 0px;
-  height: 0px;
-  position: absolute;
-  border-left: 12px solid transparent;
-  border-bottom: 20px solid transparent;
-  left: 50px;
-  bottom: -14px;
-  background-color: rgb(49, 42, 143);
-  border: 2px solid #586bb1; 
-}
-
-
-.fbubble-bottom-left:before {
-  content: "";
-  z-index: 102;
-  width: 0px;
-  height: 0px;
-  position: absolute;
-  border-right: 12px solid transparent;
-  border-bottom: 20px solid transparent;
-  left: 10px;
-  bottom: -14px;
-  background-color: rgb(49, 42, 143);
-  border: 2px solid #586bb1; 
-}
-
 .bfold {
   background-color: rgb(49, 42, 143);
   border: 2px solid #586bb1; 
 }
 
-.bbet{
-  background-color: rgb(185, 36, 31);
-  border: 2px solid #bf530b;
+.bcall{
+  background-color: rgb(208, 114, 7);
+  border: 2px solid #f3a470;
 }
 
-
-
-.bbubble-bottom-left:before {
-  content: "";
-  z-index: 102;
-  width: 0px;
-  height: 0px;
-  position: absolute;
-  border-right: 12px solid transparent;
-  border-bottom: 20px solid transparent;
-  left: 10px;
-  bottom: -14px;
-  background-color: rgb(185, 36, 31);
+.braise{
+  background-color: rgb(166, 22, 17);
   border: 2px solid #bf530b;
+
 }
 
+.bcheck{
+  background-color: rgb(27, 128, 38);
+  border: 2px solid #82d888; 
+}
 
-
-.bbubble-bottom-right:before {
-  content: "";
-  z-index: 102;
-  width: 0px;
-  height: 0px;
-  position: absolute;
-  border-left: 12px solid transparent;
-  border-bottom: 20px solid transparent;
-  left: 50px;
-  bottom: -14px;
-  background-color: rgb(185, 36, 31);
-  border: 2px solid #bf530b;
+.bdefault{
+  background-color: rgba(92, 92, 92, 0.7);
+  border: 2px solid rgba(177, 177, 177, 0.7);
 }
 
 #info-container {
