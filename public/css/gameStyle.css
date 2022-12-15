@@ -52,11 +52,10 @@
   grid-area: poker;
   display: grid;
   position: relative;
-  grid-template-rows: 10% 70% 20%;
+  grid-template-rows: 80% 20%;
   /*grid-template-rows: 80% 20%;*/
   grid-template-columns: auto;
   grid-template-areas: 
-  "poker-header"
   "game-table"
   "buttons";
   grid-gap: 8px;
@@ -76,10 +75,12 @@
 }
 
 .game-buttons {
+  display: flex;
   padding: 8px;
   grid-area: buttons;
   background-color: rgb(33, 36, 33);
   position:relative;
+  flex-direction: column;
 }
 
 .loading {
@@ -490,7 +491,7 @@
 #play-buttons {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 #bet {
@@ -586,7 +587,6 @@
 .braise{
   background-color: rgb(166, 22, 17);
   border: 2px solid #bf530b;
-
 }
 
 .bcheck{
@@ -597,6 +597,17 @@
 .bdefault{
   background-color: rgba(92, 92, 92, 0.7);
   border: 2px solid rgba(177, 177, 177, 0.7);
+}
+
+.w{
+  color:white;
+  font-weight: bold;
+  padding:10px;
+  padding-left: 80px;
+  padding-right: 80px;
+}
+.w:hover{
+  box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.3);
 }
 
 #info-container {
@@ -617,4 +628,8 @@
 ::placeholder { 
   color: rgb(33, 28, 28);
   opacity: 1; 
+}
+#reg-space{
+  height:50px;
+
 }

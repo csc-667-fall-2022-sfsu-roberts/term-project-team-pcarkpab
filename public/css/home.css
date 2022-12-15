@@ -2,3 +2,20 @@
     text-align: center;
     background-color: rgba(255, 255, 255, 0.562);
 }
+
+#hands{
+    display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+p[id="Message2"] {
+    font-family: "CentaurLabelFont";
+    font-size: x-large;
+    width: 65%;
+    margin: auto;
+    overflow: auto;
+    text-align: center;
+    text-shadow: 1px 1px 3px white;
+}

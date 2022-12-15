@@ -208,7 +208,6 @@
   }
 
   .console-chat{
-    background-color: black;
     height:275px;
   }
   .console-box {
@@ -254,4 +253,24 @@
       padding-left: 3px;
       position: relative;
       top:-1%;
+  }
+
+  #announce-container{
+    position: relative;
+    top:57%;
+    display: flex;
+    justify-content: center;
+  }
+  .announce-message {
+    
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: bold;
+    
+    background: rgba(91, 220, 124, 0.4);
+    border-radius: 10px;
+    border: #3b2f2a;
+    padding: 14px;
+    text-align: center;
+    color: rgb(255, 255, 255);
   }
