@@ -304,19 +304,19 @@
 
 #player1 {
   top: 7%;
-  left: 64.5%;
+  left: 66%;
   display: flex;
 }
 
 #player2 {
   top: 40%;
-  left: 71.5%;
+  left: 73%;
   display: flex;
 }
 
 #player3 {
   top: 70%;
-  left: 64.5%;
+  left: 66%;
   display: flex;
 }
 
@@ -630,6 +630,18 @@
   opacity: 1; 
 }
 #reg-space{
-  height:50px;
+  height:75px;
 
 }
+
+#reg-space3{
+  height:40px;
+
+}
+
+
+#reg-space2{
+  height:200px;
+
+}
+

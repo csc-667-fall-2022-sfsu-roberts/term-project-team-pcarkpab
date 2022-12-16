@@ -73,6 +73,7 @@
   
   
   button[id="PokerLogoSubmit"] {
+    display: block;
     background-image: url(../css/fonts/LoginSignupLogo2.png);
     filter: drop-shadow(0 0 0.2rem rgb(0, 0, 0));
     margin-left: auto;
@@ -81,10 +82,10 @@
     background-position: 0px 0px;
     background-repeat: no-repeat;
     background-color: transparent;
-    padding: 140px 160px 80px 160px;
+    padding: 207px 368px 0px 0px;
     text-align: center;
     border: none;
-  }
+}
   
   
   button[id="PokerLogoSubmit"]:hover {
