@@ -1,5 +1,5 @@
 
-const START_DELAY = 5;
+const START_DELAY = 15;
 const BLANKCARD_ID = 53;
 
 let pathname = window.location.pathname;
